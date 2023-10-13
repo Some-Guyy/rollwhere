@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/tannowenn/rollwhere/issues"
   },
-  "homepage": "https://github.com/tannowenn/rollwhere#readme"
+  "homepage": "https://github.com/tannowenn/rollwhere#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
