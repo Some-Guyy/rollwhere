@@ -123,6 +123,30 @@ class AutocompleteDirectionsHandler {
                         me.directionsRenderer.setDirections(response);
                         // me.directionsRenderer.setRouteIndex(2);
                     }
+                    //alternate routes
+                    let alternateRouteEl = document.getElementById("alternate-routes")
+                    for (let i=0; i<response.routes.length; i++) {
+                        let header = document.createElement("h5")
+                        let ol = document.createElement("ol")
+                        header.innerHTML = `Route ${i+1}`
+
+                        response.routes[i].legs[0].steps.forEach((step, index) => {
+                            let li = document.createElement("li")
+                            li.innerHTML = step.instructions
+
+                            //if travel mode is transit, we add additional info about the transit
+                            if (step.transit){
+                                step.transit.line.vehicle.type == "BUS" ? li.innerHTML += ` | Bus: ${step.transit.line.name} Heading Towards ${step.transit.headsign}` : li.innerHTML += ` | Train: ${step.transit.line.name} Heading Towards ${step.transit.headsign}`
+                            }
+
+                            ol.appendChild(li)
+                            
+                        })
+
+                        alternateRouteEl.appendChild(header)
+                        alternateRouteEl.appendChild(ol)
+                    }
+
                     console.log(response);
                     me.directionsRenderer.setDirections(response);
                 } else {
