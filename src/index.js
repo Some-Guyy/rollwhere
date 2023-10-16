@@ -31,7 +31,7 @@ async function initMap() {
     BottomRightDiv.appendChild(BottomRight);
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(BottomRightDiv);
 
-    
+
     // this below is to use ryan photo as marker
     var userPhoto = document.createElement("img");
     userPhoto.src = "images/Ryan_photo.jfif";
@@ -109,68 +109,74 @@ function createBottomRight(map) {
     // controlButton.textContent = "Place Markers";
     // controlButton.title = "Click to place obstacles on the map";
     controlButton.type = "checkbox";
+    controlButton.id = "markerCheckbox"
     
+
     controlButton.addEventListener("click", () => {
+        if (controlButton.checked==true){
+            // create info window
+            const infoWindow = new google.maps.InfoWindow();
+            
+            // to add obstacle markers onto map
+            map.addListener("click", (mapsMouseEvent) => {
+                // more efficient way, creating a library of icons
+                const icons = {
+                    ok: {
+                        icon: "images/danger2.png"
+                    },
+                    ceo: {
+                        icon: "images/ceo.png"
+                    },
+                    monster: {
+                        icon: "images/monster.png"
+                    },
+                };
 
-    // create info window
-    const infoWindow = new google.maps.InfoWindow();
-    
-    // to add obstacle markers onto map
-    map.addListener("click", (mapsMouseEvent) => {
-        // more efficient way, creating a library of icons
-        const icons = {
-            ok: {
-                icon: "images/danger2.png"
-            },
-            ceo: {
-                icon: "images/ceo.png"
-            },
-            monster: {
-                icon: "images/monster.png"
-            },
-        };
+                var danger_prompt = prompt("What is the obstacle type?")
 
-        var danger_prompt = prompt("What is the obstacle type?")
+                if(danger_prompt.length==0){
+                    alert("Put a bloody string you nougat!")
+                }else{
+                    var danger_prompt_info = prompt("Share with us somemore details!!!")
+                    var danger_info = `
+                    <div>
+                        <h3>
+                            Obstacle Type: <span class="${danger_prompt}">${danger_prompt}</span>
+                        </h3>
+                        <p>
+                            ${danger_prompt_info}
+                        </p>
+                        <p>
+                            double click marker to delete marker
+                        </p>
+                    </div>
+                    `
+                    //initialize marker on map
+                    var marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng.toJSON(),
+                        map,
+                        content: danger_info,
+                        // title: danger_info,
+                        icon: icons[danger_prompt].icon,
+                    });
+                    // adding info window when u click that marker
+                    marker.addListener("click", () => {
+                        infoWindow.close();
+                        // infoWindow.setContent(marker.getTitle());
+                        infoWindow.setContent(marker.content);
+                        infoWindow.open(marker.getMap(), marker);
+                    });
 
-        if(danger_prompt.length==0){
-            alert("Put a bloody string you nougat!")
+                    // to delete marker double click marker
+                    marker.addListener("dblclick", () => {
+                        marker.setMap(null);
+                    });
+                }
+                });
         }else{
-            var danger_prompt_info = prompt("Share with us somemore details!!!")
-            var danger_info = `
-            <div>
-                <h3>
-                    Obstacle Type: <span class="${danger_prompt}">${danger_prompt}</span>
-                </h3>
-                <p>
-                    ${danger_prompt_info}
-                </p>
-                <p>
-                    double click marker to delete marker
-                </p>
-            </div>
-            `
-            //initialize marker on map
-            var marker = new google.maps.Marker({
-                position: mapsMouseEvent.latLng.toJSON(),
-                map,
-                content: danger_info,
-                // title: danger_info,
-                icon: icons[danger_prompt].icon,
-            });
-            // adding info window when u click that marker
-            marker.addListener("click", () => {
-                infoWindow.close();
-                // infoWindow.setContent(marker.getTitle());
-                infoWindow.setContent(marker.content);
-                infoWindow.open(marker.getMap(), marker);
-            });
-
-            // to delete marker double click marker
-            marker.addListener("dblclick", () => {
-                marker.setMap(null);
-            });
+            google.maps.event.clearListeners(map, 'click');
         }
-        });
+    
     });
     return controlButton;
 }
