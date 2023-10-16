@@ -1,20 +1,136 @@
-function initMap() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        mapTypeControl: false,
-        center: { lat: 1.297454623220471, lng: 103.84956272470986 },
+// Initialize and add the map
+let map;
+
+
+async function initMap() {
+    
+    //create map
+    const { Map } = await google.maps.importLibrary("maps");
+    // below to create standard markers
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+ 
+
+    // The map, centered at Singpore on load
+    var map = new Map(document.getElementById("map"), {
         zoom: 19,
+        center: { lat: 1.3521, lng: 103.8198 },
+        mapId: "5100c9e4073b9a44",
     });
 
+    // create info window
+    const infoWindow = new google.maps.InfoWindow();
+
+    // to add obstacle markers onto map
     map.addListener("click", (mapsMouseEvent) => {
-        new google.maps.Marker({
-            position: mapsMouseEvent.latLng.toJSON(),
-            map,
-            title: "Caution",
+        // more efficient way, creating a library of icons
+        const icons = {
+            ok: {
+                icon: "images/danger2.png"
+            },
+            ceo: {
+                icon: "images/ceo.png"
+            },
+            monster: {
+                icon: "images/monster.png"
+            },
+        };
+
+        var danger_prompt = prompt("What is the obstacle type?")
+
+        if(danger_prompt.length==0){
+            alert("Put a bloody string you nougat!")
+        }else{
+            var danger_prompt_info = prompt("Share with us somemore details!!!")
+            var danger_info = `
+            <div>
+                <h3>
+                    Obstacle Type: <span class="${danger_prompt}">${danger_prompt}</span>
+                </h3>
+                <p>
+                    ${danger_prompt_info}
+                </p>
+                <p>
+                    double click marker to delete marker
+                </p>
+            </div>
+            `
+            //initialize marker on map
+            var marker = new google.maps.Marker({
+                position: mapsMouseEvent.latLng.toJSON(),
+                map,
+                content: danger_info,
+                // title: danger_info,
+                icon: icons[danger_prompt].icon,
+            });
+            // adding info window when u click that marker
+            marker.addListener("click", () => {
+                infoWindow.close();
+                // infoWindow.setContent(marker.getTitle());
+                infoWindow.setContent(marker.content);
+                infoWindow.open(marker.getMap(), marker);
+            });
+
+            // to delete marker double click marker
+            marker.addListener("dblclick", () => {
+                marker.setMap(null);
+            });
+        }
         });
-    });
+
+    // this below is to use ryan photo as marker
+    var userPhoto = document.createElement("img");
+    userPhoto.src = "images/Ryan_photo.jfif";
+    userPhoto.id = "user-photo"
+
+    // below code is to find ur start position and put photo of "user"
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            };
+
+            map.setCenter(pos);
+
+            // The marker, positioned at location of user
+            const your_location = new AdvancedMarkerElement({
+                map: map,
+                position: pos,
+                content: userPhoto,
+                title: "Your Location",
+            });
+
+            // click user icon to know current location
+            your_location.addListener("click", () => {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(`<h2>Your Location</h2>`);
+                infoWindow.open(map);
+            });
+            
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        },
+      );
+
 
     new AutocompleteDirectionsHandler(map);
 }
+
+
+// handle map errors
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(
+      browserHasGeolocation
+        ? "Error: The Geolocation service failed."
+        : "Error: Your browser doesn't support geolocation.",
+    );
+    infoWindow.open(map);
+}
+
+
+
 
 class AutocompleteDirectionsHandler {
     map;
