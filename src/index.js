@@ -1,20 +1,189 @@
-function initMap() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        mapTypeControl: false,
-        center: { lat: 1.297454623220471, lng: 103.84956272470986 },
+// Initialize and add the map
+let map;
+
+
+async function initMap() {
+    
+    //create map
+    const { Map } = await google.maps.importLibrary("maps");
+    // below to create standard markers
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+ 
+
+    // The map, centered at Singpore on load
+    var map = new Map(document.getElementById("map"), {
         zoom: 19,
+        center: { lat: 1.3521, lng: 103.8198 },
+        mapId: "5100c9e4073b9a44",
     });
 
-    map.addListener("click", (mapsMouseEvent) => {
-        new google.maps.Marker({
-            position: mapsMouseEvent.latLng.toJSON(),
-            map,
-            title: "Caution",
-        });
-    });
+    
+    // Create the DIV to hold the control.
+    const BottomRightDiv = document.createElement("div");
+    BottomRightDiv.setAttribute("id", "placemarkerCheckbox")
+    // text infront of checkbox
+    var place_marker_text = document.createTextNode("Place marker ")
+    // Create the control.
+    const BottomRight = createBottomRight(map);
+
+    // Append the control to the DIV.
+    BottomRightDiv.appendChild(place_marker_text)
+    BottomRightDiv.appendChild(BottomRight);
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(BottomRightDiv);
+
+
+    // this below is to use ryan photo as marker
+    var userPhoto = document.createElement("img");
+    userPhoto.src = "images/Ryan_photo.jfif";
+    userPhoto.id = "user-photo"
+
+    // creating the info window for user
+    let infoWindow = new google.maps.InfoWindow();
+
+    // below code is to find ur start position and put photo of "user"
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            };
+
+            map.setCenter(pos);
+
+            // The marker, positioned at location of user
+            const your_location = new AdvancedMarkerElement({
+                map: map,
+                position: pos,
+                content: userPhoto,
+                title: "Your Location",
+            });
+
+            // click user icon to know current location
+            your_location.addListener("click", () => {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(`<h2>Your Location</h2>`);
+                infoWindow.open(map);
+            });
+            
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        },
+      );
+
 
     new AutocompleteDirectionsHandler(map);
 }
+
+
+// handle map errors
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(
+      browserHasGeolocation
+        ? "Error: The Geolocation service failed."
+        : "Error: Your browser doesn't support geolocation.",
+    );
+    infoWindow.open(map);
+}
+
+
+function createBottomRight(map) {
+    const controlButton = document.createElement("input");
+  
+    // Set CSS for the control.
+    controlButton.style.backgroundColor = "#fff";
+    // controlButton.style.border = "200px solid #fff";
+    // controlButton.style.borderRadius = "3px";
+    // controlButton.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    // controlButton.style.color = "rgb(25,25,25)";
+    controlButton.style.cursor = "pointer";
+    controlButton.style.width = "20px";
+    controlButton.style.height = "20px";
+    // controlButton.style.fontFamily = "Roboto,Arial,sans-serif";
+    // controlButton.style.fontSize = "16px";
+    // controlButton.style.lineHeight = "38px";
+    controlButton.style.margin = "8px 10px 22px";
+    controlButton.style.padding = "20px";
+    // controlButton.style.textAlign = "center";
+    // controlButton.textContent = "Place Markers";
+    // controlButton.title = "Click to place obstacles on the map";
+    controlButton.type = "checkbox";
+    controlButton.id = "markerCheckbox"
+    
+
+    controlButton.addEventListener("click", () => {
+        if (controlButton.checked==true){
+            // create info window
+            const infoWindow = new google.maps.InfoWindow();
+            
+            // to add obstacle markers onto map
+            map.addListener("click", (mapsMouseEvent) => {
+                // more efficient way, creating a library of icons
+                const icons = {
+                    ok: {
+                        icon: "images/danger2.png"
+                    },
+                    ceo: {
+                        icon: "images/ceo.png"
+                    },
+                    monster: {
+                        icon: "images/monster.png"
+                    },
+                };
+
+                var danger_prompt = prompt("What is the obstacle type?")
+
+                if(danger_prompt.length==0){
+                    alert("Put a bloody string you nougat!")
+                }else{
+                    var danger_prompt_info = prompt("Share with us somemore details!!!")
+                    var danger_info = `
+                    <div>
+                        <h3>
+                            Obstacle Type: <span class="${danger_prompt}">${danger_prompt}</span>
+                        </h3>
+                        <p>
+                            ${danger_prompt_info}
+                        </p>
+                        <p>
+                            double click marker to delete marker
+                        </p>
+                    </div>
+                    `
+                    //initialize marker on map
+                    var marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng.toJSON(),
+                        map,
+                        content: danger_info,
+                        // title: danger_info,
+                        icon: icons[danger_prompt].icon,
+                    });
+                    // adding info window when u click that marker
+                    marker.addListener("click", () => {
+                        infoWindow.close();
+                        // infoWindow.setContent(marker.getTitle());
+                        infoWindow.setContent(marker.content);
+                        infoWindow.open(marker.getMap(), marker);
+                    });
+
+                    // to delete marker double click marker
+                    marker.addListener("dblclick", () => {
+                        marker.setMap(null);
+                    });
+                }
+                });
+        }else{
+            google.maps.event.clearListeners(map, 'click');
+        }
+    
+    });
+    return controlButton;
+}
+
+
+
+
 
 class AutocompleteDirectionsHandler {
     map;

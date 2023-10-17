@@ -14,6 +14,21 @@
         <h2>Click a part of the map to add markers</h2>
         <h3>Enter origin and destination locations to generate a route!</h3>
         <p>Markers and a single route seem feasible so far, provideRouteAlternatives does not seem to provide any alternatives though...</p>
+
+        <h2>Ryan Markers feature</h2>
+        <p>
+            1. map zooms in on ur location<br>
+            2. puts photo on ur location(i just use this photo for now)<br>
+            3. click on ur location photo to see ur location<br>
+            4. click anywhere on map to put marker for obstacles<br>
+            NOTE: keep in mind when u plop marker down it will ask 2 prompts
+            first prompt either put ceo or ok or monster exactly(I think we decide categories later)<br>
+            5. will show the obstacle type picture depending on what is first input<br>
+            6. shows second prompt additional details<br>
+            7. can click each marker to see them details<br>
+            8. can delete marker by double tapping marker
+        </p>
+
         <input id="change-route" type="button" value="CHANGE ROUTE">
     </div>
     <div style="display: none">
@@ -43,7 +58,7 @@
             for more information.
             -->
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiqhO1pyvQ8Z2wOQlA_HYOld80YavqYyk&callback=initMap&libraries=places&v=weekly"
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap&libraries=places&v=weekly"
         defer></script>
 </body>
 
