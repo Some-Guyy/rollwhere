@@ -87,7 +87,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.open(map);
 }
 
-
+// creates place marker checkbox
 function createBottomRight(map) {
     const controlButton = document.createElement("input");
   
@@ -132,16 +132,20 @@ function createBottomRight(map) {
                     },
                 };
                 
+                // access modal button which is invisible
                 let modal = document.getElementById("modal_button");
+                // accessing modal place marker button
                 let place_marker = document.getElementById("place_marker")
+                //everytime you click map modal button is clicked
                 modal.click();
 
+                // when clicking place marker on modal
                 place_marker.addEventListener("click", () => {
                     var obstacle_type = document.getElementById("obstacle_type").value
                     var obstacle_info = document.getElementById("obstacle_info").value
                     var obstacle_details = document.getElementById("obstacle_details").value
                 
-
+                    // create details to put in infow window
                     let danger_info = `
                     <div>
                         <h3>
@@ -172,11 +176,12 @@ function createBottomRight(map) {
                         infoWindow.open(marker.getMap(), marker);
                     });
 
-                   // to delete marker double click marker
+                    // to delete marker double click marker
                     marker.addListener("dblclick", () => {
                         marker.setMap(null);
                     });
                 
+                    // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
                     document.getElementById("exampleModal").innerHTML = `
                     <div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
