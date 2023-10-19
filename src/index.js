@@ -115,7 +115,7 @@ function createBottomRight(map) {
     controlButton.addEventListener("click", () => {
         if (controlButton.checked==true){
             // create info window
-            const infoWindow = new google.maps.InfoWindow();
+            let infoWindow = new google.maps.InfoWindow();
             
             // to add obstacle markers onto map
             map.addListener("click", (mapsMouseEvent) => {
@@ -131,20 +131,24 @@ function createBottomRight(map) {
                         icon: "images/monster.png"
                     },
                 };
+                
+                let modal = document.getElementById("modal_button");
+                let place_marker = document.getElementById("place_marker")
+                modal.click();
 
-                var danger_prompt = prompt("What is the obstacle type?")
+                place_marker.addEventListener("click", () => {
+                    var obstacle_type = document.getElementById("obstacle_type").value
+                    var obstacle_info = document.getElementById("obstacle_info").value
+                    var obstacle_details = document.getElementById("obstacle_details").value
+                
 
-                if(danger_prompt.length==0){
-                    alert("Put a bloody string you nougat!")
-                }else{
-                    var danger_prompt_info = prompt("Share with us somemore details!!!")
-                    var danger_info = `
+                    let danger_info = `
                     <div>
                         <h3>
-                            Obstacle Type: <span class="${danger_prompt}">${danger_prompt}</span>
+                            Obstacle Type: <span class="${obstacle_type}">${obstacle_info}</span>
                         </h3>
                         <p>
-                            ${danger_prompt_info}
+                            ${obstacle_details}
                         </p>
                         <p>
                             double click marker to delete marker
@@ -152,13 +156,14 @@ function createBottomRight(map) {
                     </div>
                     `
                     //initialize marker on map
-                    var marker = new google.maps.Marker({
+                    let marker = new google.maps.Marker({
                         position: mapsMouseEvent.latLng.toJSON(),
                         map,
                         content: danger_info,
                         // title: danger_info,
-                        icon: icons[danger_prompt].icon,
+                        icon: icons[obstacle_type].icon,
                     });
+
                     // adding info window when u click that marker
                     marker.addListener("click", () => {
                         infoWindow.close();
@@ -167,12 +172,64 @@ function createBottomRight(map) {
                         infoWindow.open(marker.getMap(), marker);
                     });
 
-                    // to delete marker double click marker
+                   // to delete marker double click marker
                     marker.addListener("dblclick", () => {
                         marker.setMap(null);
                     });
-                }
-                });
+                
+                    document.getElementById("exampleModal").innerHTML = `
+                    <div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-10 fw-bold " id="exampleModalLabel">Place marker</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form>
+                        <div class="modal-body">
+                            
+                            <div class="container-fluid">
+
+                                <div class="row">
+                                <div class="col-md-4">Marker Icon</div>
+                                <div class="col-md-4 ms-auto"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">IMAGE HErE</div>
+                                    <div class="col-md-8">
+
+                                        <select class="form-select" aria-label="Default select example" id="obstacle_type">
+                                            <option selected>Obstacle</option>
+                                            <option value="monster">monster</option>
+                                            <option value="ok">ok</option>
+                                            <option value="ceo">ceo</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            What is the obstacle type
+                            <input type="text" class="form-control" id="obstacle_info">
+                            <br>
+                            Share with us somemore details!!!
+                            <textarea class="form-control" id="obstacle_details"></textarea>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
+                            
+                        </div>
+                        
+
+                    </div>
+                </div>
+                    `
+                })          
+            });
+            
         }else{
             google.maps.event.clearListeners(map, 'click');
         }
@@ -301,5 +358,8 @@ class AutocompleteDirectionsHandler {
         );
     }
 }
+
+
+
 
 window.initMap = initMap;

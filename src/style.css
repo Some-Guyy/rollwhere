@@ -4,7 +4,21 @@
  */
  #map {
     height: 100%;
+    position: relative;
+
 }
+
+
+.modal-header {
+    border: solid #3E837A;
+}
+.modal-body {
+    border: solid #3E837A;
+}
+.modal-footer {
+    border: solid #3E837A;
+}
+
 
 #info {
     margin-left: 20px;
