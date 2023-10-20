@@ -81,14 +81,14 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">IMAGE HErE
-                                <img src="">
+                            <div class="col-md-4">
+                                <img id="image" src="images/monster.png">
                             </div>
                             <div class="col-md-8">
-
+                                Obstacle Type
                                 <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                                    <option selected>Obstacle</option>
-                                    <option value="monster">monster</option>
+                                    <!-- <option selected>Obstacle</option> -->
+                                    <option value="monster" selected>monster</option>
                                     <option value="ok">ok</option>
                                     <option value="ceo">ceo</option>
                                   </select>
@@ -98,10 +98,10 @@
 
                     </div>
 
-                    What is the obstacle type
+                    What is the obstacle info
                     <input type="text" class="form-control" id="obstacle_info">
                     <br>
-                    Share with us somemore details!!!
+                    Share with us somemore in detail
                     <textarea class="form-control" id="obstacle_details"></textarea>
 
                 </div>
@@ -128,8 +128,8 @@
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h1 class="modal-title fs-5" id="errorModalLabel">Pick an obstacle you nougat!</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h1 class="modal-title fs-5" id="errorModalLabel">You didn't put obstacle type!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close"></button>
             </div>
             <!-- <div class="modal-body">
             ...

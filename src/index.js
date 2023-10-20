@@ -1,6 +1,57 @@
 // Initialize and add the map
 let map;
 
+// base template for modal form
+var modal_form_class = `<div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-10 fw-bold " id="exampleModalLabel">Place marker</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form>
+    <div class="modal-body">
+        
+        <div class="container-fluid">
+
+            <div class="row">
+              <div class="col-md-4">Marker Icon</div>
+              <div class="col-md-4 ms-auto"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <img id="image" src="images/monster.png">
+                </div>
+                <div class="col-md-8">
+
+                    <select class="form-select" aria-label="Default select example" id="obstacle_type">
+                        <!-- <option selected>Obstacle</option> -->
+                        <option value="monster" selected>monster</option>
+                        <option value="ok">ok</option>
+                        <option value="ceo">ceo</option>
+                      </select>
+
+                </div>
+            </div>
+
+        </div>
+
+        What is the obstacle type
+        <input type="text" class="form-control" id="obstacle_info">
+        <br>
+        Share with us somemore details!!!
+        <textarea class="form-control" id="obstacle_details"></textarea>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
+        
+    </div>
+    
+
+</div>
+</div>`;
 
 async function initMap() {
     
@@ -138,6 +189,15 @@ function createBottomRight(map) {
                 let place_marker = document.getElementById("place_marker")
                 //everytime you click map modal button is clicked
                 modal.click();
+
+                // accessing select tag in html
+                var chng = document.getElementById("obstacle_type")
+                // changing icon everytime there is a change
+                var marker_icon = document.getElementById("image")
+                chng.addEventListener("change", () => {
+                    console.log(chng.value)
+                    marker_icon.setAttribute("src", `images/${chng.value}.png`)
+                })
                 
                 // when clicking place marker on modal
                 place_marker.addEventListener("click", () => {
@@ -146,61 +206,13 @@ function createBottomRight(map) {
                     var obstacle_details = document.getElementById("obstacle_details").value
                     
                     // checking if obstacle type is valid
-                    if (obstacle_type=="Obstacle"){
+                    if (obstacle_info.length == 0){
                         // failed
-                        document.getElementById("exampleModal").innerHTML = `
-                    <div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-10 fw-bold " id="exampleModalLabel">Place marker</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form>
-                        <div class="modal-body">
-                            
-                            <div class="container-fluid">
-
-                                <div class="row">
-                                <div class="col-md-4">Marker Icon</div>
-                                <div class="col-md-4 ms-auto"></div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-4">IMAGE HErE</div>
-                                    <div class="col-md-8">
-
-                                        <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                                            <option selected>Obstacle</option>
-                                            <option value="monster">monster</option>
-                                            <option value="ok">ok</option>
-                                            <option value="ceo">ceo</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            What is the obstacle type
-                            <input type="text" class="form-control" id="obstacle_info">
-                            <br>
-                            Share with us somemore details!!!
-                            <textarea class="form-control" id="obstacle_details"></textarea>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
-                            
-                        </div>
-                        
-
-                    </div>
-                </div>
-                        `
+                        document.getElementById("exampleModal").innerHTML = modal_form_class
                         // will trigger error modal button
                         let modal_error = document.getElementById("modal_error_button");
                         modal_error.click();
+                        
                     }else{
                         // success
                         // create details to put in infow window
@@ -240,56 +252,7 @@ function createBottomRight(map) {
                         });
                     
                         // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
-                        document.getElementById("exampleModal").innerHTML = `
-                        <div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-10 fw-bold " id="exampleModalLabel">Place marker</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form>
-                            <div class="modal-body">
-                                
-                                <div class="container-fluid">
-
-                                    <div class="row">
-                                    <div class="col-md-4">Marker Icon</div>
-                                    <div class="col-md-4 ms-auto"></div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4">IMAGE HErE</div>
-                                        <div class="col-md-8">
-
-                                            <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                                                <option selected>Obstacle</option>
-                                                <option value="monster">monster</option>
-                                                <option value="ok">ok</option>
-                                                <option value="ceo">ceo</option>
-                                            </select>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                What is the obstacle type
-                                <input type="text" class="form-control" id="obstacle_info">
-                                <br>
-                                Share with us somemore details!!!
-                                <textarea class="form-control" id="obstacle_details"></textarea>
-
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
-                                
-                            </div>
-                            
-
-                        </div>
-                    </div>
-                        `
+                        document.getElementById("exampleModal").innerHTML = modal_form_class
                     }
                     
                 })          
