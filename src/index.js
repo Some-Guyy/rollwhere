@@ -122,7 +122,7 @@ function createBottomRight(map) {
                 // more efficient way, creating a library of icons
                 const icons = {
                     ok: {
-                        icon: "images/danger2.png"
+                        icon: "images/ok.png"
                     },
                     ceo: {
                         icon: "images/ceo.png"
@@ -138,51 +138,17 @@ function createBottomRight(map) {
                 let place_marker = document.getElementById("place_marker")
                 //everytime you click map modal button is clicked
                 modal.click();
-
+                
                 // when clicking place marker on modal
                 place_marker.addEventListener("click", () => {
                     var obstacle_type = document.getElementById("obstacle_type").value
                     var obstacle_info = document.getElementById("obstacle_info").value
                     var obstacle_details = document.getElementById("obstacle_details").value
-                
-                    // create details to put in infow window
-                    let danger_info = `
-                    <div>
-                        <h3>
-                            Obstacle Type: <span class="${obstacle_type}">${obstacle_info}</span>
-                        </h3>
-                        <p>
-                            ${obstacle_details}
-                        </p>
-                        <p>
-                            double click marker to delete marker
-                        </p>
-                    </div>
-                    `
-                    //initialize marker on map
-                    let marker = new google.maps.Marker({
-                        position: mapsMouseEvent.latLng.toJSON(),
-                        map,
-                        content: danger_info,
-                        // title: danger_info,
-                        icon: icons[obstacle_type].icon,
-                    });
-
-                    // adding info window when u click that marker
-                    marker.addListener("click", () => {
-                        infoWindow.close();
-                        // infoWindow.setContent(marker.getTitle());
-                        infoWindow.setContent(marker.content);
-                        infoWindow.open(marker.getMap(), marker);
-                    });
-
-                    // to delete marker double click marker
-                    marker.addListener("dblclick", () => {
-                        marker.setMap(null);
-                    });
-                
-                    // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
-                    document.getElementById("exampleModal").innerHTML = `
+                    
+                    // checking if obstacle type is valid
+                    if (obstacle_type=="Obstacle"){
+                        // failed
+                        document.getElementById("exampleModal").innerHTML = `
                     <div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -231,7 +197,101 @@ function createBottomRight(map) {
 
                     </div>
                 </div>
-                    `
+                        `
+                        // will trigger error modal button
+                        let modal_error = document.getElementById("modal_error_button");
+                        modal_error.click();
+                    }else{
+                        // success
+                        // create details to put in infow window
+                        let danger_info = `
+                        <div>
+                            <h3>
+                                Obstacle Type: <span class="${obstacle_type}">${obstacle_info}</span>
+                            </h3>
+                            <p>
+                                ${obstacle_details}
+                            </p>
+                            <p>
+                                double click marker to delete marker
+                            </p>
+                        </div>
+                        `
+                        //initialize marker on map
+                        let marker = new google.maps.Marker({
+                            position: mapsMouseEvent.latLng.toJSON(),
+                            map,
+                            content: danger_info,
+                            // title: danger_info,
+                            icon: icons[obstacle_type].icon,
+                        });
+
+                        // adding info window when u click that marker
+                        marker.addListener("click", () => {
+                            infoWindow.close();
+                            // infoWindow.setContent(marker.getTitle());
+                            infoWindow.setContent(marker.content);
+                            infoWindow.open(marker.getMap(), marker);
+                        });
+
+                        // to delete marker double click marker
+                        marker.addListener("dblclick", () => {
+                            marker.setMap(null);
+                        });
+                    
+                        // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
+                        document.getElementById("exampleModal").innerHTML = `
+                        <div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-10 fw-bold " id="exampleModalLabel">Place marker</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form>
+                            <div class="modal-body">
+                                
+                                <div class="container-fluid">
+
+                                    <div class="row">
+                                    <div class="col-md-4">Marker Icon</div>
+                                    <div class="col-md-4 ms-auto"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">IMAGE HErE</div>
+                                        <div class="col-md-8">
+
+                                            <select class="form-select" aria-label="Default select example" id="obstacle_type">
+                                                <option selected>Obstacle</option>
+                                                <option value="monster">monster</option>
+                                                <option value="ok">ok</option>
+                                                <option value="ceo">ceo</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                What is the obstacle type
+                                <input type="text" class="form-control" id="obstacle_info">
+                                <br>
+                                Share with us somemore details!!!
+                                <textarea class="form-control" id="obstacle_details"></textarea>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
+                                
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                        `
+                    }
+                    
                 })          
             });
             

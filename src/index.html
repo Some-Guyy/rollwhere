@@ -54,12 +54,14 @@
 
     <div id="map"></div>
 
+    <!-- Invisible modal button clicked when user adds marker to map -->
     <div id="Modal" class="invisible">
         <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             INVISIBLE MODAL BUTTON WHOOO
         </button>
     </div>
 
+    <!-- modal that pops out when user clicks on map -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
         <div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
@@ -79,7 +81,9 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">IMAGE HErE</div>
+                            <div class="col-md-4">IMAGE HErE
+                                <img src="">
+                            </div>
                             <div class="col-md-8">
 
                                 <select class="form-select" aria-label="Default select example" id="obstacle_type">
@@ -112,6 +116,31 @@
         </div>
     </div>
 
+    <!--error modal button for error in marker modal -->
+    <div class="invisible">
+        <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#errorModal">
+        Launch demo modal
+        </button>
+    </div>
+
+    <!-- error Modal popup -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="errorModalLabel">Pick an obstacle you nougat!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- <div class="modal-body">
+            ...
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div> -->
+        </div>
+        </div>
+    </div>
     <!-- 
             The `defer` attribute causes the callback to execute after the full HTML
             document has been parsed. For non-blocking uses, avoiding race conditions,
