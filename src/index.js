@@ -6,7 +6,7 @@ var modal_form_class = `
 <div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place marker</h1>
+            <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
             <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form>
@@ -46,8 +46,7 @@ var modal_form_class = `
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
-            
+            <button type="button" class="btn fw-bold text-light" id="place_marker" data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
         </div>
         
 

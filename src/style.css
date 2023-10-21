@@ -10,14 +10,11 @@
 
 /* Modal css */
 .modal-header {
-    border: solid #3E837A;
+    background-color:#3E837A;
+    color: white;
+    border: #3E837A;
 }
-.modal-body {
-    border: solid #3E837A;
-}
-.modal-footer {
-    border: solid #3E837A;
-}
+
 
 
 #info {
