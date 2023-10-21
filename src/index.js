@@ -28,8 +28,8 @@ var modal_form_class = `
                         <select class="form-select" aria-label="Default select example" id="obstacle_type">
                             <!-- <option selected>Obstacle</option> -->
                             <option value="monster" selected>monster</option>
-                            <option value="ok">ok</option>
-                            <option value="ceo">ceo</option>
+                            <option value="danger">danger</option>
+                            <option value="pothole">pothole</option>
                         </select>
 
                     </div>
@@ -37,7 +37,7 @@ var modal_form_class = `
 
             </div>
 
-            What is the obstacle type
+            What is the obstacle name
             <input type="text" class="form-control" id="obstacle_info">
             <br>
             Share with us somemore details!!!
@@ -173,11 +173,11 @@ function createBottomRight(map) {
             map.addListener("click", (mapsMouseEvent) => {
                 // more efficient way, creating a library of icons
                 const icons = {
-                    ok: {
-                        icon: "images/ok.png"
+                    danger: {
+                        icon: "images/danger.png"
                     },
-                    ceo: {
-                        icon: "images/ceo.png"
+                    pothole: {
+                        icon: "images/pothole.png"
                     },
                     monster: {
                         icon: "images/monster.png"
@@ -229,16 +229,24 @@ function createBottomRight(map) {
                         // success
                         // create details to put in infow window
                         let danger_info = `
-                        <div>
-                            <h3>
-                                Obstacle Type: <span class="${obstacle_type}">${obstacle_info}</span>
-                            </h3>
-                            <p>
-                                ${obstacle_details}
-                            </p>
-                            <p>
-                                double click marker to delete marker
-                            </p>
+                        <div class="card" style="width: 18rem;">
+
+                            <div class="card-header bg-dark-subtle" >
+                                <h4>
+                                    Obstacle Type: <span class="${obstacle_type}"><h4>${obstacle_info}</h4></span>
+                                </h4>
+                            </div>
+
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <span class="fw-bold">Details:</span> ${obstacle_details}
+                                </p>
+
+                                <p style="color:red;">
+                                    Note: Double click marker to delete marker
+                                </p>
+                            </div>
+
                         </div>
                         `
                         //initialize marker on map

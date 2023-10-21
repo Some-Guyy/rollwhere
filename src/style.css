@@ -40,14 +40,14 @@
 
   /* Below are some test classes for obstacle types */
 
-  .ok {
+  .danger {
     color: red;
     font-weight: bold;
     font-size: medium;
   }
 
 
-  .ceo {
+  .pothole {
     color: blue;
     font-weight: bold;
     font-size: medium;
