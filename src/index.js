@@ -1,6 +1,57 @@
 // Initialize and add the map
 let map;
 
+// base template for modal form
+var modal_form_class = `
+<div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
+            <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form>
+        <div class="modal-body">
+            
+            <div class="container-fluid">
+
+                <div class="row">
+                <div class="col-md-4">Marker Icon</div>
+                <div class="col-md-4 ms-auto"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img id="image" src="images/monster.png">
+                    </div>
+                    <div class="col-md-8">
+
+                        <select class="form-select" aria-label="Default select example" id="obstacle_type">
+                            <!-- <option selected>Obstacle</option> -->
+                            <option value="monster" selected>monster</option>
+                            <option value="danger">danger</option>
+                            <option value="pothole">pothole</option>
+                        </select>
+
+                    </div>
+                </div>
+
+            </div>
+
+            What is the obstacle name
+            <input type="text" class="form-control" id="obstacle_info">
+            <br>
+            Share with us somemore details!!!
+            <textarea class="form-control" id="obstacle_details"></textarea>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn fw-bold text-light" id="place_marker" data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
+        </div>
+        
+
+    </div>
+</div>`;
 
 async function initMap() {
     
@@ -22,7 +73,7 @@ async function initMap() {
     const BottomRightDiv = document.createElement("div");
     BottomRightDiv.setAttribute("id", "placemarkerCheckbox")
     // text infront of checkbox
-    var place_marker_text = document.createTextNode("Place marker ")
+    var place_marker_text = document.createTextNode("Place Markers ")
     // Create the control.
     const BottomRight = createBottomRight(map);
 
@@ -87,92 +138,146 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.open(map);
 }
 
-
+// creates place marker checkbox
 function createBottomRight(map) {
     const controlButton = document.createElement("input");
   
     // Set CSS for the control.
-    controlButton.style.backgroundColor = "#fff";
+    // controlButton.style.backgroundColor = "#fff";
     // controlButton.style.border = "200px solid #fff";
     // controlButton.style.borderRadius = "3px";
     // controlButton.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
     // controlButton.style.color = "rgb(25,25,25)";
-    controlButton.style.cursor = "pointer";
-    controlButton.style.width = "20px";
-    controlButton.style.height = "20px";
     // controlButton.style.fontFamily = "Roboto,Arial,sans-serif";
     // controlButton.style.fontSize = "16px";
     // controlButton.style.lineHeight = "38px";
-    controlButton.style.margin = "8px 10px 22px";
-    controlButton.style.padding = "20px";
+    // controlButton.style.margin = "8px 10px 22px";
+    // controlButton.style.padding = "20px";
     // controlButton.style.textAlign = "center";
     // controlButton.textContent = "Place Markers";
     // controlButton.title = "Click to place obstacles on the map";
+    controlButton.style.width = "20px";
+    controlButton.style.height = "20px";
+    controlButton.style.cursor = "pointer";
     controlButton.type = "checkbox";
     controlButton.id = "markerCheckbox"
+    controlButton.style.verticalAlign = "middle"
     
 
     controlButton.addEventListener("click", () => {
         if (controlButton.checked==true){
             // create info window
-            const infoWindow = new google.maps.InfoWindow();
+            let infoWindow = new google.maps.InfoWindow();
             
             // to add obstacle markers onto map
             map.addListener("click", (mapsMouseEvent) => {
                 // more efficient way, creating a library of icons
                 const icons = {
-                    ok: {
-                        icon: "images/danger2.png"
+                    danger: {
+                        icon: "images/danger.png"
                     },
-                    ceo: {
-                        icon: "images/ceo.png"
+                    pothole: {
+                        icon: "images/pothole.png"
                     },
                     monster: {
                         icon: "images/monster.png"
                     },
                 };
+                
+                // access modal button which is invisible
+                let modal = document.getElementById("modal_button");
+                // accessing modal place marker button
+                let place_marker = document.getElementById("place_marker")
+                //everytime you click map modal button is clicked
+                modal.click();
 
-                var danger_prompt = prompt("What is the obstacle type?")
+                // accessing select tag in html
+                var chng = document.getElementById("obstacle_type")
+                // changing icon everytime there is a change
+                var marker_icon = document.getElementById("image")
+                chng.addEventListener("change", () => {
+                    // console.log(chng.value)
+                    marker_icon.setAttribute("src", `images/${chng.value}.png`)
+                })
+                
+                // when clicking close button on modal
+                var modal_close = document.getElementById("modal_close")
+                modal_close.addEventListener("click", () =>{
+                    // console.log("close")
+                    // some bug where if u dont touch form but cancel, it ties to prev form. my workaround is to add a value without user seeing before resetting
+                    let temp = document.getElementById("obstacle_info")
+                    temp.value = "a";
+                    //resets modal form
+                    document.getElementById("exampleModal").innerHTML = modal_form_class
+                })
 
-                if(danger_prompt.length==0){
-                    alert("Put a bloody string you nougat!")
-                }else{
-                    var danger_prompt_info = prompt("Share with us somemore details!!!")
-                    var danger_info = `
-                    <div>
-                        <h3>
-                            Obstacle Type: <span class="${danger_prompt}">${danger_prompt}</span>
-                        </h3>
-                        <p>
-                            ${danger_prompt_info}
-                        </p>
-                        <p>
-                            double click marker to delete marker
-                        </p>
-                    </div>
-                    `
-                    //initialize marker on map
-                    var marker = new google.maps.Marker({
-                        position: mapsMouseEvent.latLng.toJSON(),
-                        map,
-                        content: danger_info,
-                        // title: danger_info,
-                        icon: icons[danger_prompt].icon,
-                    });
-                    // adding info window when u click that marker
-                    marker.addListener("click", () => {
-                        infoWindow.close();
-                        // infoWindow.setContent(marker.getTitle());
-                        infoWindow.setContent(marker.content);
-                        infoWindow.open(marker.getMap(), marker);
-                    });
+                // when clicking place marker on modal
+                place_marker.addEventListener("click", () => {
+                    var obstacle_type = document.getElementById("obstacle_type").value
+                    var obstacle_info = document.getElementById("obstacle_info").value
+                    var obstacle_details = document.getElementById("obstacle_details").value
+                    
+                    // checking if obstacle type is valid
+                    if (obstacle_info.length == 0){
+                        // failed
+                        document.getElementById("exampleModal").innerHTML = modal_form_class
+                        // will trigger error modal button
+                        let modal_error = document.getElementById("modal_error_button");
+                        modal_error.click();
+                        
+                    }else{
+                        // success
+                        // create details to put in infow window
+                        let danger_info = `
+                        <div class="card" style="width: 18rem;">
 
-                    // to delete marker double click marker
-                    marker.addListener("dblclick", () => {
-                        marker.setMap(null);
-                    });
-                }
-                });
+                            <div class="card-header bg-dark-subtle" >
+                                <h4>
+                                    Obstacle Type: <span class="${obstacle_type}"><h4>${obstacle_info}</h4></span>
+                                </h4>
+                            </div>
+
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <span class="fw-bold">Details:</span> ${obstacle_details}
+                                </p>
+
+                                <p style="color:red;">
+                                    Note: Double click marker to delete marker
+                                </p>
+                            </div>
+
+                        </div>
+                        `
+                        //initialize marker on map
+                        let marker = new google.maps.Marker({
+                            position: mapsMouseEvent.latLng.toJSON(),
+                            map,
+                            content: danger_info,
+                            // title: danger_info,
+                            icon: icons[obstacle_type].icon,
+                        });
+
+                        // adding info window when u click that marker
+                        marker.addListener("click", () => {
+                            infoWindow.close();
+                            // infoWindow.setContent(marker.getTitle());
+                            infoWindow.setContent(marker.content);
+                            infoWindow.open(marker.getMap(), marker);
+                        });
+
+                        // to delete marker double click marker
+                        marker.addListener("dblclick", () => {
+                            marker.setMap(null);
+                        });
+                    
+                        // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
+                        document.getElementById("exampleModal").innerHTML = modal_form_class
+                    }
+                    
+                })          
+            });
+            
         }else{
             google.maps.event.clearListeners(map, 'click');
         }
@@ -301,5 +406,8 @@ class AutocompleteDirectionsHandler {
         );
     }
 }
+
+
+
 
 window.initMap = initMap;

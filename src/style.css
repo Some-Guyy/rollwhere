@@ -4,17 +4,29 @@
  */
  #map {
     height: 100%;
+    position: relative;
+
 }
+
+/* Modal css */
+.modal-header {
+    background-color:#3E837A;
+    color: white;
+    border: #3E837A;
+}
+
+
 
 #info {
     margin-left: 20px;
 }
 
 #placemarkerCheckbox{
-    vertical-align: middle;
-    background-color: green;
-    padding: 5px;
-    border-radius: 25px;
+    /* vertical-align: middle; */
+    background-color: #3E837A;
+    color: #fff;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
     font-size: 15px;
     font-weight: bold;
 }
@@ -28,14 +40,14 @@
 
   /* Below are some test classes for obstacle types */
 
-  .ok {
+  .danger {
     color: red;
     font-weight: bold;
     font-size: medium;
   }
 
 
-  .ceo {
+  .pothole {
     color: blue;
     font-weight: bold;
     font-size: medium;
