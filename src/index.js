@@ -73,7 +73,7 @@ async function initMap() {
     const BottomRightDiv = document.createElement("div");
     BottomRightDiv.setAttribute("id", "placemarkerCheckbox")
     // text infront of checkbox
-    var place_marker_text = document.createTextNode("Place marker ")
+    var place_marker_text = document.createTextNode("Place Markers ")
     // Create the control.
     const BottomRight = createBottomRight(map);
 
@@ -143,24 +143,25 @@ function createBottomRight(map) {
     const controlButton = document.createElement("input");
   
     // Set CSS for the control.
-    controlButton.style.backgroundColor = "#fff";
+    // controlButton.style.backgroundColor = "#fff";
     // controlButton.style.border = "200px solid #fff";
     // controlButton.style.borderRadius = "3px";
     // controlButton.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
     // controlButton.style.color = "rgb(25,25,25)";
-    controlButton.style.cursor = "pointer";
-    controlButton.style.width = "20px";
-    controlButton.style.height = "20px";
     // controlButton.style.fontFamily = "Roboto,Arial,sans-serif";
     // controlButton.style.fontSize = "16px";
     // controlButton.style.lineHeight = "38px";
-    controlButton.style.margin = "8px 10px 22px";
-    controlButton.style.padding = "20px";
+    // controlButton.style.margin = "8px 10px 22px";
+    // controlButton.style.padding = "20px";
     // controlButton.style.textAlign = "center";
     // controlButton.textContent = "Place Markers";
     // controlButton.title = "Click to place obstacles on the map";
+    controlButton.style.width = "20px";
+    controlButton.style.height = "20px";
+    controlButton.style.cursor = "pointer";
     controlButton.type = "checkbox";
     controlButton.id = "markerCheckbox"
+    controlButton.style.verticalAlign = "middle"
     
 
     controlButton.addEventListener("click", () => {

@@ -25,10 +25,11 @@
 }
 
 #placemarkerCheckbox{
-    vertical-align: middle;
-    background-color: green;
-    padding: 5px;
-    border-radius: 25px;
+    /* vertical-align: middle; */
+    background-color: #3E837A;
+    color: #fff;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
     font-size: 15px;
     font-weight: bold;
 }
