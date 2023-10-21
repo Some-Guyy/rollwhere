@@ -6,7 +6,7 @@ var modal_form_class = `<div id="modal-form" class="modal-dialog modal-dialog-ce
 <div class="modal-content">
     <div class="modal-header">
         <h1 class="modal-title fs-10 fw-bold " id="exampleModalLabel">Place marker</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <form>
     <div class="modal-body">
@@ -195,10 +195,21 @@ function createBottomRight(map) {
                 // changing icon everytime there is a change
                 var marker_icon = document.getElementById("image")
                 chng.addEventListener("change", () => {
-                    console.log(chng.value)
+                    // console.log(chng.value)
                     marker_icon.setAttribute("src", `images/${chng.value}.png`)
                 })
                 
+                // when clicking close button on modal
+                var modal_close = document.getElementById("modal_close")
+                modal_close.addEventListener("click", () =>{
+                    // console.log("close")
+                    // some bug where if u dont touch form but cancel, it ties to prev form. my workaround is to add a value without user seeing before resetting
+                    let temp = document.getElementById("obstacle_info")
+                    temp.value = "a";
+                    //resets modal form
+                    document.getElementById("exampleModal").innerHTML = modal_form_class
+                })
+
                 // when clicking place marker on modal
                 place_marker.addEventListener("click", () => {
                     var obstacle_type = document.getElementById("obstacle_type").value
