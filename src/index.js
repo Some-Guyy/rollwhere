@@ -2,55 +2,56 @@
 let map;
 
 // base template for modal form
-var modal_form_class = `<div id="modal-form" class="modal-dialog modal-dialog-centered modal-xl">
-<div class="modal-content">
-    <div class="modal-header">
-        <h1 class="modal-title fs-10 fw-bold " id="exampleModalLabel">Place marker</h1>
-        <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <form>
-    <div class="modal-body">
-        
-        <div class="container-fluid">
+var modal_form_class = `
+<div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place marker</h1>
+            <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form>
+        <div class="modal-body">
+            
+            <div class="container-fluid">
 
-            <div class="row">
-              <div class="col-md-4">Marker Icon</div>
-              <div class="col-md-4 ms-auto"></div>
+                <div class="row">
+                <div class="col-md-4">Marker Icon</div>
+                <div class="col-md-4 ms-auto"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img id="image" src="images/monster.png">
+                    </div>
+                    <div class="col-md-8">
+
+                        <select class="form-select" aria-label="Default select example" id="obstacle_type">
+                            <!-- <option selected>Obstacle</option> -->
+                            <option value="monster" selected>monster</option>
+                            <option value="ok">ok</option>
+                            <option value="ceo">ceo</option>
+                        </select>
+
+                    </div>
+                </div>
+
             </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <img id="image" src="images/monster.png">
-                </div>
-                <div class="col-md-8">
-
-                    <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                        <!-- <option selected>Obstacle</option> -->
-                        <option value="monster" selected>monster</option>
-                        <option value="ok">ok</option>
-                        <option value="ceo">ceo</option>
-                      </select>
-
-                </div>
-            </div>
+            What is the obstacle type
+            <input type="text" class="form-control" id="obstacle_info">
+            <br>
+            Share with us somemore details!!!
+            <textarea class="form-control" id="obstacle_details"></textarea>
 
         </div>
 
-        What is the obstacle type
-        <input type="text" class="form-control" id="obstacle_info">
-        <br>
-        Share with us somemore details!!!
-        <textarea class="form-control" id="obstacle_details"></textarea>
-
-    </div>
-
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="place_marker" data-bs-dismiss="modal">Place Marker</button>
+            
+        </div>
         
-    </div>
-    
 
-</div>
+    </div>
 </div>`;
 
 async function initMap() {
