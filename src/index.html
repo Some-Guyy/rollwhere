@@ -26,8 +26,9 @@
 
         <input id="change-route" type="button" value="CHANGE ROUTE">
     </div>
+
     </div>
-    <div style="display: none">
+        <div style="display: none">
         <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" />
 
         <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" />
@@ -42,6 +43,49 @@
             <input type="radio" name="type" id="changemode-driving" />
             <label for="changemode-driving">Driving</label>
         </div>
+    </div>
+
+    <!--offcanvas navbar-->
+    <div>
+        <nav class="navbar fixed-top" id="navbar">
+            <div class="container-fluid" >
+                
+                <button class="navbar-toggler" id="navbar-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation"
+                data-bs-theme="dark" style="border-color: white;">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!--Offcanvas-->
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    
+                    <!--offcanvas header-->
+                    <div class="offcanvas-header">
+    
+                        <img id="user-photo" src="images/Ryan_photo.jfif">
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    
+                    </div>
+    
+                    <!--offcanvas body-->
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Link</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div id="white-bg">
+            <img src="images/RollWhere_Logo.jpg" id="rollwhere-logo"> 
+        </div>
+    
     </div>
 
     <!-- Map is here -->

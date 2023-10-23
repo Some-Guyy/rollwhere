@@ -8,13 +8,30 @@
 
 }
 
-/* #navbar {
+#navbar {
     background-color: #3E837A;
+    width: 83px;
+    height: 83px;
+    
+}
+
+#white-bg {
+    background-color: white;
+    height: 100%; 
+    width: 83px;
+    position: fixed;
+    z-index: 1;
+}
+
+#rollwhere-logo {
+    width: 83px;
+    position: absolute;
+    bottom: 30px;
 }
 
 .offcanvas-header {
     background-color: #3E837A;
-} */
+}
 
 /* Modal css */
 .modal-header {
