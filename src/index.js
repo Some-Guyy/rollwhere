@@ -1,6 +1,7 @@
 // Initialize and add the map
 let map;
 
+
 // base template for modal form
 var modal_form_class = `
 <div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
@@ -60,15 +61,55 @@ async function initMap() {
     // below to create standard markers
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
  
-
+    
     // The map, centered at Singpore on load
     var map = new Map(document.getElementById("map"), {
         zoom: 19,
         center: { lat: 1.3521, lng: 103.8198 },
         mapId: "5100c9e4073b9a44",
     });
-
     
+    markers.on('value',gotData)
+
+    function gotData(data){
+        if (data.val()){
+        var marker = data.val()
+        var keys = Object.keys(marker)
+        let i = 0
+        for (i=0;i<keys.length;i++){
+            CreateMarkers(marker[keys[i]].position,marker[keys[i]].content,marker[keys[i]].icon)
+            
+            }
+        }
+    }
+    
+    function CreateMarkers(position,content,icon){
+        
+        let marker = new google.maps.Marker({
+            position: position,
+            map,
+            content: content,
+            // title: danger_info,
+            icon: icon,
+            
+        });
+        
+        // adding info window when u click that marker
+        marker.addListener("click", () => {
+            infoWindow.close();
+            // infoWindow.setContent(marker.getTitle());
+            infoWindow.setContent(marker.content);
+            infoWindow.open(marker.getMap(), marker);
+        });
+    
+        // to delete marker double click marker
+        marker.addListener("dblclick", () => {
+            marker.setMap(null);
+            let akey = position.lat.toString() + position.lng.toString()
+            let iden = akey.split ('.').join ('')
+            DeleteMarker(iden);    
+    })
+    }
     // Create the DIV to hold the control.
     const BottomRightDiv = document.createElement("div");
     BottomRightDiv.setAttribute("id", "placemarkerCheckbox")
@@ -256,7 +297,14 @@ function createBottomRight(map) {
                             content: danger_info,
                             // title: danger_info,
                             icon: icons[obstacle_type].icon,
+                            
                         });
+
+                        // creating the identity by combining lat and lng 
+                        let akey = mapsMouseEvent.latLng.toJSON().lat.toString() + mapsMouseEvent.latLng.toJSON().lng.toString()
+                        let iden = akey.split ('.').join ('')
+                        //adding marker to database
+                        AddMarker(iden,mapsMouseEvent.latLng.toJSON(),danger_info,icons[obstacle_type].icon)
 
                         // adding info window when u click that marker
                         marker.addListener("click", () => {
@@ -269,6 +317,8 @@ function createBottomRight(map) {
                         // to delete marker double click marker
                         marker.addListener("dblclick", () => {
                             marker.setMap(null);
+                            //function to remove marker from database
+                            DeleteMarker(iden);
                         });
                     
                         // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
@@ -285,6 +335,94 @@ function createBottomRight(map) {
     });
     return controlButton;
 }
+
+const firebaseConfig = {
+    apiKey: "AIzaSyD_OxinfwWy9P_4PfUO0E34lgm8oogDlpE",
+    authDomain: "rollwhere-aae1e.firebaseapp.com",
+    databaseURL: "https://rollwhere-aae1e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "rollwhere-aae1e",
+    storageBucket: "rollwhere-aae1e.appspot.com",
+    messagingSenderId: "315407102485",
+    appId: "1:315407102485:web:d702b132f72212a7c5141c",
+    measurementId: "G-LLXK2ZJXE6"
+};
+
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+var markers = firebase.database().ref('markers')
+
+
+
+//The following example demostrates how to add data
+
+//The following writes the data
+function AddMarker(iden,position, content, icon) {
+    firebase.database().ref('markers/' + iden).set({
+    position: position,
+    content: content,
+    icon: icon,
+    }, function(error) {
+    if (error) {
+        console.log("err")
+    } else {
+        console.log("marker added")
+    }
+    });
+}
+
+
+function DeleteMarker(iden) {
+    firebase.database().ref('markers/' + iden ).remove()
+    .then(function() {
+    console.log("marker removed")
+    })
+    .catch(function(error) {
+    console.log("remove err")
+    });
+}
+
+// function gotData(data){
+//     var marker = data.val()
+//     var key = Object.keys(marker)
+//     console.log(key)
+//     console.log(marker[key].position)
+//     CreateMarkers(marker[key].position,marker[key].content,marker[key].icon)
+//     markers.off("value");
+// }
+// function errData(){
+//     console.log('error')
+// }
+
+// function CreateMarkers(position,content,icon){
+    
+//     let marker = new google.maps.Marker({
+//         position: position,
+//         map,
+//         content: content,
+//         // title: danger_info,
+//         icon: icon,
+        
+//     });
+//     console.log(map)
+    
+//     // adding info window when u click that marker
+//     marker.addListener("click", () => {
+//         infoWindow.close();
+//         // infoWindow.setContent(marker.getTitle());
+//         infoWindow.setContent(marker.content);
+//         infoWindow.open(marker.getMap(), marker);
+//     });
+
+//     // to delete marker double click marker
+//     marker.addListener("dblclick", () => {
+//         marker.setMap(null);
+//         let akey = position.lat.toString() + position.lng.toString()
+//         let iden = akey.split ('.').join ('')
+//         DeleteMarker(iden);    
+// })
+// }
 
 
 

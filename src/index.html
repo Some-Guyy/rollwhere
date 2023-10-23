@@ -2,10 +2,15 @@
 <html lang="en">
 
 <head>
-    <title>Testing Google Maps API</title>
+    <title>RollWhere</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
     <link rel="stylesheet" type="text/css" href="./style.css" />
+    
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script> 
+
+<!-- This is the API from Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script> 
     <script type="module" src="./index.js"></script>
 
 
@@ -15,25 +20,12 @@
 
 <body>
     <div id="info">
-        <h2>Click a part of the map to add markers</h2>
+        <!-- <h2>Click a part of the map to add markers</h2>
         <h3>Enter origin and destination locations to generate a route!</h3>
-        <p>Markers and a single route seem feasible so far, provideRouteAlternatives does not seem to provide any alternatives though...</p>
-
-        <h2>Ryan Markers feature</h2>
-        <p>
-            1. map zooms in on ur location<br>
-            2. puts photo on ur location(i just use this photo for now)<br>
-            3. click on ur location photo to see ur location<br>
-            4. click anywhere on map to put marker for obstacles<br>
-            NOTE: keep in mind when u plop marker down it will ask 2 prompts
-            first prompt either put ceo or ok or monster exactly(I think we decide categories later)<br>
-            5. will show the obstacle type picture depending on what is first input<br>
-            6. shows second prompt additional details<br>
-            7. can click each marker to see them details<br>
-            8. can delete marker by double tapping marker
-        </p>
+        <p>Markers and a single route seem feasible so far, provideRouteAlternatives does not seem to provide any alternatives though...</p> -->
 
         <input id="change-route" type="button" value="CHANGE ROUTE">
+    </div>
     </div>
     <div style="display: none">
         <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" />
@@ -52,6 +44,7 @@
         </div>
     </div>
 
+    <!-- Map is here -->
     <div id="map"></div>
 
     <!-- Invisible modal button clicked when user adds marker to map -->
