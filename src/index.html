@@ -19,6 +19,7 @@
 </head>
 
 <body>
+    <!--NOTE: CHANGE ROUTE BUTTON IS HERE-->
     <div id="info">
         <!-- <h2>Click a part of the map to add markers</h2>
         <h3>Enter origin and destination locations to generate a route!</h3>
@@ -60,14 +61,37 @@
                     
                     <!--offcanvas header-->
                     <div class="offcanvas-header">
-    
-                        <img id="user-photo" src="images/Ryan_photo.jfif">
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <img id="offcanvas-photo" src="images/Ryan_photo.jfif">
+
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+
+                            <div class="row">
+                                <div class="col" style="text-align: center; font-size: 25px; margin: 10px 0 10px; font-weight: bold;">
+                                    Owen Tan
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-5">
+                                    Markers Placed: 0
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-5">
+                                    Routes Saved: 0
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
     
                     <!--offcanvas body-->
                     <div class="offcanvas-body">
+                        <hr>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Home</a>
@@ -76,11 +100,53 @@
                                 <a class="nav-link" href="#">Link</a>
                             </li>
                             
+                            <!-- Invisible modal button clicked when user adds marker to map -->
+                            <div id="Modal" class="invisible">
+                                <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                </button>
+                            </div>
+
+                            <!-- invisible error modal button for error in marker modal -->
+                            <div class="invisible">
+                                <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#errorModal">
+                                </button>
+                            </div>
+                            
                         </ul>
+                        
+
+                        <!--Offcanvas Buttons at footer-->
+                        <div id="btn-grp" class="container-fluid d-grid gap-2">
+                            <hr>
+                            <div class="row">
+                                <div class="col">
+                                    <button id="saved-routes-btn" type="button" class="btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16" style="margin-right: 30px;">
+                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                        </svg>
+                                        Saved Routes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <button id="logout-btn" type="button" class="btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="white" class="bi bi-box-arrow-left" viewBox="0 0 16 16" style="margin-right: 30px;">
+                                            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                                            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                                        </svg>
+                                          Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </nav>
+
 
         <div id="white-bg">
             <img src="images/RollWhere_Logo.jpg" id="rollwhere-logo"> 
@@ -91,12 +157,7 @@
     <!-- Map is here -->
     <div id="map"></div>
 
-    <!-- Invisible modal button clicked when user adds marker to map -->
-    <div id="Modal" class="invisible">
-        <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            INVISIBLE MODAL BUTTON WHOOO
-        </button>
-    </div>
+    
 
     <!-- modal that pops out when user clicks on map -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" >
@@ -151,12 +212,7 @@
         </div>
     </div>
 
-    <!--error modal button for error in marker modal -->
-    <div class="invisible">
-        <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#errorModal">
-        Launch demo modal
-        </button>
-    </div>
+    
 
     <!-- error Modal popup -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
