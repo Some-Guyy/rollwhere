@@ -79,9 +79,9 @@ async function initMap() {
         for (i=0;i<keys.length;i++){
             CreateMarkers(marker[keys[i]].position,marker[keys[i]].content,marker[keys[i]].icon)
             
+            }
         }
     }
-}
     
     function CreateMarkers(position,content,icon){
         
@@ -299,16 +299,12 @@ function createBottomRight(map) {
                             icon: icons[obstacle_type].icon,
                             
                         });
+
                         // creating the identity by combining lat and lng 
                         let akey = mapsMouseEvent.latLng.toJSON().lat.toString() + mapsMouseEvent.latLng.toJSON().lng.toString()
                         let iden = akey.split ('.').join ('')
                         //adding marker to database
                         AddMarker(iden,mapsMouseEvent.latLng.toJSON(),danger_info,icons[obstacle_type].icon)
-                        
-                        
-                        
-
-                        
 
                         // adding info window when u click that marker
                         marker.addListener("click", () => {
