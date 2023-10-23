@@ -383,49 +383,6 @@ function DeleteMarker(iden) {
     });
 }
 
-// function gotData(data){
-//     var marker = data.val()
-//     var key = Object.keys(marker)
-//     console.log(key)
-//     console.log(marker[key].position)
-//     CreateMarkers(marker[key].position,marker[key].content,marker[key].icon)
-//     markers.off("value");
-// }
-// function errData(){
-//     console.log('error')
-// }
-
-// function CreateMarkers(position,content,icon){
-    
-//     let marker = new google.maps.Marker({
-//         position: position,
-//         map,
-//         content: content,
-//         // title: danger_info,
-//         icon: icon,
-        
-//     });
-//     console.log(map)
-    
-//     // adding info window when u click that marker
-//     marker.addListener("click", () => {
-//         infoWindow.close();
-//         // infoWindow.setContent(marker.getTitle());
-//         infoWindow.setContent(marker.content);
-//         infoWindow.open(marker.getMap(), marker);
-//     });
-
-//     // to delete marker double click marker
-//     marker.addListener("dblclick", () => {
-//         marker.setMap(null);
-//         let akey = position.lat.toString() + position.lng.toString()
-//         let iden = akey.split ('.').join ('')
-//         DeleteMarker(iden);    
-// })
-// }
-
-
-
 
 
 class AutocompleteDirectionsHandler {
