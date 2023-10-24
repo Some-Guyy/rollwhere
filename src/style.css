@@ -4,17 +4,67 @@
  */
  #map {
     height: 100%;
-    position: relative;
-
+    margin-left: 83px;
 }
 
-/* #navbar {
+#navbar {
     background-color: #3E837A;
+    width: 83px;
+    height: 83px;
+    
+}
+
+#white-bg {
+    background-color: white;
+    height: 100%; 
+    width: 83px;
+    position: fixed;
+    z-index: 1;
+}
+
+#rollwhere-logo {
+    width: 83px;
+    position: absolute;
+    bottom: 30px;
 }
 
 .offcanvas-header {
     background-color: #3E837A;
-} */
+    color: #fff;
+}
+
+.btn-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#offcanvas-photo {
+    margin: auto;
+    width: 50%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+#btn-grp {
+    position: absolute;
+    bottom: 20px;
+    margin: auto;
+}
+
+#saved-routes-btn {
+    background-color: #3E837A;
+    width: 90%;
+    text-align: left;
+    color: white;
+}
+
+#logout-btn {
+    background-color: #F18F1C;
+    width: 90%;
+    text-align: left;
+    color: white;
+}
 
 /* Modal css */
 .modal-header {
