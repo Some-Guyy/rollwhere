@@ -14,7 +14,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth()
-SignUp.addEventListener('click',()=>{
+var sign = document.getElementById("SignUp")
+sign.addEventListener('click',()=>{
   var email = document.getElementById('email').value
   var password = document.getElementById('password').value
   var username = document.getElementById('username').value
