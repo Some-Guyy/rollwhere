@@ -137,7 +137,7 @@ async function initMap() {
     // Append the control to the DIV.
     BottomRightDiv.appendChild(place_marker_text)
     BottomRightDiv.appendChild(BottomRight);
-    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(BottomRightDiv);
+    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(BottomRightDiv);
 
 
     // this below is to use ryan photo as marker
