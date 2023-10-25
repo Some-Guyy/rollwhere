@@ -6,26 +6,27 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
     <link rel="stylesheet" type="text/css" href="./style.css" />
-    
-    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script> 
+
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
 
     <!-- This is the API from Firebase Realtime Database -->
-    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script> 
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
     <script type="module" src="./index.js"></script>
 
 
     <!--Bootstrap CSS CDN-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!--Vue CDN-->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
+
 </head>
 
 <body>
 
     </div>
-        <div style="display: none">
+    <div style="display: none">
         <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" />
 
         <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" />
@@ -45,16 +46,18 @@
     <!--offcanvas navbar-->
     <div>
         <nav class="navbar fixed-top" id="navbar">
-            <div class="container-fluid" >
-                
-                <button class="navbar-toggler" id="navbar-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation"
-                data-bs-theme="dark" style="border-color: white;">
+            <div class="container-fluid">
+
+                <button class="navbar-toggler" id="navbar-button" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation"
+                    data-bs-theme="dark" style="border-color: white;">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                
+
                 <!--Offcanvas-->
-                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                    
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+
                     <!--offcanvas header-->
                     <div class="offcanvas-header">
                         <div class="container-fluid">
@@ -62,11 +65,13 @@
                             <div class="row">
                                 <img id="offcanvas-photo" src="images/Ryan_photo.jfif">
 
-                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
                             </div>
 
                             <div class="row">
-                                <div class="col" style="text-align: center; font-size: 25px; margin: 10px 0 10px; font-weight: bold;">
+                                <div class="col"
+                                    style="text-align: center; font-size: 25px; margin: 10px 0 10px; font-weight: bold;">
                                     Owen Tan
                                 </div>
                             </div>
@@ -84,7 +89,7 @@
 
                         </div>
                     </div>
-    
+
                     <!--offcanvas body-->
                     <div class="offcanvas-body">
                         <hr>
@@ -96,29 +101,23 @@
                                 <a class="nav-link" href="#">Link</a>
                             </li>
 
-                            <!--NOTE: CHANGE ROUTE BUTTON IS HERE-->
-                            <div id="info">
-                                <!-- <h2>Click a part of the map to add markers</h2>
-                                <h3>Enter origin and destination locations to generate a route!</h3>
-                                <p>Markers and a single route seem feasible so far, provideRouteAlternatives does not seem to provide any alternatives though...</p> -->
 
-                                <input id="change-route" type="button" value="CHANGE ROUTE">
-                            </div>
-                            
                             <!-- Invisible modal button clicked when user adds marker to map -->
                             <div id="Modal" class="invisible">
-                                <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
                                 </button>
                             </div>
 
                             <!-- invisible error modal button for error in marker modal -->
                             <div class="invisible">
-                                <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#errorModal">
+                                <button id="modal_error_button" type="button" class="btn btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#errorModal">
                                 </button>
                             </div>
-                            
+
                         </ul>
-                        
+
 
                         <!--Offcanvas Buttons at footer-->
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
@@ -127,8 +126,11 @@
                             <div class="row">
                                 <div class="col">
                                     <button id="saved-routes-btn" type="button" class="btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16" style="margin-right: 30px;">
-                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16"
+                                            style="margin-right: 30px;">
+                                            <path
+                                                d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" />
                                         </svg>
                                         Saved Routes
                                     </button>
@@ -138,11 +140,15 @@
                             <div class="row">
                                 <div class="col">
                                     <button id="logout-btn" type="button" class="btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="white" class="bi bi-box-arrow-left" viewBox="0 0 16 16" style="margin-right: 30px;">
-                                            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
-                                            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="white"
+                                            class="bi bi-box-arrow-left" viewBox="0 0 16 16"
+                                            style="margin-right: 30px;">
+                                            <path fill-rule="evenodd"
+                                                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
+                                            <path fill-rule="evenodd"
+                                                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
                                         </svg>
-                                          Logout
+                                        Logout
                                     </button>
                                 </div>
                             </div>
@@ -155,87 +161,102 @@
 
         <!--logo and white BG-->
         <div id="white-bg">
-            <img src="images/RollWhere_Logo.jpg" id="rollwhere-logo"> 
+            <img src="images/RollWhere_Logo.jpg" id="rollwhere-logo">
         </div>
-    
+
     </div>
 
-    <!-- Map is here -->
-    <div id="map"></div>
+    <!-- Alternate Routes & Saving and loading -->
+    <button type="button" id="save-route" class="btn btn-primary" style="position: absolute; left: 5%; bottom: 10%; z-index: 2">Save Route</button>
+    <button type="button" id="load-route" class="btn btn-primary" style="position: absolute; left: 25%; bottom: 10%; z-index: 2">Load Route</button>
+    <div class="bg-primary" style="position: absolute; top: 10%; right: 5%; z-index: 1">
+        <h5>Alternate Routes</h5>
+        <ul id="alternate-routes">
+        </ul>
 
-    
+        <h5>Saved Routes</h5>
+        <ul id="saved-routes"></ul>
+    </div>
+    <!-- Map is here -->
+    <div id="map" style="z-index: 0"></div>
+
+
 
     <!-- modal that pops out when user clicks on map -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" >
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
 
         <div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
-                    <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <form>
-                <div class="modal-body">
-                    
-                    <div class="container-fluid">
+                    <div class="modal-body">
 
-                        <div class="row">
-                          <div class="col-md-4">Marker Icon</div>
-                          <div class="col-md-4 ms-auto"></div>
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <div class="col-md-4">Marker Icon</div>
+                                <div class="col-md-4 ms-auto"></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img id="image" src="images/monster.png">
+                                </div>
+                                <div class="col-8">
+                                    Obstacle Type
+                                    <select class="form-select" aria-label="Default select example" id="obstacle_type">
+                                        <option value="monster" selected>monster</option>
+                                        <option value="danger">danger</option>
+                                        <option value="pothole">pothole</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                <img id="image" src="images/monster.png">
-                            </div>
-                            <div class="col-8">
-                                Obstacle Type
-                                <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                                    <option value="monster" selected>monster</option>
-                                    <option value="danger">danger</option>
-                                    <option value="pothole">pothole</option>
-                                  </select>
-
-                            </div>
-                        </div>
+                        What is the obstacle name
+                        <input type="text" class="form-control" id="obstacle_info">
+                        <br>
+                        Share with us somemore in detail
+                        <textarea class="form-control" id="obstacle_details"></textarea>
 
                     </div>
 
-                    What is the obstacle name
-                    <input type="text" class="form-control" id="obstacle_info">
-                    <br>
-                    Share with us somemore in detail
-                    <textarea class="form-control" id="obstacle_details"></textarea>
+                    <div class="modal-footer">
+                        <button type="button" class="btn fw-bold text-light" id="place_marker" data-bs-dismiss="modal"
+                            style="background-color: #3E837A;">Place Marker</button>
+                    </div>
 
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn fw-bold text-light" id="place_marker" data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
-                </div>
-                
 
             </div>
         </div>
     </div>
 
-    
+
 
     <!-- error Modal popup -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h1 class="modal-title fs-5" id="errorModalLabel">You didn't put obstacle type!</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close"></button>
-            </div>
-            <!-- <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="errorModalLabel">You didn't put obstacle type!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close"></button>
+                </div>
+                <!-- <div class="modal-body">
             ...
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
             </div> -->
-        </div>
+            </div>
         </div>
     </div>
     <!-- 
@@ -248,10 +269,12 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXiCDirZ_ve5btwH1g_3zUdSxDdzneCOk&callback=initMap&libraries=places&v=weekly"
         defer>
-    </script>
+        </script>
 
     <!--Bootstrap JS CDN-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
