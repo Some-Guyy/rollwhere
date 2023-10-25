@@ -70,9 +70,6 @@ class AutocompleteDirectionsHandler {
             destinationInput,
         );
         this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
-        // this.directionsRenderer.addListener('directions_changed', ()=> {
-        //     let results = this.directionsRenderer.getDirections()
-        //   });
     }
 
     // Sets a listener on a radio button to change the filter type on Places
