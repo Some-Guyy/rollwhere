@@ -470,7 +470,6 @@ class AutocompleteDirectionsHandler {
             "changemode-driving",
             google.maps.TravelMode.DRIVING,
         );
-        this.setupChangeRouteListener();
         this.setupPlaceChangedListener(originAutocomplete, "ORIG");
         this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
         this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
@@ -508,13 +507,8 @@ class AutocompleteDirectionsHandler {
             this.route();
         });
     }
-    setupChangeRouteListener() {
-        const changeRouteButton = document.getElementById("change-route");
-        changeRouteButton.addEventListener("click", () => {
-            this.route(true);
-        });
-    }
-    route(changeRoute = false) {
+
+    route() {
         if (!this.originPlaceId || !this.destinationPlaceId) {
             return;
         }
@@ -530,11 +524,6 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
-                    if (changeRoute) {
-                        console.log(response);
-                        me.directionsRenderer.setDirections(response);
-                        // me.directionsRenderer.setRouteIndex(2);
-                    }
                     console.log(response);
                     me.directionsRenderer.setDirections(response);
                 } else {
