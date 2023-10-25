@@ -1,3 +1,16 @@
+const root = Vue.createApp({
+    data() {
+        return {
+            username: "mr.rollerman", // Will update this based on login
+            profilePicUrl: "images/Ryan_photo.jfif",
+            markersPlaced: 0,
+            routesSaved: 0
+        }
+    }
+});
+
+root.mount("#root");
+
 // Initialize and add the map
 let map;
 
