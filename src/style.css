@@ -4,7 +4,7 @@
  */
  #map {
     height: 100%;
-    margin-left: 83px;
+    /* margin-left: 83px; */
 }
 
 #navbar {
@@ -14,13 +14,13 @@
     
 }
 
-#white-bg {
+/* #white-bg {
     background-color: white;
     height: 100%; 
     width: 83px;
     position: fixed;
     z-index: 1;
-}
+} */
 
 #rollwhere-logo {
     width: 83px;
@@ -87,6 +87,7 @@
     border-radius: 15px;
     font-size: 15px;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Below is for user location photo */

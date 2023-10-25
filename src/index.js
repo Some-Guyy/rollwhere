@@ -80,6 +80,9 @@ async function initMap() {
         zoom: 19,
         center: { lat: 1.3521, lng: 103.8198 },
         mapId: "5100c9e4073b9a44",
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.TOP_RIGHT}
     });
 
     markers.on('value', gotData)
@@ -134,7 +137,7 @@ async function initMap() {
     // Append the control to the DIV.
     BottomRightDiv.appendChild(place_marker_text)
     BottomRightDiv.appendChild(BottomRight);
-    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(BottomRightDiv);
+    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(BottomRightDiv);
 
 
     // this below is to use ryan photo as marker
@@ -439,11 +442,11 @@ class AutocompleteDirectionsHandler {
         );
         this.setupPlaceChangedListener(originAutocomplete, "ORIG");
         this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
+        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
+        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
             destinationInput,
         );
-        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
         this.switchRoute()
         this.setUpSaveRouteListener()
         this.setUpLoadRouteListener()
