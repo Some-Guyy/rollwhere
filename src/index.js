@@ -55,45 +55,45 @@ var modal_form_class = `
 </div>`;
 
 async function initMap() {
-    
+
     //create map
     const { Map } = await google.maps.importLibrary("maps");
     // below to create standard markers
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
- 
-    
+
+
     // The map, centered at Singpore on load
     var map = new Map(document.getElementById("map"), {
         zoom: 19,
         center: { lat: 1.3521, lng: 103.8198 },
         mapId: "5100c9e4073b9a44",
     });
-    
-    markers.on('value',gotData)
 
-    function gotData(data){
-        if (data.val()){
-        var marker = data.val()
-        var keys = Object.keys(marker)
-        let i = 0
-        for (i=0;i<keys.length;i++){
-            CreateMarkers(marker[keys[i]].position,marker[keys[i]].content,marker[keys[i]].icon)
-            
+    markers.on('value', gotData)
+
+    function gotData(data) {
+        if (data.val()) {
+            var marker = data.val()
+            var keys = Object.keys(marker)
+            let i = 0
+            for (i = 0; i < keys.length; i++) {
+                CreateMarkers(marker[keys[i]].position, marker[keys[i]].content, marker[keys[i]].icon)
+
             }
         }
     }
-    
-    function CreateMarkers(position,content,icon){
-        
+
+    function CreateMarkers(position, content, icon) {
+
         let marker = new google.maps.Marker({
             position: position,
             map,
             content: content,
             // title: danger_info,
             icon: icon,
-            
+
         });
-        
+
         // adding info window when u click that marker
         marker.addListener("click", () => {
             infoWindow.close();
@@ -101,14 +101,14 @@ async function initMap() {
             infoWindow.setContent(marker.content);
             infoWindow.open(marker.getMap(), marker);
         });
-    
+
         // to delete marker double click marker
         marker.addListener("dblclick", () => {
             marker.setMap(null);
             let akey = position.lat.toString() + position.lng.toString()
-            let iden = akey.split ('.').join ('')
-            DeleteMarker(iden);    
-    })
+            let iden = akey.split('.').join('')
+            DeleteMarker(iden);
+        })
     }
     // Create the DIV to hold the control.
     const BottomRightDiv = document.createElement("div");
@@ -156,12 +156,12 @@ async function initMap() {
                 infoWindow.setContent(`<h2>Your Location</h2>`);
                 infoWindow.open(map);
             });
-            
+
         },
         () => {
-          handleLocationError(true, infoWindow, map.getCenter());
+            handleLocationError(true, infoWindow, map.getCenter());
         },
-      );
+    );
 
 
     new AutocompleteDirectionsHandler(map);
@@ -172,9 +172,9 @@ async function initMap() {
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(
-      browserHasGeolocation
-        ? "Error: The Geolocation service failed."
-        : "Error: Your browser doesn't support geolocation.",
+        browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation.",
     );
     infoWindow.open(map);
 }
@@ -182,7 +182,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 // creates place marker checkbox
 function createBottomRight(map) {
     const controlButton = document.createElement("input");
-  
+
     // Set CSS for the control.
     // controlButton.style.backgroundColor = "#fff";
     // controlButton.style.border = "200px solid #fff";
@@ -203,13 +203,13 @@ function createBottomRight(map) {
     controlButton.type = "checkbox";
     controlButton.id = "markerCheckbox"
     controlButton.style.verticalAlign = "middle"
-    
+
 
     controlButton.addEventListener("click", () => {
-        if (controlButton.checked==true){
+        if (controlButton.checked == true) {
             // create info window
             let infoWindow = new google.maps.InfoWindow();
-            
+
             // to add obstacle markers onto map
             map.addListener("click", (mapsMouseEvent) => {
                 // more efficient way, creating a library of icons
@@ -224,7 +224,7 @@ function createBottomRight(map) {
                         icon: "images/monster.png"
                     },
                 };
-                
+
                 // access modal button which is invisible
                 let modal = document.getElementById("modal_button");
                 // accessing modal place marker button
@@ -240,10 +240,10 @@ function createBottomRight(map) {
                     // console.log(chng.value)
                     marker_icon.setAttribute("src", `images/${chng.value}.png`)
                 })
-                
+
                 // when clicking close button on modal
                 var modal_close = document.getElementById("modal_close")
-                modal_close.addEventListener("click", () =>{
+                modal_close.addEventListener("click", () => {
                     // console.log("close")
                     // some bug where if u dont touch form but cancel, it ties to prev form. my workaround is to add a value without user seeing before resetting
                     let temp = document.getElementById("obstacle_info")
@@ -257,16 +257,16 @@ function createBottomRight(map) {
                     var obstacle_type = document.getElementById("obstacle_type").value
                     var obstacle_info = document.getElementById("obstacle_info").value
                     var obstacle_details = document.getElementById("obstacle_details").value
-                    
+
                     // checking if obstacle type is valid
-                    if (obstacle_info.length == 0){
+                    if (obstacle_info.length == 0) {
                         // failed
                         document.getElementById("exampleModal").innerHTML = modal_form_class
                         // will trigger error modal button
                         let modal_error = document.getElementById("modal_error_button");
                         modal_error.click();
-                        
-                    }else{
+
+                    } else {
                         // success
                         // create details to put in infow window
                         let danger_info = `
@@ -297,14 +297,14 @@ function createBottomRight(map) {
                             content: danger_info,
                             // title: danger_info,
                             icon: icons[obstacle_type].icon,
-                            
+
                         });
 
                         // creating the identity by combining lat and lng 
                         let akey = mapsMouseEvent.latLng.toJSON().lat.toString() + mapsMouseEvent.latLng.toJSON().lng.toString()
-                        let iden = akey.split ('.').join ('')
+                        let iden = akey.split('.').join('')
                         //adding marker to database
-                        AddMarker(iden,mapsMouseEvent.latLng.toJSON(),danger_info,icons[obstacle_type].icon)
+                        AddMarker(iden, mapsMouseEvent.latLng.toJSON(), danger_info, icons[obstacle_type].icon)
 
                         // adding info window when u click that marker
                         marker.addListener("click", () => {
@@ -320,18 +320,18 @@ function createBottomRight(map) {
                             //function to remove marker from database
                             DeleteMarker(iden);
                         });
-                    
+
                         // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
                         document.getElementById("exampleModal").innerHTML = modal_form_class
                     }
-                    
-                })          
+
+                })
             });
-            
-        }else{
+
+        } else {
             google.maps.event.clearListeners(map, 'click');
         }
-    
+
     });
     return controlButton;
 }
@@ -358,29 +358,29 @@ var markers = firebase.database().ref('markers')
 //The following example demostrates how to add data
 
 //The following writes the data
-function AddMarker(iden,position, content, icon) {
+function AddMarker(iden, position, content, icon) {
     firebase.database().ref('markers/' + iden).set({
-    position: position,
-    content: content,
-    icon: icon,
-    }, function(error) {
-    if (error) {
-        console.log("err")
-    } else {
-        console.log("marker added")
-    }
+        position: position,
+        content: content,
+        icon: icon,
+    }, function (error) {
+        if (error) {
+            console.log("err")
+        } else {
+            console.log("marker added")
+        }
     });
 }
 
 
 function DeleteMarker(iden) {
-    firebase.database().ref('markers/' + iden ).remove()
-    .then(function() {
-    console.log("marker removed")
-    })
-    .catch(function(error) {
-    console.log("remove err")
-    });
+    firebase.database().ref('markers/' + iden).remove()
+        .then(function () {
+            console.log("marker removed")
+        })
+        .catch(function (error) {
+            console.log("remove err")
+        });
 }
 
 // function gotData(data){
@@ -396,17 +396,17 @@ function DeleteMarker(iden) {
 // }
 
 // function CreateMarkers(position,content,icon){
-    
+
 //     let marker = new google.maps.Marker({
 //         position: position,
 //         map,
 //         content: content,
 //         // title: danger_info,
 //         icon: icon,
-        
+
 //     });
 //     console.log(map)
-    
+
 //     // adding info window when u click that marker
 //     marker.addListener("click", () => {
 //         infoWindow.close();
@@ -441,7 +441,7 @@ class AutocompleteDirectionsHandler {
         this.destinationPlaceId = "";
         this.travelMode = google.maps.TravelMode.WALKING;
         this.directionsService = new google.maps.DirectionsService();
-        this.directionsRenderer = new google.maps.DirectionsRenderer({draggable: true});
+        this.directionsRenderer = new google.maps.DirectionsRenderer({ draggable: true });
         this.directionsRenderer.setMap(map);
 
         const originInput = document.getElementById("origin-input");
