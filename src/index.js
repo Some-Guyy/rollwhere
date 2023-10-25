@@ -385,7 +385,6 @@ function AddMarker(iden, position, content, icon) {
     });
 }
 
-
 function DeleteMarker(iden) {
     firebase.database().ref('markers/' + iden).remove()
         .then(function () {
@@ -395,51 +394,6 @@ function DeleteMarker(iden) {
             console.log("remove err")
         });
 }
-
-// function gotData(data){
-//     var marker = data.val()
-//     var key = Object.keys(marker)
-//     console.log(key)
-//     console.log(marker[key].position)
-//     CreateMarkers(marker[key].position,marker[key].content,marker[key].icon)
-//     markers.off("value");
-// }
-// function errData(){
-//     console.log('error')
-// }
-
-// function CreateMarkers(position,content,icon){
-
-//     let marker = new google.maps.Marker({
-//         position: position,
-//         map,
-//         content: content,
-//         // title: danger_info,
-//         icon: icon,
-
-//     });
-//     console.log(map)
-
-//     // adding info window when u click that marker
-//     marker.addListener("click", () => {
-//         infoWindow.close();
-//         // infoWindow.setContent(marker.getTitle());
-//         infoWindow.setContent(marker.content);
-//         infoWindow.open(marker.getMap(), marker);
-//     });
-
-//     // to delete marker double click marker
-//     marker.addListener("dblclick", () => {
-//         marker.setMap(null);
-//         let akey = position.lat.toString() + position.lng.toString()
-//         let iden = akey.split ('.').join ('')
-//         DeleteMarker(iden);    
-// })
-// }
-
-
-
-
 
 class AutocompleteDirectionsHandler {
     map;
@@ -654,7 +608,7 @@ class AutocompleteDirectionsHandler {
         })
     }
 
-    route(changeRoute = false) {
+    route() {
         if (!this.originPlaceId || !this.destinationPlaceId) {
             return;
         }
@@ -670,10 +624,6 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
-                    if (changeRoute) {
-                        console.log(response);
-                        me.directionsRenderer.setDirections(response);
-                    }
                     //populating alternate routes header
                     let alternateRouteEl = document.getElementById("alternate-routes")
                     for (let i = 0; i < response.routes.length; i++) {
