@@ -55,7 +55,8 @@
 
                 <!--Offcanvas-->
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel">
+                    aria-labelledby="offcanvasNavbarLabel" data-bs-scroll="true"
+                    data-bs-backdrop="false">
 
                     <!--offcanvas header-->
                     <div class="offcanvas-header">
@@ -90,7 +91,7 @@
                     </div>
 
                     <!--offcanvas body-->
-                    <div class="offcanvas-body">
+                    <div class="offcanvas-body" style="overflow-y: auto;">
                         <hr>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
@@ -115,11 +116,14 @@
                             </div>
 
                         </ul>
+                        <hr>
 
+                    </div>
 
+                    <div>
                         <!--Offcanvas Buttons at footer-->
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
-                            <hr>
+                                          
                             <!--saved routes button-->
                             <div class="row">
                                 <div class="col">
@@ -175,6 +179,8 @@
         <h5>Saved Routes</h5>
         <ul id="saved-routes"></ul>
     </div>
+
+
     <!-- Map is here -->
     <div id="map" style="z-index: 0"></div>
 

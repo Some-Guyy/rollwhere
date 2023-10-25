@@ -47,9 +47,9 @@
 }
 
 #btn-grp {
-    position: absolute;
-    bottom: 20px;
-    margin: auto;
+    /* position: absolute;
+    bottom: 20px; */
+    margin-bottom: 20px;
 }
 
 #saved-routes-btn {
