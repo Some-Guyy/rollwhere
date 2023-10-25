@@ -43,7 +43,7 @@
     </div>
 
     <!--offcanvas navbar-->
-    <div>
+    <div id="root">
         <nav class="navbar fixed-top" id="navbar">
             <div class="container-fluid">
 
@@ -71,18 +71,18 @@
                             <div class="row">
                                 <div class="col"
                                     style="text-align: center; font-size: 25px; margin: 10px 0 10px; font-weight: bold;">
-                                    Owen Tan
+                                    {{ username }}
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-1"></div>
                                 <div class="col-5">
-                                    Markers Placed: 0
+                                    Markers Placed: {{ markersPlaced }}
                                 </div>
                                 <div class="col-1"></div>
                                 <div class="col-5">
-                                    Routes Saved: 0
+                                    Routes Saved: {{ routesSaved }}
                                 </div>
                             </div>
 
