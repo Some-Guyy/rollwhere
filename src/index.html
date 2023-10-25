@@ -164,8 +164,19 @@
 
     </div>
 
+    <!-- Alternate Routes & Saving and loading -->
+    <button type="button" id="save-route" class="btn btn-primary" style="position: absolute; left: 5%; bottom: 10%; z-index: 2">Save Route</button>
+    <button type="button" id="load-route" class="btn btn-primary" style="position: absolute; left: 25%; bottom: 10%; z-index: 2">Load Route</button>
+    <div class="bg-primary" style="position: absolute; top: 10%; right: 5%; z-index: 1">
+        <h5>Alternate Routes</h5>
+        <ul id="alternate-routes">
+        </ul>
+
+        <h5>Saved Routes</h5>
+        <ul id="saved-routes"></ul>
+    </div>
     <!-- Map is here -->
-    <div id="map"></div>
+    <div id="map" style="z-index: 0"></div>
 
 
 
