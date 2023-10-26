@@ -617,7 +617,7 @@ class AutocompleteDirectionsHandler {
                     for (let i = 0; i < response.routes.length; i++) {
                         let li = document.createElement("li");
 
-                        li.innerHTML = `Route ${i + 1}, Distance: ${response.routes[i].legs[0].distance.text}, Duration: ${response.routes[i].legs[0].duration.text}`;
+                        li.innerHTML = `Route ${i + 1}: ${response.routes[i].summary}, Distance: ${response.routes[i].legs[0].distance.text}, Duration: ${response.routes[i].legs[0].duration.text}`;
                         li.addEventListener("click", () => {
                             this.switchRoute(i);
                             root.changeCanvas("routepage");
