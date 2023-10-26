@@ -91,7 +91,7 @@
                     </div>
 
                     <!--offcanvas header searchpage-->
-                    <div v-show="activePage.searchpage == true" class="offcanvas-header">
+                    <div v-show="activePage.searchpage == true || activePage.routepage == true" class="offcanvas-header">
                         <div class="container-fluid">
                             <div class="row">
                                 From: {{ originPlace }}
@@ -99,17 +99,8 @@
                             <div class="row">
                                 To: {{ destinationPlace }}
                             </div>
-                        </div>
-                    </div>
-
-                    <!--offcanvas header routepage-->
-                    <div v-show="activePage.routepage == true" class="offcanvas-header">
-                        <div class="container-fluid">
                             <div class="row">
-                                From: {{ originPlace }}
-                            </div>
-                            <div class="row">
-                                To: {{ destinationPlace }}
+                                <button type="button" v-on:click="changeCanvas('homepage')">Go HOME</button>
                             </div>
                         </div>
                     </div>
