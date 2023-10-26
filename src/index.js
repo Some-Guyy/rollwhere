@@ -1,15 +1,51 @@
-const root = Vue.createApp({
+const app = Vue.createApp({
     data() {
         return {
             username: "mr.rollerman", // Will update this based on login
             profilePicUrl: "images/Ryan_photo.jfif",
+            activePage: {
+                "homepage": true,
+                "searchpage": false,
+                "routepage": false
+            },
+            savedRoutes: [],
+            savedRouteSelectedId: null,
             numMarkersPlaced: 0,
-            numRoutesSaved: 0
+            numRoutesSaved: 0,
+            currentRouteIndex: 0,
+
+            originPlace: "",
+            destinationPlace: ""
+        }
+    },
+
+    methods: {
+        getRoute(index) {
+            return this.savedRoutes[index].data;
+        },
+
+        addRoute(routeName, routeData) {
+            this.savedRoutes.push({id: this.savedRoutes.length, name:routeName, data: routeData});
+        },
+        
+        changeCanvas(page) {
+            for (const pageName in this.activePage) {
+                if (pageName == page) {
+                    this.activePage[pageName] = true;
+                } else {
+                    this.activePage[pageName] = false;
+                }
+            }
+        },
+
+        updateOriginDest(origin, dest) {
+            this.originPlace = origin;
+            this.destinationPlace = dest;
         }
     }
 });
 
-root.mount("#root");
+const root = app.mount("#root");
 
 // Initialize and add the map
 let map;
@@ -494,18 +530,20 @@ class AutocompleteDirectionsHandler {
         // localStorage.setItem("customRoute", JSON.stringify(routeData))
 
         //temporary code to mimic saving to database with localstorage
-        if (!localStorage.getItem("savedRoute")) {
-            let savedRoutes = []
-            savedRoutes.push(routeData)
-            console.log(savedRoutes, "first time init")
-            localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
-        }
-        else {
-            let savedRoutes = JSON.parse(localStorage.getItem("savedRoute"))
-            console.log(savedRoutes, "> 1 time init")
-            savedRoutes.push(routeData)
-            localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
-        }
+        // if (!localStorage.getItem("savedRoute")) {
+        //     let savedRoutes = []
+        //     savedRoutes.push(routeData)
+        //     console.log(savedRoutes, "first time init")
+        //     localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
+        // }
+        // else {
+        //     let savedRoutes = JSON.parse(localStorage.getItem("savedRoute"))
+        //     console.log(savedRoutes, "> 1 time init")
+        //     savedRoutes.push(routeData)
+        //     localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
+        // }
+        let routeName = prompt("What route name?");
+        root.addRoute(routeName, routeData);
 
         //if user drag routes
         // if (routeData.routes[0].legs[0].via_waypoints) {
@@ -519,43 +557,46 @@ class AutocompleteDirectionsHandler {
     
     //load saved routes
     loadRoute() {
-        let savedRoute = localStorage.getItem("savedRoute")
+        let savedRoute = root.getRoute(root.savedRouteSelectedId);
+        console.log(savedRoute);
 
-        if (savedRoute) {
-            let parsedSavedRoute = JSON.parse(savedRoute);
-            console.log(parsedSavedRoute)
+        // let savedRoute = localStorage.getItem("savedRoute")
+
+        // if (savedRoute) {
+        //     let parsedSavedRoute = JSON.parse(savedRoute);
+        //     console.log(parsedSavedRoute)
 
 
-            //temporary code to mimic loading from database with localstorage
+        //     //temporary code to mimic loading from database with localstorage
 
-            if (parsedSavedRoute.request.waypoints) {
-                // let parsedWaypoints = JSON.parse(localStorage.getItem("waypoints"))
-                // console.log(parsedWaypoints)
-                console.log(parsedSavedRoute.request.origin.placeId)
+        //     if (parsedSavedRoute.request.waypoints) {
+        //         // let parsedWaypoints = JSON.parse(localStorage.getItem("waypoints"))
+        //         // console.log(parsedWaypoints)
+        //         console.log(parsedSavedRoute.request.origin.placeId)
 
-                this.directionsService.route(
-                    {
-                        origin: parsedSavedRoute.request.origin,
-                        destination: parsedSavedRoute.request.destination,
-                        travelMode: google.maps.DirectionsTravelMode.WALKING,
-                        waypoints: parsedSavedRoute.request.waypoints //waypoints:parsedSavedRoute
-                    },
-                    (result) => {
-                        this.directionsRenderer.setDirections(result)
-                    }
+        //         this.directionsService.route(
+        //             {
+        //                 origin: parsedSavedRoute.request.origin,
+        //                 destination: parsedSavedRoute.request.destination,
+        //                 travelMode: google.maps.DirectionsTravelMode.WALKING,
+        //                 waypoints: parsedSavedRoute.request.waypoints //waypoints:parsedSavedRoute
+        //             },
+        //             (result) => {
+        //                 this.directionsRenderer.setDirections(result)
+        //             }
 
-                )
+        //         )
 
-            }
-            else {
-                this.directionsRenderer.setDirections(parsedSavedRoute)
-                console.log("normal route")
-            }
+        //     }
+        //     else {
+        //         this.directionsRenderer.setDirections(parsedSavedRoute)
+        //         console.log("normal route")
+        //     }
 
-        }
-        else {
-            console.log("No custom route found in local storage.");
-        }
+        // }
+        // else {
+        //     console.log("No custom route found in local storage.");
+        // }
     }
 
     //handle the save routes
@@ -570,7 +611,7 @@ class AutocompleteDirectionsHandler {
 
     //handle the load routes
     setUpLoadRouteListener() {
-        let loadRouteBtn = document.getElementById("load-route")
+        let loadRouteBtn = document.getElementById("load-route-new")
 
         loadRouteBtn.addEventListener("click", () => {
             this.loadRoute()
@@ -611,10 +652,12 @@ class AutocompleteDirectionsHandler {
         })
     }
 
-    route() {
+    route() {        
         if (!this.originPlaceId || !this.destinationPlaceId) {
             return;
         }
+
+        root.changeCanvas("searchpage");
 
         const me = this;
 
@@ -627,6 +670,8 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
+                    root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+
                     //populating alternate routes header
                     let alternateRouteEl = document.getElementById("alternate-routes")
                     for (let i = 0; i < response.routes.length; i++) {

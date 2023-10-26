@@ -56,10 +56,10 @@
                 <!--Offcanvas-->
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel" 
-                    data-bs-backdrop="false">
+                    data-bs-backdrop="true">
 
-                    <!--offcanvas header-->
-                    <div class="offcanvas-header">
+                    <!--offcanvas header homepage-->
+                    <div v-if="activePage.homepage == true" class="offcanvas-header">
                         <div class="container-fluid">
 
                             <div class="row">
@@ -90,17 +90,29 @@
                         </div>
                     </div>
 
-                    <!--offcanvas body-->
-                    <div class="offcanvas-body" style="overflow-y: auto;">
+                    <!--offcanvas header searchpage-->
+                    <div v-if="activePage.searchpage == true" class="offcanvas-header">
+                        <div class="container-fluid">
+                            <div class="row">
+                                From: {{ originPlace }}
+                            </div>
+                            <div class="row">
+                                To: {{ destinationPlace }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--offcanvas body homepage-->
+                    <div v-if="activePage.homepage == true" class="offcanvas-body" style="overflow-y: auto;">
+                        Saved Routes
+                        Current selected route: {{ savedRouteSelectedId }}
+                        <button v-show="savedRouteSelectedId != null" type="button" id="load-route-new">Load</button>
                         <hr>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <li v-for="route of savedRoutes">
+                                <input :value="route.id" v-model="savedRouteSelectedId" type="radio" name="options" autocomplete="off">
+                                {{ route.name }}
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
-
                             <!-- Invisible modal button clicked when user adds marker to map -->
                             <div id="Modal" class="invisible">
                                 <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -116,12 +128,19 @@
                             </div>
 
                         </ul>
-                        <hr>
 
+                    </div>
+
+                    <!--offcanvas body searchpage-->
+                    <div v-if="activePage.searchpage == true" class="offcanvas-body" style="overflow-y: auto;">
+                        List of routes
+                        <hr>
+                        <ul id="alternate-routes-list" class="navbar-nav justify-content-end flex-grow-1 pe-3"></ul>
                     </div>
 
                     <div>
                         <!--Offcanvas Buttons at footer-->
+                        <hr>
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
 
                             <!--saved routes button-->
