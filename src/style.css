@@ -117,6 +117,12 @@
     font-size: medium;
   }
 
+  .slope {
+    color: brown;
+    font-weight: bold;
+    font-size: medium;
+  }
+
 /* 
    * Optional: Makes the sample page fill the window. 
    */

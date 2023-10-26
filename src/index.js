@@ -95,6 +95,7 @@ var modal_form_class = `
                             <option value="monster" selected>monster</option>
                             <option value="danger">danger</option>
                             <option value="pothole">pothole</option>
+                            <option value="slope">slope</option>
                         </select>
 
                     </div>
@@ -290,6 +291,9 @@ function createBottomRight(map) {
                     monster: {
                         icon: "images/monster.png"
                     },
+                    slope: {
+                        icon: "images/Slope.png"
+                    }
                 };
 
                 // access modal button which is invisible
