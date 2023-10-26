@@ -493,10 +493,8 @@ class AutocompleteDirectionsHandler {
         );
         this.setupPlaceChangedListener(originAutocomplete, "ORIG");
         this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
+        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destinationInput);
         this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
-            destinationInput,
-        );
         this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
         this.switchRoute();
         this.setUpSaveRouteListener();
