@@ -498,12 +498,9 @@ class AutocompleteDirectionsHandler {
             destinationInput,
         );
         this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
-        this.switchRoute()
-        this.setUpSaveRouteListener()
-        this.setUpLoadRouteListener()
-        this.setUpShowSavedRoutes()  
-        this.setUpSavedRoutesChanges()
-
+        this.switchRoute();
+        this.setUpSaveRouteListener();
+        this.setUpLoadRouteListener();
     }
     // Sets a listener on a radio button to change the filter type on Places
     // Autocomplete.
@@ -566,52 +563,13 @@ class AutocompleteDirectionsHandler {
         //     localStorage.setItem("waypoints", waypoints)
         //     console.log(waypoints)
         // }
-        console.log(routeData)
-        console.log("saved your custom route")
+        console.log("saveRoute()", routeData);
     }
     
     //load saved routes
     loadRoute() {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
-        console.log(savedRoute);
-
-        // let savedRoute = localStorage.getItem("savedRoute")
-
-        // if (savedRoute) {
-        //     let parsedSavedRoute = JSON.parse(savedRoute);
-        //     console.log(parsedSavedRoute)
-
-
-        //     //temporary code to mimic loading from database with localstorage
-
-        //     if (parsedSavedRoute.request.waypoints) {
-        //         // let parsedWaypoints = JSON.parse(localStorage.getItem("waypoints"))
-        //         // console.log(parsedWaypoints)
-        //         console.log(parsedSavedRoute.request.origin.placeId)
-
-        //         this.directionsService.route(
-        //             {
-        //                 origin: parsedSavedRoute.request.origin,
-        //                 destination: parsedSavedRoute.request.destination,
-        //                 travelMode: google.maps.DirectionsTravelMode.WALKING,
-        //                 waypoints: parsedSavedRoute.request.waypoints //waypoints:parsedSavedRoute
-        //             },
-        //             (result) => {
-        //                 this.directionsRenderer.setDirections(result)
-        //             }
-
-        //         )
-
-        //     }
-        //     else {
-        //         this.directionsRenderer.setDirections(parsedSavedRoute)
-        //         console.log("normal route")
-        //     }
-
-        // }
-        // else {
-        //     console.log("No custom route found in local storage.");
-        // }
+        console.log("loadRoute()", savedRoute);
     }
 
     //handle the save routes
@@ -626,44 +584,10 @@ class AutocompleteDirectionsHandler {
 
     //handle the load routes
     setUpLoadRouteListener() {
-        let loadRouteBtn = document.getElementById("load-route-new")
+        let loadRouteBtn = document.getElementById("load-route")
 
         loadRouteBtn.addEventListener("click", () => {
             this.loadRoute()
-        })
-    }
-
-    //initial load shows saved routes
-    setUpShowSavedRoutes() {
-        window.addEventListener("load", () => {
-            let savedRoutesEl = document.getElementById("saved-routes")
-
-            if (localStorage.getItem("savedRoute")) {
-                let savedRoutes = JSON.parse(localStorage.getItem("savedRoute"))
-                for (let i = 0; i < savedRoutes.length; i++) {
-                    let li = document.createElement("li")
-                    li.innerHTML = `Saved Route ${i + 1}`
-                    
-                    savedRoutesEl.appendChild(li)
-                }
-            }
-        })
-    }
-
-    //any changes to saved routes
-    setUpSavedRoutesChanges() {
-
-        let savedRoutesEl = document.getElementById("saved-routes")
-        savedRoutesEl.addEventListener("onchange", () => {
-            if (localStorage.getItem("savedRoute")) {
-                let savedRoutes = JSON.parse(localStorage.getItem("savedRoute"))
-                for (let i = 0; i < savedRoutes.length; i++) {
-                    let li = document.createElement("li")
-                    li.innerHTML = `Saved Route ${i + 1}`
-
-                    savedRoutesEl.appendChild(li)
-                }
-            }
         })
     }
 
@@ -701,42 +625,8 @@ class AutocompleteDirectionsHandler {
                         });
                         alternateRouteListEl.appendChild(li);
                     }
-                    
-                    //populating alternate routes header
-                    let alternateRouteEl = document.getElementById("alternate-routes")
-                    for (let i = 0; i < response.routes.length; i++) {
-                        let header = document.createElement("h5")
-                        let ol = document.createElement("ol")
-                        header.innerHTML = `Route ${i + 1}`
 
-                        //create new button to put beside header
-                        let switchButton = document.createElement("button");
-                        switchButton.innerText = "Switch Route";
-                        switchButton.addEventListener("click", () => {
-                            this.switchRoute(i);
-                        });
-
-
-                        response.routes[i].legs[0].steps.forEach((step, index) => {
-                            let li = document.createElement("li")
-                            li.innerHTML = step.instructions
-
-                            //if travel mode is transit, we add additional info about the transit
-                            if (step.transit) {
-                                step.transit.line.vehicle.type == "BUS" ? li.innerHTML += ` | Bus: ${step.transit.line.name} Heading Towards ${step.transit.headsign}` : li.innerHTML += ` | Train: ${step.transit.line.name} Heading Towards ${step.transit.headsign}`
-                            }
-
-
-                            ol.appendChild(li)
-                        })
-
-                        // add everything to the DOM
-                        alternateRouteEl.appendChild(header)
-                        alternateRouteEl.appendChild(switchButton)
-                        alternateRouteEl.appendChild(ol)
-                    }
-
-                    console.log(response);
+                    console.log("route()", response);
                     me.directionsRenderer.setDirections(response);
                 } else {
                     window.alert("Directions request failed due to " + status);
