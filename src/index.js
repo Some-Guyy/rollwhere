@@ -369,6 +369,8 @@ firebase.initializeApp(firebaseConfig);
 
 var markers = firebase.database().ref('markers')
 
+// const auth = firebase.auth()
+
 
 
 //The following example demostrates how to add data
@@ -398,6 +400,19 @@ function DeleteMarker(iden) {
         });
 }
 
+// const user = firebase.auth().currentUser;
+var user = sessionStorage.getItem('user')
+sessionStorage.clear();
+
+
+if (user) {
+  // User is signed in, see docs for a list of available properties
+  // https://firebase.google.com/docs/reference/js/v8/firebase.User
+  // ...
+} else {
+    location.href = "login.html"
+  // No user is signed in.
+}
 
 
 class AutocompleteDirectionsHandler {
