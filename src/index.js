@@ -1,21 +1,24 @@
 const app = Vue.createApp({
     data() {
         return {
-            username: "mr.rollerman", // Will update this based on login
-            profilePicUrl: "images/Ryan_photo.jfif",
             activePage: {
                 "homepage": true,
                 "searchpage": false,
                 "routepage": false
             },
+            lastPageAccessed: null,
+
+            username: "mr.rollerman", // Will update this based on login
+            profilePicUrl: "images/Ryan_photo.jfif",
             savedRoutes: [],
             savedRouteSelectedId: null,
             numMarkersPlaced: 0,
             numRoutesSaved: 0,
-            currentRouteIndex: 0,
 
             originPlace: "",
-            destinationPlace: ""
+            destinationPlace: "",
+
+            currentRouteSteps: []
         }
     },
 
@@ -30,6 +33,10 @@ const app = Vue.createApp({
         
         changeCanvas(page) {
             for (const pageName in this.activePage) {
+                if (this.activePage[pageName] === true) {
+                    this.lastPageAccessed = pageName; // Update last page accessed to help with back button
+                }
+
                 if (pageName == page) {
                     this.activePage[pageName] = true;
                 } else {
@@ -38,9 +45,17 @@ const app = Vue.createApp({
             }
         },
 
+        goBackCanvas() {
+            this.changeCanvas(this.lastPageAccessed);
+        },
+
         updateOriginDest(origin, dest) {
             this.originPlace = origin;
             this.destinationPlace = dest;
+        },
+
+        updateCurrentRouteSteps(steps) {
+            this.currentRouteSteps = steps;
         }
     }
 });
@@ -658,6 +673,7 @@ class AutocompleteDirectionsHandler {
         }
 
         root.changeCanvas("searchpage");
+        document.getElementById("navbar-button").click(); // Force open offcanvas after searching
 
         const me = this;
 
@@ -671,7 +687,21 @@ class AutocompleteDirectionsHandler {
             (response, status) => {
                 if (status === "OK") {
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+                    let alternateRouteListEl = document.getElementById("alternate-routes-list");
+                    alternateRouteListEl.innerHTML = "";
 
+                    for (let i = 0; i < response.routes.length; i++) {
+                        let li = document.createElement("li");
+
+                        li.innerHTML = `Route ${i + 1}, Distance: ${response.routes[i].legs[0].distance.text}, Duration: ${response.routes[i].legs[0].duration.text}`;
+                        li.addEventListener("click", () => {
+                            this.switchRoute(i);
+                            root.changeCanvas("routepage");
+                            root.updateCurrentRouteSteps(response.routes[i].legs[0].steps);
+                        });
+                        alternateRouteListEl.appendChild(li);
+                    }
+                    
                     //populating alternate routes header
                     let alternateRouteEl = document.getElementById("alternate-routes")
                     for (let i = 0; i < response.routes.length; i++) {
