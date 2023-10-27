@@ -7,6 +7,7 @@ const app = Vue.createApp({
                 "routepage": false
             },
             lastPageAccessed: null,
+            lastRouteResponse: null,
 
             username: "mr.rollerman", // Will update this based on login
             profilePicUrl: "images/Ryan_photo.jfif",
@@ -24,6 +25,36 @@ const app = Vue.createApp({
     },
 
     methods: {
+        changeCanvas(page) {
+            for (const pageName in this.activePage) {
+                if (this.activePage[pageName] === true) {
+                    this.lastPageAccessed = pageName; // Update last page accessed to help with back button
+                }
+
+                if (pageName == page) {
+                    this.activePage[pageName] = true;
+                } else {
+                    this.activePage[pageName] = false;
+                }
+            }
+        },
+
+        goBackCanvas() {
+            this.changeCanvas(this.lastPageAccessed);
+        },
+
+        getLastPageAccessed() {
+            return this.lastPageAccessed;
+        },
+
+        getLastRouteResponse() {
+            return this.lastRouteResponse;
+        },
+
+        updateLastRouteResponse(response) {
+            this.lastRouteResponse = response;
+        },
+
         getRoute(id) {
             for (let route of this.savedRoutes) {
                 if (route.id === id) {
@@ -46,24 +77,6 @@ const app = Vue.createApp({
                 }
             }
             console.log("id of route not found!");
-        },
-
-        changeCanvas(page) {
-            for (const pageName in this.activePage) {
-                if (this.activePage[pageName] === true) {
-                    this.lastPageAccessed = pageName; // Update last page accessed to help with back button
-                }
-
-                if (pageName == page) {
-                    this.activePage[pageName] = true;
-                } else {
-                    this.activePage[pageName] = false;
-                }
-            }
-        },
-
-        goBackCanvas() {
-            this.changeCanvas(this.lastPageAccessed);
         },
 
         updateOriginDest(origin, dest) {
@@ -529,6 +542,7 @@ class AutocompleteDirectionsHandler {
         this.switchRoute();
         this.setUpSaveRouteListener();
         this.setUpLoadRouteListener();
+        this.setupBackBtnListener();
     }
     // Sets a listener on a radio button to change the filter type on Places
     // Autocomplete.
@@ -610,6 +624,7 @@ class AutocompleteDirectionsHandler {
                 },
                 (response, status) => {
                     if (status === "OK") {
+                        root.updateLastRouteResponse(response);
                         root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
                         root.updateCurrentRouteIndex(0);
                         root.changeCanvas("routepage");
@@ -647,6 +662,18 @@ class AutocompleteDirectionsHandler {
         })
     }
 
+    // This allows us to access directionsRenderer when pressing back button to reload previous response because response may have changed when dragging routes to modify them
+    setupBackBtnListener() {
+        let backBtn = document.getElementById("back-btn");
+
+        backBtn.addEventListener("click", () => {
+            if (root.getLastPageAccessed() === "searchpage") {
+                this.directionsRenderer.setDirections(root.getLastRouteResponse());
+            }
+            root.goBackCanvas();
+        })
+    }
+
     route() {
         if (!this.originPlaceId || !this.destinationPlaceId) {
             return;
@@ -666,6 +693,7 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
+                    root.updateLastRouteResponse(response);
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
                     let alternateRouteListEl = document.getElementById("alternate-routes-list");
                     alternateRouteListEl.innerHTML = "";
