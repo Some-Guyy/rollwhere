@@ -14,25 +14,165 @@
     <!-- This is the API from Firebase Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
 
+    <!--Vue CDN-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
     <!-- bootstrap CDN-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!--Signup-->
+    <link rel="stylesheet" href="signup.css">
+
+    <!--abril fatface font-->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Abril+Fatface" />
+
+    <!--Actor font-->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Actor" />
+
+    <!--Rozha One font-->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Rozha+One">
+
 </head>
 <body>
-    <form>
-        <div class="mb-3">
-          Email address
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-          Password
-          <input type="password" class="form-control" id="password">
-        </div>
-        <div class="mb-3">
-        Username
-        <input type="text" class="form-control" id="username">
-        </div>
-        <button type="button" id="SignUp" class="btn btn-primary">SignUp</button>
-      </form>
+      <!--Everything-->
+      <div class="container-fluid" id="signUp">
+
+          <div class="row" style="padding-top: 5%;">
+          </div>
+          <!--THis is the whitebox in centre-->
+          <div class="container-fluid" id="whiteBox">
+              <div class="row">
+                  <!--Carousel here-->
+                  <div class="col-md-6 d-none d-md-block" id="leftSide">
+                      <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+
+                          <div class="carousel-inner">
+                            <!--Carousel item 1. it is active-->
+                            <div class="carousel-item active wheelchair">
+                              <img src="images/wheelchair1.png" class="d-block w-100" alt="wheelchair1">
+
+                              <div class="carousel-caption d-none d-md-block" style="top: 40%">
+                                <h1 id="rozha">Bringing you to the places that matter</h1>
+                              </div>
+                            </div>
+
+                            <!--Carousel item 2 to 5, 4 is removed-->
+                            <div v-for="(caption, wheelchair) in captions" class="carousel-item wheelchair">
+                              <img v-bind:src="'images/' + wheelchair + '.png'" class="d-block w-100" alt="...">
+
+                              <div class="carousel-caption d-none d-md-block" style="top: 40%">
+                                <h1 id="rozha">
+                                  {{caption}}
+                                </h1>
+                              </div>
+                            </div>
+
+                          </div>
+
+                          <!--carousel buttons-->
+                          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                          </button>
+
+                          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                          </button>
+
+                      </div>
+                  </div>
+
+                  <!--Logo section-->
+                  <div class="col-md-6">
+                      <div class="row">
+                        <img class="img-fluid mx-auto my-4" v-bind:src="logo" :style="{'width': logo_width, 'height':logo_height}">
+                      </div>
+
+                      <!--Welcome message section-->
+                      <div class="row" id="abril">
+                        Hi there !
+                      </div>
+                      <div class="row" id="actor">
+                        Lets get you started
+                      </div>
+
+                      <div class="row">
+                          <form>
+
+                              <!--Email input section-->
+                              <div class="d-flex justify-content-start">
+                                  <div class="input-group mb-1 mt-5 mx-2">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                                        </svg>
+                                    </span>
+
+                                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email">
+
+                                  </div>
+                              </div>
+
+                              <!--Username input section-->
+                              <div class="d-flex justify-content-start">
+                                <div class="input-group mb-1 mt-2 mx-2">
+                                  <span class="input-group-text" id="basic-addon2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                                        <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5ZM9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8Zm1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Z"/>
+                                        <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z"/>
+                                      </svg>
+                                  </span>
+
+                                  <input type="text" class="form-control" id="username" placeholder="Username">
+
+                                </div>
+                              </div>
+                              
+                              <!--Password input section-->
+                              <div class="d-flex justify-content-start">
+                                <div class="input-group mb-1 mt-2 mx-2">
+                                    <span class="input-group-text" id="basic-addon2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-lock" viewBox="0 0 16 16">
+                                        <path d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z"/>
+                                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                      </svg>
+                                    </span>
+
+                                    <input type="password" class="form-control" id="password" placeholder="Password">
+
+                                </div>
+                              </div>
+
+                            <!--Account creation-->
+                            <button type="button" id="SignUp" class="btn">Create Account</button>
+
+                          </form>
+
+                      </div>
+
+                      <!--Green line-->
+                      <hr>
+                      
+                      <!--Login section-->
+                      <div class="row">
+                        <div id="loginSect">
+                          Already have an account? <span><a id="loginLink" href="login.html"> login</a></span>
+                        </div>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+
+          <div class="row" style="padding-top: 5%;">
+          </div>
+
+      </div>
+
+      
+
+
 
 
     <script src="signup.js" type="module"></script>

@@ -1,6 +1,33 @@
 // https://firebase.google.com/docs/reference/js/auth.md#createuserwithemailandpassword
 //https://firebase.google.com/docs/auth/web/password-auth
 
+
+const app = Vue.createApp({
+  data() { 
+      return {
+          logo: "images/RollWhere_Logo.jpg",
+          logo_width: "60%",
+          logo_height: "60%",
+
+          captions: {
+            "wheelchair2": "We understand",
+            "wheelchair3": "Because we care",
+            "wheelchair5": "Let us guide you",
+          },
+
+
+      }
+  },
+  methods: {
+
+    find_caption(wheelchair) {
+      this.caption = this.captions[wheelchair];
+    }
+  }
+})
+
+const signUp = app.mount('#signUp')
+
 const firebaseConfig = {
     apiKey: "AIzaSyD_OxinfwWy9P_4PfUO0E34lgm8oogDlpE",
     authDomain: "rollwhere-aae1e.firebaseapp.com",
