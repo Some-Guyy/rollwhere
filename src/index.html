@@ -110,6 +110,7 @@
                         Saved Routes
                         Current selected route: {{ savedRouteSelectedId }}
                         <button v-show="savedRouteSelectedId != null" type="button" id="load-route">Load</button>
+                        <button v-show="savedRouteSelectedId != null" type="button" v-on:click="deleteRoute()">Delete</button>
                         <hr>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li v-for="route of savedRoutes">
@@ -143,7 +144,8 @@
 
                     <!--offcanvas body routepage-->
                     <div v-show="activePage.routepage == true" class="offcanvas-body" style="overflow-y: auto;">
-                        Steps <button type="button" v-on:click="goBackCanvas()">Back</button><button id="save-route" type="button">Save route</button>
+                        Steps <button id="back-btn" type="button">Back</button><button id="save-route" type="button">Save route</button>
+                        Current route index: {{currentRouteIndex}}
                         <hr>
                         <ol>
                             <li v-for="step of currentRouteSteps">

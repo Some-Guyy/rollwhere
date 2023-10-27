@@ -7,6 +7,7 @@ const app = Vue.createApp({
                 "routepage": false
             },
             lastPageAccessed: null,
+            lastRouteResponse: null,
 
             username: "mr.rollerman", // Will update this based on login
             profilePicUrl: "images/Ryan_photo.jfif",
@@ -18,19 +19,12 @@ const app = Vue.createApp({
             originPlace: "",
             destinationPlace: "",
 
-            currentRouteSteps: []
+            currentRouteSteps: [],
+            currentRouteIndex: 0
         }
     },
 
     methods: {
-        getRoute(index) {
-            return this.savedRoutes[index].data;
-        },
-
-        addRoute(routeName, routeData) {
-            this.savedRoutes.push({id: this.savedRoutes.length, name:routeName, data: routeData});
-        },
-        
         changeCanvas(page) {
             for (const pageName in this.activePage) {
                 if (this.activePage[pageName] === true) {
@@ -49,6 +43,42 @@ const app = Vue.createApp({
             this.changeCanvas(this.lastPageAccessed);
         },
 
+        getLastPageAccessed() {
+            return this.lastPageAccessed;
+        },
+
+        getLastRouteResponse() {
+            return this.lastRouteResponse;
+        },
+
+        updateLastRouteResponse(response) {
+            this.lastRouteResponse = response;
+        },
+
+        getRoute(id) {
+            for (let route of this.savedRoutes) {
+                if (route.id === id) {
+                    return route.data;
+                }
+            }
+            console.log("id of route not found!");
+        },
+
+        addRoute(routeName, routeData) {
+            this.savedRoutes.push({ id: Math.random(), name: routeName, data: routeData });
+        },
+
+        deleteRoute() {
+            for (let i = 0; i < this.savedRoutes.length; i++) {
+                if (this.savedRoutes[i].id === this.savedRouteSelectedId) {
+                    this.savedRoutes.splice(i, 1);
+                    this.savedRouteSelectedId = null;
+                    return;
+                }
+            }
+            console.log("id of route not found!");
+        },
+
         updateOriginDest(origin, dest) {
             this.originPlace = origin;
             this.destinationPlace = dest;
@@ -56,6 +86,14 @@ const app = Vue.createApp({
 
         updateCurrentRouteSteps(steps) {
             this.currentRouteSteps = steps;
+        },
+
+        getCurrentRouteIndex() {
+            return this.currentRouteIndex;
+        },
+
+        updateCurrentRouteIndex(index) {
+            this.currentRouteIndex = index;
         }
     }
 });
@@ -134,7 +172,8 @@ async function initMap() {
         mapId: "5100c9e4073b9a44",
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.TOP_RIGHT}
+            position: google.maps.ControlPosition.TOP_RIGHT
+        }
     });
 
     markers.on('value', gotData)
@@ -503,6 +542,7 @@ class AutocompleteDirectionsHandler {
         this.switchRoute();
         this.setUpSaveRouteListener();
         this.setUpLoadRouteListener();
+        this.setupBackBtnListener();
     }
     // Sets a listener on a radio button to change the filter type on Places
     // Autocomplete.
@@ -556,8 +596,11 @@ class AutocompleteDirectionsHandler {
         //     savedRoutes.push(routeData)
         //     localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
         // }
+        let routeDataCopy = JSON.parse(JSON.stringify(routeData)); // Create a copy so we don't edit the original response.
         let routeName = prompt("What route name?");
-        root.addRoute(routeName, routeData);
+        let selectedRouteIndex = root.getCurrentRouteIndex();
+        routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
+        root.addRoute(routeName, routeDataCopy);
 
         //if user drag routes
         // if (routeData.routes[0].legs[0].via_waypoints) {
@@ -565,13 +608,39 @@ class AutocompleteDirectionsHandler {
         //     localStorage.setItem("waypoints", waypoints)
         //     console.log(waypoints)
         // }
-        console.log("saveRoute()", routeData);
+        console.log("saveRoute()", routeDataCopy);
     }
-    
+
     //load saved routes
     loadRoute() {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
-        console.log("loadRoute()", savedRoute);
+        if (savedRoute.request.waypoints) {
+            this.directionsService.route(
+                {
+                    origin: savedRoute.request.origin,
+                    destination: savedRoute.request.destination,
+                    travelMode: savedRoute.request.travelMode,
+                    waypoints: savedRoute.request.waypoints
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        root.updateLastRouteResponse(response);
+                        root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+                        root.updateCurrentRouteIndex(0);
+                        root.changeCanvas("routepage");
+                        this.directionsRenderer.setDirections(response);
+                        console.log("loadRoute() wayP", response);
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                });
+        } else {
+            root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
+            root.updateCurrentRouteIndex(0);
+            root.changeCanvas("routepage");
+            this.directionsRenderer.setDirections(savedRoute);
+            console.log("loadRoute()", savedRoute);
+        }
     }
 
     //handle the save routes
@@ -593,7 +662,19 @@ class AutocompleteDirectionsHandler {
         })
     }
 
-    route() {        
+    // This allows us to access directionsRenderer when pressing back button to reload previous response because response may have changed when dragging routes to modify them
+    setupBackBtnListener() {
+        let backBtn = document.getElementById("back-btn");
+
+        backBtn.addEventListener("click", () => {
+            if (root.getLastPageAccessed() === "searchpage") {
+                this.directionsRenderer.setDirections(root.getLastRouteResponse());
+            }
+            root.goBackCanvas();
+        })
+    }
+
+    route() {
         if (!this.originPlaceId || !this.destinationPlaceId) {
             return;
         }
@@ -612,6 +693,7 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
+                    root.updateLastRouteResponse(response);
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
                     let alternateRouteListEl = document.getElementById("alternate-routes-list");
                     alternateRouteListEl.innerHTML = "";
@@ -622,8 +704,9 @@ class AutocompleteDirectionsHandler {
                         li.innerHTML = `Route ${i + 1}: ${response.routes[i].summary}, Distance: ${response.routes[i].legs[0].distance.text}, Duration: ${response.routes[i].legs[0].duration.text}`;
                         li.addEventListener("click", () => {
                             this.switchRoute(i);
-                            root.changeCanvas("routepage");
                             root.updateCurrentRouteSteps(response.routes[i].legs[0].steps);
+                            root.updateCurrentRouteIndex(i);
+                            root.changeCanvas("routepage");
                         });
                         alternateRouteListEl.appendChild(li);
                     }
