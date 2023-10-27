@@ -9,13 +9,55 @@ const app = Vue.createApp({
             logo_height: "40%",
 
             welcome_size: '200px',
-            
+
         }
     }
 })
 
 const vm = app.mount('#app')
 
+//map section below
+// Initialize and add the map
+let map;
+
+async function initMap() {
+
+    //create map
+    const { Map } = await google.maps.importLibrary("maps");
+    // below to create standard markers
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+
+    // The map, centered at Singpore on load
+    var map = new Map(document.getElementById("map"), {
+        zoom: 11,
+        center: { lat: 1.3521, lng: 103.8198 },
+        mapId: "5100c9e4073b9a44",
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.TOP_RIGHT}
+    });
+
+    // below code is to find ur start position and put photo of "user"
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            };
+
+            map.setCenter(pos);
+
+            // The marker, positioned at location of user
+            const your_location = new AdvancedMarkerElement({
+                map: map,
+                position: pos,
+            });
+        },
+    );
+}
+
+window.initMap = initMap;
 
 const firebaseConfig = {
     apiKey: "AIzaSyD_OxinfwWy9P_4PfUO0E34lgm8oogDlpE",
@@ -51,6 +93,8 @@ Login.addEventListener("click",()=>{
   });
 
 })
+
+
 
 
 

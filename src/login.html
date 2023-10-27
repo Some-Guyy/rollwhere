@@ -31,7 +31,6 @@
 </head>
 
 <body>
-    
     <div class="container-fluid" id="app">
         <div class="row">
             <!-- left portion-->
@@ -58,6 +57,7 @@
                 <div class="row">
                     <form>
                         
+                      <!--Email input section-->
                         <div class="input-group mb-3 mt-4 mx-5">
                             <span class="input-group-text" id="basic-addon1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
@@ -69,6 +69,7 @@
                             style="margin-right: 100px;">
                         </div>
                         
+                        <!--Password input section-->
                         <div class=" input-group mx-5">
                             <span class="input-group-text" id="basic-addon2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-lock" viewBox="0 0 16 16">
@@ -80,6 +81,7 @@
                             <input type="password" class="form-control" id="password" placeholder="Password" style="margin-right: 100px;">
                         </div>
 
+                        <!--Login button-->
                         <div id="loginSect">
                             <button type="button" id="Login" class="btn">Start Rolling</button>
                         </div>
@@ -94,15 +96,20 @@
                 </div>
             </div>
 
-            <!--Right Portion-->
+            <!--Right Portion which is map-->
             <div class="col-md-6 d-none d-md-block">
-              MAP IMAGE HERE
+              <div id="map"></div>
             </div>
         </div>
     </div>
 
 
+    
 
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXiCDirZ_ve5btwH1g_3zUdSxDdzneCOk&callback=initMap&libraries=places&v=weekly"
+        defer>
+    </script>
 
     <script src="login.js"></script>
 
