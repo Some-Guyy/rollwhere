@@ -144,6 +144,7 @@
                     <!--offcanvas body routepage-->
                     <div v-show="activePage.routepage == true" class="offcanvas-body" style="overflow-y: auto;">
                         Steps <button type="button" v-on:click="goBackCanvas()">Back</button><button id="save-route" type="button">Save route</button>
+                        Current route index: {{currentRouteIndex}}
                         <hr>
                         <ol>
                             <li v-for="step of currentRouteSteps">

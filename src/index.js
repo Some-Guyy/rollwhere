@@ -18,7 +18,8 @@ const app = Vue.createApp({
             originPlace: "",
             destinationPlace: "",
 
-            currentRouteSteps: []
+            currentRouteSteps: [],
+            currentRouteIndex: 0
         }
     },
 
@@ -56,6 +57,14 @@ const app = Vue.createApp({
 
         updateCurrentRouteSteps(steps) {
             this.currentRouteSteps = steps;
+        },
+
+        getCurrentRouteIndex() {
+            return this.currentRouteIndex;
+        },
+
+        updateCurrentRouteIndex(index) {
+            this.currentRouteIndex = index;
         }
     }
 });
@@ -556,8 +565,11 @@ class AutocompleteDirectionsHandler {
         //     savedRoutes.push(routeData)
         //     localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
         // }
+        let routeDataCopy = JSON.parse(JSON.stringify(routeData)); // Create a copy so we don't edit the original response.
         let routeName = prompt("What route name?");
-        root.addRoute(routeName, routeData);
+        let selectedRouteIndex = root.getCurrentRouteIndex();
+        routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
+        root.addRoute(routeName, routeDataCopy);
 
         //if user drag routes
         // if (routeData.routes[0].legs[0].via_waypoints) {
@@ -565,7 +577,7 @@ class AutocompleteDirectionsHandler {
         //     localStorage.setItem("waypoints", waypoints)
         //     console.log(waypoints)
         // }
-        console.log("saveRoute()", routeData);
+        console.log("saveRoute()", routeDataCopy);
     }
     
     //load saved routes
@@ -624,6 +636,7 @@ class AutocompleteDirectionsHandler {
                             this.switchRoute(i);
                             root.changeCanvas("routepage");
                             root.updateCurrentRouteSteps(response.routes[i].legs[0].steps);
+                            root.updateCurrentRouteIndex(i);
                         });
                         alternateRouteListEl.appendChild(li);
                     }
