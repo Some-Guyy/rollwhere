@@ -667,7 +667,8 @@ class AutocompleteDirectionsHandler {
         let backBtn = document.getElementById("back-btn");
 
         backBtn.addEventListener("click", () => {
-            if (root.getLastPageAccessed() === "searchpage") {
+            if (root.getLastPageAccessed() === "searchpage" && this.directionsRenderer.getDirections().request.waypoints) {
+                console.log("waypoints exist");
                 this.directionsRenderer.setDirections(root.getLastRouteResponse());
             }
             root.goBackCanvas();
