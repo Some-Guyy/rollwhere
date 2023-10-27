@@ -14,25 +14,99 @@
     <!-- This is the API from Firebase Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
 
+    <!--Vue CDN-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
     <!-- bootstrap CDN-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-<body>
-    <form>
-        <div class="mb-3">
-          Email address
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-          Password
-          <input type="password" class="form-control" id="password">
-        </div>
-        <button type="button" id="Login" class="btn btn-primary">Login</button>
-    </form>
 
-    <a href="signup.html"> sign up here</a>
+    <!--abril fatface font-->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Abril+Fatface" />
+
+    <!--Actor font-->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Actor" />
+
+    <!--login css-->
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    
+    <div class="container-fluid" id="app">
+        <div class="row">
+            <!-- left portion-->
+            <div class="col-md-6">
+                
+                <!--Logo-->
+                <div class="row">
+                    <img class="img-fluid mx-auto my-4" v-bind:src="logo" :style="{'width': logo_width, 'height':logo_height, justify}">
+                </div>
+
+                <!--Welcome Message-->
+                <div class="row">
+                    <h3 class="d-flex justify-content-center" id="abril">
+                      Welcome
+                    </h3>
+                </div>
+                <div class="row">
+                    <p class="d-flex justify-content-center" id="actor">
+                        We are glad to see you back
+                    </p>
+                </div>
+
+                <!--Form-->
+                <div class="row">
+                    <form>
+                        
+                        <div class="input-group mb-3 mt-4 mx-5">
+                            <span class="input-group-text" id="basic-addon1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                                </svg>
+                            </span>
+
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email"
+                            style="margin-right: 100px;">
+                        </div>
+                        
+                        <div class=" input-group mx-5">
+                            <span class="input-group-text" id="basic-addon2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-lock" viewBox="0 0 16 16">
+                                  <path d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z"/>
+                                  <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                </svg>
+                            </span>
+                            
+                            <input type="password" class="form-control" id="password" placeholder="Password" style="margin-right: 100px;">
+                        </div>
+
+                        <div id="loginSect">
+                            <button type="button" id="Login" class="btn">Start Rolling</button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!--Sign up-->
+                <div class="row" id="signSect">
+                    <p>Don't have an account?<span><a href="signup.html" id="signLink"> Sign Up</a></span>
+                    </p>
+                </div>
+            </div>
+
+            <!--Right Portion-->
+            <div class="col-md-6 d-none d-md-block">
+              MAP IMAGE HERE
+            </div>
+        </div>
+    </div>
+
+
+
 
     <script src="login.js"></script>
+
+    <!--Bootstrap JS CDN-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

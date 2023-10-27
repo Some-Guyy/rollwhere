@@ -1,5 +1,22 @@
 // https://firebase.google.com/docs/reference/js/auth.md#createuserwithemailandpassword
 //https://firebase.google.com/docs/auth/web/password-auth
+
+const app = Vue.createApp({
+    data() { 
+        return {
+            logo: "images/RollWhere_Logo.jpg",
+            logo_width: "40%",
+            logo_height: "40%",
+
+            welcome_size: '200px',
+            
+        }
+    }
+})
+
+const vm = app.mount('#app')
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyD_OxinfwWy9P_4PfUO0E34lgm8oogDlpE",
     authDomain: "rollwhere-aae1e.firebaseapp.com",
