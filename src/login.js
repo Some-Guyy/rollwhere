@@ -1,6 +1,5 @@
 // https://firebase.google.com/docs/reference/js/auth.md#createuserwithemailandpassword
 //https://firebase.google.com/docs/auth/web/password-auth
-
 const firebaseConfig = {
     apiKey: "AIzaSyD_OxinfwWy9P_4PfUO0E34lgm8oogDlpE",
     authDomain: "rollwhere-aae1e.firebaseapp.com",
@@ -14,34 +13,27 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth()
-
-//add user to database after signup
-SignUp.addEventListener('click',()=>{
+//login user
+Login.addEventListener("click",()=>{
   var email = document.getElementById('email').value
   var password = document.getElementById('password').value
-  var username = document.getElementById('username').value
-  firebase.auth().createUserWithEmailAndPassword(email, password)
+  firebase.auth().signInWithEmailAndPassword(email, password)
   .then((userCredential) => {
-    // Signed in 
+    // Signed in
     var user = userCredential.user;
-    firebase.database().ref('users/' + user.uid).set({
-      email: email,
-      username: username
-  });
     // ...
-    alert("Sign up successful,redirecting to login page")
-    location.href='login.html'
+    location.href = 'index.html'
+    alert("login successful go to index.html")
+    sessionStorage.setItem('user',user.uid)
+
   })
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
     alert(errorMessage)
-    // ..
   });
 
-
 })
-
 
 
 
