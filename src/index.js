@@ -32,6 +32,11 @@ const app = Vue.createApp({
             this.savedRoutes.push({ id: this.savedRoutes.length, name: routeName, data: routeData });
         },
 
+        deleteRoute() {
+            this.savedRoutes.splice(this.savedRouteSelectedId, 1);
+            this.savedRouteSelectedId = null;
+        },
+
         changeCanvas(page) {
             for (const pageName in this.activePage) {
                 if (this.activePage[pageName] === true) {

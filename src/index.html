@@ -110,6 +110,7 @@
                         Saved Routes
                         Current selected route: {{ savedRouteSelectedId }}
                         <button v-show="savedRouteSelectedId != null" type="button" id="load-route">Load</button>
+                        <button v-show="savedRouteSelectedId != null" type="button" v-on:click="deleteRoute()">Delete</button>
                         <hr>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li v-for="route of savedRoutes">
