@@ -29,9 +29,9 @@ const app = Vue.createApp({
         },
 
         addRoute(routeName, routeData) {
-            this.savedRoutes.push({id: this.savedRoutes.length, name:routeName, data: routeData});
+            this.savedRoutes.push({ id: this.savedRoutes.length, name: routeName, data: routeData });
         },
-        
+
         changeCanvas(page) {
             for (const pageName in this.activePage) {
                 if (this.activePage[pageName] === true) {
@@ -143,7 +143,8 @@ async function initMap() {
         mapId: "5100c9e4073b9a44",
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.TOP_RIGHT}
+            position: google.maps.ControlPosition.TOP_RIGHT
+        }
     });
 
     markers.on('value', gotData)
@@ -579,11 +580,36 @@ class AutocompleteDirectionsHandler {
         // }
         console.log("saveRoute()", routeDataCopy);
     }
-    
+
     //load saved routes
     loadRoute() {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
-        console.log("loadRoute()", savedRoute);
+        if (savedRoute.request.waypoints) {
+            this.directionsService.route(
+                {
+                    origin: savedRoute.request.origin,
+                    destination: savedRoute.request.destination,
+                    travelMode: savedRoute.request.travelMode,
+                    waypoints: savedRoute.request.waypoints
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+                        root.updateCurrentRouteIndex(0);
+                        root.changeCanvas("routepage");
+                        this.directionsRenderer.setDirections(response);
+                        console.log("loadRoute() wayP", response);
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                });
+        } else {
+            root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
+            root.updateCurrentRouteIndex(0);
+            root.changeCanvas("routepage");
+            this.directionsRenderer.setDirections(savedRoute);
+            console.log("loadRoute()", savedRoute);
+        }
     }
 
     //handle the save routes
@@ -605,7 +631,7 @@ class AutocompleteDirectionsHandler {
         })
     }
 
-    route() {        
+    route() {
         if (!this.originPlaceId || !this.destinationPlaceId) {
             return;
         }
@@ -634,9 +660,9 @@ class AutocompleteDirectionsHandler {
                         li.innerHTML = `Route ${i + 1}: ${response.routes[i].summary}, Distance: ${response.routes[i].legs[0].distance.text}, Duration: ${response.routes[i].legs[0].duration.text}`;
                         li.addEventListener("click", () => {
                             this.switchRoute(i);
-                            root.changeCanvas("routepage");
                             root.updateCurrentRouteSteps(response.routes[i].legs[0].steps);
                             root.updateCurrentRouteIndex(i);
+                            root.changeCanvas("routepage");
                         });
                         alternateRouteListEl.appendChild(li);
                     }
