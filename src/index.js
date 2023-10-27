@@ -24,17 +24,28 @@ const app = Vue.createApp({
     },
 
     methods: {
-        getRoute(index) {
-            return this.savedRoutes[index].data;
+        getRoute(id) {
+            for (let route of this.savedRoutes) {
+                if (route.id === id) {
+                    return route.data;
+                }
+            }
+            console.log("id of route not found!");
         },
 
         addRoute(routeName, routeData) {
-            this.savedRoutes.push({ id: this.savedRoutes.length, name: routeName, data: routeData });
+            this.savedRoutes.push({ id: Math.random(), name: routeName, data: routeData });
         },
 
         deleteRoute() {
-            this.savedRoutes.splice(this.savedRouteSelectedId, 1);
-            this.savedRouteSelectedId = null;
+            for (let i = 0; i < this.savedRoutes.length; i++) {
+                if (this.savedRoutes[i].id === this.savedRouteSelectedId) {
+                    this.savedRoutes.splice(i, 1);
+                    this.savedRouteSelectedId = null;
+                    return;
+                }
+            }
+            console.log("id of route not found!");
         },
 
         changeCanvas(page) {
