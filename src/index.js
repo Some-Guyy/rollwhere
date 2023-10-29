@@ -79,6 +79,10 @@ const app = Vue.createApp({
             console.log("id of route not found!");
         },
 
+        clickLoadRoute() {
+            document.getElementById("load-route").click();
+        },
+
         updateOriginDest(origin, dest) {
             this.originPlace = origin;
             this.destinationPlace = dest;

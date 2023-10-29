@@ -55,8 +55,7 @@
 
                 <!--Offcanvas-->
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel" 
-                    data-bs-backdrop="true">
+                    aria-labelledby="offcanvasNavbarLabel" data-bs-backdrop="true">
 
                     <!--offcanvas header homepage-->
                     <div v-show="activePage.homepage == true" class="offcanvas-header">
@@ -90,8 +89,9 @@
                         </div>
                     </div>
 
-                    <!--offcanvas header searchpage-->
-                    <div v-show="activePage.searchpage == true || activePage.routepage == true" class="offcanvas-header">
+                    <!--offcanvas header searchpage & routepage-->
+                    <div v-show="activePage.searchpage == true || activePage.routepage == true"
+                        class="offcanvas-header">
                         <div class="container-fluid">
                             <div class="row">
                                 From: {{ originPlace }}
@@ -109,13 +109,17 @@
                     <div v-show="activePage.homepage == true" class="offcanvas-body" style="overflow-y: auto;">
                         Saved Routes
                         Current selected route: {{ savedRouteSelectedId }}
-                        <button v-show="savedRouteSelectedId != null" type="button" id="load-route">Load</button>
-                        <button v-show="savedRouteSelectedId != null" type="button" v-on:click="deleteRoute()">Delete</button>
+                        <button hidden id="load-route"></button>
                         <hr>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li v-for="route of savedRoutes">
-                                <input :value="route.id" v-model="savedRouteSelectedId" type="radio" name="options" autocomplete="off">
+                                <input :value="route.id" v-model="savedRouteSelectedId" type="radio" name="options"
+                                    autocomplete="off">
                                 {{ route.name }}
+                                <button v-show="savedRouteSelectedId === route.id" type="button"
+                                    v-on:click="clickLoadRoute()">Load</button>
+                                <button v-show="savedRouteSelectedId === route.id" type="button"
+                                    v-on:click="deleteRoute()">Delete</button>
                             </li>
                             <!-- Invisible modal button clicked when user adds marker to map -->
                             <div id="Modal" class="invisible">
@@ -144,7 +148,8 @@
 
                     <!--offcanvas body routepage-->
                     <div v-show="activePage.routepage == true" class="offcanvas-body" style="overflow-y: auto;">
-                        Steps <button id="back-btn" type="button">Back</button><button id="save-route" type="button">Save route</button>
+                        Steps <button id="back-btn" type="button">Back</button><button id="save-route"
+                            type="button">Save route</button>
                         Current route index: {{currentRouteIndex}}
                         <hr>
                         <ol>
