@@ -294,19 +294,6 @@ function createBottomRight(map) {
     const controlButton = document.createElement("input");
 
     // Set CSS for the control.
-    // controlButton.style.backgroundColor = "#fff";
-    // controlButton.style.border = "200px solid #fff";
-    // controlButton.style.borderRadius = "3px";
-    // controlButton.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-    // controlButton.style.color = "rgb(25,25,25)";
-    // controlButton.style.fontFamily = "Roboto,Arial,sans-serif";
-    // controlButton.style.fontSize = "16px";
-    // controlButton.style.lineHeight = "38px";
-    // controlButton.style.margin = "8px 10px 22px";
-    // controlButton.style.padding = "20px";
-    // controlButton.style.textAlign = "center";
-    // controlButton.textContent = "Place Markers";
-    // controlButton.title = "Click to place obstacles on the map";
     controlButton.style.width = "20px";
     controlButton.style.height = "20px";
     controlButton.style.cursor = "pointer";
@@ -584,33 +571,11 @@ class AutocompleteDirectionsHandler {
 
     //save route
     saveRoute(routeData) {
-        // localStorage.setItem("customRoute", JSON.stringify(routeData))
-
-        //temporary code to mimic saving to database with localstorage
-        // if (!localStorage.getItem("savedRoute")) {
-        //     let savedRoutes = []
-        //     savedRoutes.push(routeData)
-        //     console.log(savedRoutes, "first time init")
-        //     localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
-        // }
-        // else {
-        //     let savedRoutes = JSON.parse(localStorage.getItem("savedRoute"))
-        //     console.log(savedRoutes, "> 1 time init")
-        //     savedRoutes.push(routeData)
-        //     localStorage.setItem("savedRoute", JSON.stringify(savedRoutes))
-        // }
         let routeDataCopy = JSON.parse(JSON.stringify(routeData)); // Create a copy so we don't edit the original response.
         let routeName = prompt("What route name?");
         let selectedRouteIndex = root.getCurrentRouteIndex();
         routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
         root.addRoute(routeName, routeDataCopy);
-
-        //if user drag routes
-        // if (routeData.routes[0].legs[0].via_waypoints) {
-        //     let waypoints = JSON.stringify(routeData.request.waypoints)
-        //     localStorage.setItem("waypoints", waypoints)
-        //     console.log(waypoints)
-        // }
         console.log("saveRoute()", routeDataCopy);
     }
 
@@ -724,8 +689,5 @@ class AutocompleteDirectionsHandler {
         );
     }
 }
-
-
-
 
 window.initMap = initMap;
