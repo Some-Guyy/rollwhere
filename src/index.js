@@ -664,6 +664,8 @@ class AutocompleteDirectionsHandler {
                 if (status === "OK") {
                     root.updateLastRouteResponse(response);
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+
+                    // ryan look at this, this is where li needs to be styled
                     let alternateRouteListEl = document.getElementById("alternate-routes-list");
                     alternateRouteListEl.innerHTML = "";
 

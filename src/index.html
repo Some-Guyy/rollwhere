@@ -143,6 +143,7 @@
                     <div v-show="activePage.searchpage == true" class="offcanvas-body" style="overflow-y: auto;">
                         List of routes
                         <hr>
+                        <!-- ryan look at this, inside the ul is where li will be generated in index.js -->
                         <ul id="alternate-routes-list"></ul>
                     </div>
 
@@ -153,6 +154,7 @@
                         Current route index: {{currentRouteIndex}}
                         <hr>
                         <ol>
+                            <!-- ryan look at this, this takes html text from step.instructions -->
                             <li v-for="step of currentRouteSteps">
                                 <span v-html="step.instructions"></span>
                             </li>
