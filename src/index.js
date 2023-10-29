@@ -14,7 +14,6 @@ const app = Vue.createApp({
             savedRoutes: [],
             savedRouteSelectedId: null,
             numMarkersPlaced: 0,
-            numRoutesSaved: 0,
 
             originPlace: "",
             destinationPlace: "",
