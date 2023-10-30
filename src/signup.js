@@ -42,6 +42,21 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth()
 
+function AddUser(userId, username, email) {
+  firebase.database().ref('users/' + userId).set({
+  username: username,
+  email: email
+  
+  }, function(error) {
+  if (error) {
+      console.log(error)
+  } else {
+    alert("Sign up successful,redirecting to login page")
+    location.href='login.html'
+  }
+  });
+}
+
 //add user to database after signup
 SignUp.addEventListener('click',()=>{
   var email = document.getElementById('email').value
@@ -51,13 +66,8 @@ SignUp.addEventListener('click',()=>{
   .then((userCredential) => {
     // Signed in 
     var user = userCredential.user;
-    firebase.database().ref('users/' + user.uid).set({
-      email: email,
-      username: username
-  });
+    AddUser(user.uid,username,email)
     // ...
-    alert("Sign up successful,redirecting to login page")
-    location.href='login.html'
   })
   .catch((error) => {
     var errorCode = error.code;
