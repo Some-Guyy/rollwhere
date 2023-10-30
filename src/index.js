@@ -599,6 +599,7 @@ class AutocompleteDirectionsHandler {
                         root.updateLastRouteResponse(response);
                         root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
                         root.updateCurrentRouteIndex(0);
+                        root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
                         root.changeCanvas("routepage");
                         this.directionsRenderer.setDirections(response);
                         console.log("loadRoute() wayP", response);
@@ -609,6 +610,7 @@ class AutocompleteDirectionsHandler {
         } else {
             root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
             root.updateCurrentRouteIndex(0);
+            root.updateOriginDest(savedRoute.routes[0].legs[0].start_address, savedRoute.routes[0].legs[0].end_address);
             root.changeCanvas("routepage");
             this.directionsRenderer.setDirections(savedRoute);
             console.log("loadRoute()", savedRoute);
