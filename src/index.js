@@ -13,7 +13,6 @@ const app = Vue.createApp({
             profilePicUrl: "images/Ryan_photo.jfif",
             savedRoutes: [],
             savedRouteSelectedId: null,
-            numMarkersPlaced: 0,
 
             originPlace: "",
             destinationPlace: "",
