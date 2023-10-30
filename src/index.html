@@ -156,9 +156,25 @@
 
                     <!--offcanvas body routepage-->
                     <div v-show="activePage.routepage == true" class="offcanvas-body" style="overflow-y: auto;">
-                        Steps <button id="back-btn" type="button">Back</button><button id="save-route"
-                            type="button">Save route</button>
-                        Current route index: {{currentRouteIndex}}
+                        <div class="row d-flex text-center">
+                            <h3>Steps</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-4">
+                                <button class="btn btn-outline-success" id="back-btn" type="button">
+                                    Back
+                                </button>
+                            </div>
+                            <div class="col-1"></div>
+                            <div class="col-5">
+                                <button class="btn btn-outline" id="save-route"
+                                    type="button">
+                                    Save route
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Current route index: {{currentRouteIndex}} -->
                         <hr>
                         <ol>
                             <!-- ryan look at this, this takes html text from step.instructions -->
@@ -170,7 +186,7 @@
 
                     <div>
                         <!--Offcanvas Buttons at footer-->
-                        <hr>
+                        <hr style="width: 95%; margin-left: 2.5%;">
                         <!-- <div v-for="v,k in activePage">
                             {{ k }}: {{ v }}
                         </div> -->

@@ -54,6 +54,29 @@
     margin-right: 10%;
 }
 
+#back-btn {
+    border-color: #3E837A;
+    color: #3E837A;
+    background-color: #fff;
+}
+
+#back-btn:active {
+    color: white;
+    background-color: #3E837A;
+}
+
+#save-route {
+    border-color: #3E837A;
+    color: #3E837A;
+    background-color: #fff;
+}
+
+#save-route:active {
+    color: white;
+    background-color: #3E837A;
+}
+
+
 #card-header {
     background-color: #3E837A;
     color: white;
