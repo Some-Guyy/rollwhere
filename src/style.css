@@ -55,6 +55,10 @@
     font-weight: bold;
 }
 
+.saved-route:checked ~ span {
+    background-color: #3E837A;
+}
+
 #alternate-routes-list {
     list-style-type: none;
     margin-left: 0;
