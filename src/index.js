@@ -321,7 +321,7 @@ function createBottomRight(map) {
                         icon: "images/monster.png"
                     },
                     slope: {
-                        icon: "images/Slope.png"
+                        icon: "images/slope.png"
                     }
                 };
 
