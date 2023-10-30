@@ -45,6 +45,16 @@
     border-radius: 50%;
 }
 
+#saved-routes{
+    /* color: black; */
+    margin-left: 5px;
+}
+
+#saved-routes:enabled {
+    color: #3E837A;
+    font-weight: bold;
+}
+
 #alternate-routes-list {
     list-style-type: none;
     margin-left: 0;
@@ -83,8 +93,6 @@
 }
 
 #btn-grp {
-    /* position: absolute;
-    bottom: 20px; */
     margin-bottom: 20px;
 }
 

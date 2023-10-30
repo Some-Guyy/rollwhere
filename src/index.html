@@ -114,16 +114,24 @@
                         <h5 class="d-flex justify-content-center">My Saved Routes</h5>
                         <button hidden id="load-route"></button>
                         <hr>
-                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                            <li v-for="route of savedRoutes">
-                                <input :value="route.id" v-model="savedRouteSelectedId" type="radio" name="options"
-                                    autocomplete="off">
+                        
+                        <div v-if="savedRoutes.length>0">
+                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li v-for="route of savedRoutes" id="saved-routes">
+                                <input :value="route.id" v-model="savedRouteSelectedId" type="radio" name="options" autocomplete="off" style="accent-color: #3E837A;">
+
+                                <span id="saved-routes" class="fs-5">
                                 {{ route.name }}
+                                </span>
+
+                                
                                 <button v-show="savedRouteSelectedId === route.id" type="button"
-                                    v-on:click="clickLoadRoute()">Load</button>
-                                <button v-show="savedRouteSelectedId === route.id" type="button"
+                                    v-on:click="clickLoadRoute()" >Load</button>
+                                <button v-show="savedRouteSelectedId === route.id" type="button" style="margin-right: 10%;"
                                     v-on:click="deleteRoute()">Delete</button>
+                                
                             </li>
+
                             <!-- Invisible modal button clicked when user adds marker to map -->
                             <div id="Modal" class="invisible">
                                 <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -138,16 +146,22 @@
                                 </button>
                             </div>
 
-                        </ul>
+                            </ul>
+                        </div>
+
+                        <div v-else style="text-align: center;">
+                            <br>
+                            ~No routes added yet, more is yet to come!~
+                        </div>
 
                     </div>
 
                     <!--offcanvas body searchpage-->
                     <div v-show="activePage.searchpage == true" class="offcanvas-body" style="overflow-y: auto;">
-                        <div class="fs-4 text">
+                        <div class="fs-4 text-center">
                         List of routes
                         </div>
-                        <p>
+                        <p class="text-center">
                             Please pick one
                         </p>
 
