@@ -190,6 +190,7 @@ async function initMap() {
             for (i = 0; i < keys.length; i++) {
                 CreateMarkers(marker[keys[i]].position, marker[keys[i]].content, marker[keys[i]].icon)
             }
+            markers.off('value', gotData)
         }
     }
 
@@ -321,7 +322,7 @@ function createBottomRight(map) {
                         icon: "images/monster.png"
                     },
                     slope: {
-                        icon: "images/Slope.png"
+                        icon: "images/slope.png"
                     }
                 };
 
@@ -689,7 +690,26 @@ class AutocompleteDirectionsHandler {
                     for (let i = 0; i < response.routes.length; i++) {
                         let li = document.createElement("li");
 
-                        li.innerHTML = `Route ${i + 1}: ${response.routes[i].summary}, Distance: ${response.routes[i].legs[0].distance.text}, Duration: ${response.routes[i].legs[0].duration.text}`;
+                        li.innerHTML = `
+                        <div class="card card border-success alternate-routes-li-item">
+                            <div class="card-header card-title" id="card-header">
+                                <h5>
+                                    Route ${i + 1}: ${response.routes[i].summary}
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <span class="fw-bold">Distance:</span>
+                                     ${response.routes[i].legs[0].distance.text}
+                                </p>
+                                <p class="card-text">
+                                <span class="fw-bold">Duration:</span>
+                                 ${response.routes[i].legs[0].duration.text}
+                                </p>
+                            </div>
+                        </div>
+                        <br><br>
+                        `;
                         li.addEventListener("click", () => {
                             this.switchRoute(i);
                             root.updateCurrentRouteSteps(response.routes[i].legs[0].steps);
