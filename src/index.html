@@ -76,11 +76,6 @@
                             </div>
 
                             <div class="row">
-                                <!-- <div class="col-1"></div>
-                                <div class="col-5">
-                                    Markers Placed: {{ numMarkersPlaced }}
-                                </div> -->
-                                <!-- <div class="col-1"></div> -->
                                 <div class="col d-flex justify-content-center">
                                     Routes Saved: {{ savedRoutes.length }}
                                 </div>
@@ -109,53 +104,33 @@
 
                     <!--offcanvas body homepage-->
                     <div v-show="activePage.homepage == true" class="offcanvas-body" style="overflow-y: auto;">
-                        <!-- Saved Routes
-                        Current selected route: {{ savedRouteSelectedId }} -->
                         <h5 class="d-flex justify-content-center">My Saved Routes</h5>
                         <button hidden id="load-route"></button>
                         <hr>
 
                         <!--if got save routes show saved routes-->
-                        <div v-show="savedRoutes.length>0">
-                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                                <li v-for="route of savedRoutes" id="saved-routes">
-                                    <label>
-                                        <input :value="route.id" v-model="savedRouteSelectedId" type="radio"
-                                            name="options" autocomplete="off" style="accent-color: #3E837A;"
-                                            class="saved-route">
-                                        <span class="fs-5">
-                                            {{ route.name }}
-                                        </span>
-                                    </label>
-
-                                    <button v-show="savedRouteSelectedId === route.id" type="button"
-                                        v-on:click="clickLoadRoute()">Load</button>
-                                    <button v-show="savedRouteSelectedId === route.id" type="button"
-                                        style="margin-right: 10%;" v-on:click="deleteRoute()">Delete</button>
-
-                                </li>
-
-                                <!-- Invisible modal button clicked when user adds marker to map -->
-                                <div id="Modal" class="invisible">
-                                    <button id="modal_button" type="button" class="btn btn-primary"
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <div v-show="savedRoutes.length>0" class="container-fluid">
+                            <div class="btn-group-vertical w-100" role="group" aria-label="Vertical button group">
+                                <div v-for="route of savedRoutes" class="btn-group" role="group">
+                                    <button v-on:click="updateSavedRouteSelectedId(route.id)" type="button"
+                                        class="btn btn-outline-success dropdown-toggle text-wrap"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ route.name }}
                                     </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><button v-on:click="clickLoadRoute()" class="dropdown-item"
+                                                type="button">Load</button></li>
+                                        <li><button v-on:click="deleteRoute()" class="dropdown-item"
+                                                type="button">Delete</button></li>
+                                    </ul>
                                 </div>
-
-                                <!-- invisible error modal button for error in marker modal -->
-                                <div class="invisible">
-                                    <button id="modal_error_button" type="button" class="btn btn-primary"
-                                        data-bs-toggle="modal" data-bs-target="#errorModal">
-                                    </button>
-                                </div>
-
-                            </ul>
+                            </div>
                         </div>
 
                         <!--if no saved routes, everything gone-->
                         <div v-show="savedRoutes.length==0" style="text-align: center;">
                             <br>
-                            ~No routes added yet, More is yet to come!~
+                            ~No routes added yet, feel free to save some!~
                         </div>
 
                     </div>
@@ -170,7 +145,6 @@
                         </p>
 
                         <hr>
-                        <!-- ryan look at this, inside the ul is where li will be generated in index.js -->
                         <ul id="alternate-routes-list"></ul>
                     </div>
 
@@ -182,21 +156,32 @@
                         <div class="row">
                             <div class="col-2"></div>
                             <div class="col-4">
-                                <button class="btn btn-outline-success" id="back-btn" type="button">
+                                <button class="btn" id="back-btn" type="button">
                                     Back
                                 </button>
                             </div>
                             <div class="col-1"></div>
                             <div class="col-5">
-                                <button class="btn btn-outline" id="save-route" type="button">
-                                    Save route
-                                </button>
+                                <div class="btn-group dropstart">
+                                    <button id="save-route-btn" class="btn dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Save Route
+                                    </button>
+                                    <form class="dropdown-menu p-4">
+                                        <div class="mb-3">
+                                            <label for="save-route-name-input" class="form-label">Route Name</label>
+                                            <input v-model="currentRouteSaveName" type="text" id="save-route-name-input"
+                                                class="form-control"
+                                                :placeholder="`From ${originPlace} to ${destinationPlace} via ${currentRouteSummary}`">
+                                        </div>
+                                        <button id="save-route" type="button" class="btn">Save</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <!-- Current route index: {{currentRouteIndex}} -->
                         <hr>
                         <ol>
-                            <!-- ryan look at this, this takes html text from step.instructions -->
                             <li v-for="step of currentRouteSteps">
                                 <span v-html="step.instructions"></span> (for
                                 <span v-text="step.distance.text" style="color: #3E837A; font-weight: bold;"></span>)
@@ -207,15 +192,12 @@
                     <div>
                         <!--Offcanvas Buttons at footer-->
                         <hr style="width: 95%; margin-left: 2.5%;">
-                        <!-- <div v-for="v,k in activePage">
-                            {{ k }}: {{ v }}
-                        </div> -->
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
 
                             <!--Back to homepage button-->
                             <div class="row">
                                 <div class="col">
-                                    <button id="saved-routes-btn" type="button" class="btn"
+                                    <button id="homepage-btn" type="button" class="btn"
                                         v-on:click="changeCanvas('homepage')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
                                             fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16"
@@ -247,17 +229,24 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- Invisible modal button clicked when user adds marker to map -->
+                    <div id="Modal" class="invisible">
+                        <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        </button>
+                    </div>
+
+                    <!-- invisible error modal button for error in marker modal -->
+                    <div class="invisible">
+                        <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#errorModal">
+                        </button>
                     </div>
                 </div>
             </div>
         </nav>
-
-        <!--logo and white BG-->
-        <!-- <div id="white-bg">
-            <img src="images/RollWhere_Logo.jpg" id="rollwhere-logo">
-        </div> -->
-
     </div>
 
     <!-- Map is here -->
