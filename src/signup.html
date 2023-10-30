@@ -124,7 +124,7 @@
                                       </svg>
                                   </span>
 
-                                  <input type="text" class="form-control" id="username" placeholder="Username">
+                                  <input type="text" class="form-control" id="username" placeholder="Username" required>
 
                                 </div>
                               </div>
@@ -143,6 +143,12 @@
 
                                 </div>
                               </div>
+
+
+                            <!--Error Message-->
+                            <div v-show="error_msg.length>0" class="d-flex justify-content-center mt-2 text-danger">
+                              {{error_msg}}
+                            </div>
 
                             <!--Account creation-->
                             <button type="button" id="SignUp" class="btn">Create Account</button>
