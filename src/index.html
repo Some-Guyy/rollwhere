@@ -115,7 +115,8 @@
                         <button hidden id="load-route"></button>
                         <hr>
                         
-                        <div v-if="savedRoutes.length>0">
+                        <!--if got save routes show saved routes-->
+                        <div v-show="savedRoutes.length>0">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li v-for="route of savedRoutes" id="saved-routes">
                                 <input :value="route.id" v-model="savedRouteSelectedId" type="radio" name="options" autocomplete="off" style="accent-color: #3E837A;">
@@ -149,9 +150,10 @@
                             </ul>
                         </div>
 
-                        <div v-else style="text-align: center;">
+                        <!--if no saved routes, everything gone-->
+                        <div v-show="savedRoutes.length==0" style="text-align: center;">
                             <br>
-                            ~No routes added yet, more is yet to come!~
+                            ~No routes added yet, More is yet to come!~
                         </div>
 
                     </div>
@@ -209,7 +211,7 @@
                         </div> -->
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
 
-                            <!--saved routes button-->
+                            <!--Back to homepage button-->
                             <div class="row">
                                 <div class="col">
                                     <button id="saved-routes-btn" type="button" class="btn" v-on:click="changeCanvas('homepage')">
@@ -311,8 +313,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- error Modal popup -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
