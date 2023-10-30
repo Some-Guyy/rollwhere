@@ -81,9 +81,9 @@ Login.addEventListener("click",()=>{
     // Signed in
     var user = userCredential.user;
     // ...
+    sessionStorage.setItem('user',user.uid)
     location.href = 'index.html'
     alert("login successful go to index.html")
-    sessionStorage.setItem('user',user.uid)
 
   })
   .catch((error) => {
