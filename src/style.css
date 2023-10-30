@@ -45,6 +45,20 @@
     border-radius: 50%;
 }
 
+#alternate-routes-list {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.alternate-routes-li-item {
+    margin-right: 10%;
+}
+
+#card-header {
+    background-color: #3E837A;
+    color: white;
+}
+
 #btn-grp {
     /* position: absolute;
     bottom: 20px; */
