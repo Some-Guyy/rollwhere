@@ -15,6 +15,8 @@ const app = Vue.createApp({
             "wheelchair5": "Let us guide you",
           },
 
+          error_msg: "",
+
 
       }
   },
@@ -72,7 +74,9 @@ SignUp.addEventListener('click',()=>{
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-    alert(errorMessage)
+    // alert(errorMessage);
+    let errMsg = "Invalid email/Username/Password"
+    signUp.error_msg = errMsg;
     // ..
   });
 
