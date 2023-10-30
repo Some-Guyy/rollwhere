@@ -113,13 +113,15 @@
                             <div class="btn-group-vertical w-100" role="group" aria-label="Vertical button group">
                                 <div v-for="route of savedRoutes" class="btn-group" role="group">
                                     <button v-on:click="updateSavedRouteSelectedId(route.id)" type="button"
-                                        class="btn btn-outline-success dropdown-toggle text-wrap" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                        class="btn btn-outline-success dropdown-toggle text-wrap"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ route.name }}
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a v-on:click="clickLoadRoute()" class="dropdown-item">Load</a></li>
-                                        <li><a v-on:click="deleteRoute()" class="dropdown-item">Delete</a></li>
+                                        <li><button v-on:click="clickLoadRoute()" class="dropdown-item route-dropdown"
+                                                type="button">Load</button></li>
+                                        <li><button v-on:click="deleteRoute()" class="dropdown-item route-dropdown"
+                                                type="button">Delete</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -183,7 +185,7 @@
                             <!--Back to homepage button-->
                             <div class="row">
                                 <div class="col">
-                                    <button id="saved-routes-btn" type="button" class="btn"
+                                    <button id="homepage-btn" type="button" class="btn"
                                         v-on:click="changeCanvas('homepage')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
                                             fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16"
