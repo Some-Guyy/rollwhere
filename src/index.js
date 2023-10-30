@@ -81,6 +81,10 @@ const app = Vue.createApp({
             document.getElementById("load-route").click();
         },
 
+        updateSavedRouteSelectedId(id) {
+            this.savedRouteSelectedId = id;
+        },
+
         updateOriginDest(origin, dest) {
             this.originPlace = origin;
             this.destinationPlace = dest;

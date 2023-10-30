@@ -104,31 +104,25 @@
 
                     <!--offcanvas body homepage-->
                     <div v-show="activePage.homepage == true" class="offcanvas-body" style="overflow-y: auto;">
-                        <!-- Saved Routes
-                        Current selected route: {{ savedRouteSelectedId }} -->
                         <h5 class="d-flex justify-content-center">My Saved Routes</h5>
                         <button hidden id="load-route"></button>
                         <hr>
 
                         <!--if got save routes show saved routes-->
-                        <div v-show="savedRoutes.length>0">
-                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                                <li v-for="route of savedRoutes" id="saved-routes">
-                                    <label>
-                                        <input :value="route.id" v-model="savedRouteSelectedId" type="radio"
-                                            name="options" autocomplete="off" style="accent-color: #3E837A;"
-                                            class="saved-route">
-                                        <span class="fs-5">
-                                            {{ route.name }}
-                                        </span>
-                                    </label>
-
-                                    <button v-show="savedRouteSelectedId === route.id" type="button"
-                                        v-on:click="clickLoadRoute()">Load</button>
-                                    <button v-show="savedRouteSelectedId === route.id" type="button"
-                                        style="margin-right: 10%;" v-on:click="deleteRoute()">Delete</button>
-                                </li>
-                            </ul>
+                        <div v-show="savedRoutes.length>0" class="container-fluid">
+                            <div class="btn-group-vertical w-100" role="group" aria-label="Vertical button group">
+                                <div v-for="route of savedRoutes" class="btn-group" role="group">
+                                    <button v-on:click="updateSavedRouteSelectedId(route.id)" type="button"
+                                        class="btn btn-outline-success dropdown-toggle text-wrap" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        {{ route.name }}
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a v-on:click="clickLoadRoute()" class="dropdown-item">Load</a></li>
+                                        <li><a v-on:click="deleteRoute()" class="dropdown-item">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
 
                         <!--if no saved routes, everything gone-->
