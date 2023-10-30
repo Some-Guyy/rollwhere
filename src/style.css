@@ -65,12 +65,12 @@
     background-color: #3E837A;
 }
 
-#save-route {
+#save-route-btn, #save-route {
     color: white;
     background-color: #3E837A;
 }
 
-#save-route:active {
+#save-route-btn:active, #save-route:active {
     border-color: #3E837A;
     color: #3E837A;
     background-color: #fff;

@@ -18,7 +18,8 @@ const app = Vue.createApp({
             destinationPlace: "",
 
             currentRouteSteps: [],
-            currentRouteIndex: 0
+            currentRouteIndex: 0,
+            currentRouteSaveName: ""
         }
     },
 
