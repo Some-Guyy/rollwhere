@@ -92,8 +92,10 @@
                     <!--offcanvas header searchpage & routepage-->
                     <div v-show="activePage.searchpage == true || activePage.routepage == true"
                         class="offcanvas-header">
+                        
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         <div class="container-fluid">
-                            <div class="p-2 fs-6 text rounded-2" style="background-color: rgba(0, 0, 0, 0.3);">
+                            <div class="p-1 fs-6 text rounded-2" style="background-color: rgba(0, 0, 0, 0.3);">
                                 <div class="row text-center align-middle">
                                     <p><span class="fw-bold">From:</span> {{ originPlace }}</p>
                                 </div>
@@ -179,7 +181,8 @@
                         <ol>
                             <!-- ryan look at this, this takes html text from step.instructions -->
                             <li v-for="step of currentRouteSteps">
-                                <span v-html="step.instructions"></span>
+                                <span v-html="step.instructions"></span> (for 
+                                <span v-text="step.distance.text" style="color: #3E837A; font-weight: bold;"></span>)
                             </li>
                         </ol>
                     </div>
