@@ -64,6 +64,7 @@ const app = Vue.createApp({
         },
 
         addRoute(routeName, routeData) {
+            
             this.savedRoutes.push({ id: Math.random(), name: routeName, data: routeData });
         },
 
@@ -188,7 +189,6 @@ async function initMap() {
             let i = 0
             for (i = 0; i < keys.length; i++) {
                 CreateMarkers(marker[keys[i]].position, marker[keys[i]].content, marker[keys[i]].icon)
-
             }
         }
     }
@@ -486,17 +486,17 @@ function DeleteMarker(iden) {
 
 // const user = firebase.auth().currentUser;
 var user = sessionStorage.getItem('user')
-sessionStorage.clear();
 
 
-if (user) {
-  // User is signed in, see docs for a list of available properties
-  // https://firebase.google.com/docs/reference/js/v8/firebase.User
-  // ...
-} else {
-    location.href = "login.html"
-  // No user is signed in.
-}
+
+// if (user) {
+//   // User is signed in, see docs for a list of available properties
+//   // https://firebase.google.com/docs/reference/js/v8/firebase.User
+//   // ...
+// } else {
+//     location.href = "login.html"
+//   // No user is signed in.
+// }
 
 
 class AutocompleteDirectionsHandler {
