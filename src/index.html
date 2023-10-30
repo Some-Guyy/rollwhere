@@ -165,16 +165,16 @@
                                 <div class="btn-group dropstart">
                                     <button id="save-route-btn" class="btn dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Save route
+                                        Save Route
                                     </button>
                                     <form class="dropdown-menu p-4">
                                         <div class="mb-3">
-                                            <label for="exampleDropdownFormEmail2" class="form-label">Email
-                                                address</label>
-                                            <input type="email" class="form-control" id="exampleDropdownFormEmail2"
-                                                placeholder="email@example.com">
+                                            <label for="save-route-name-input" class="form-label">Route Name</label>
+                                            <input v-model="currentRouteSaveName" type="text" id="save-route-name-input"
+                                                class="form-control"
+                                                :placeholder="`From ${originPlace} to ${destinationPlace} via ${currentRouteSummary}`">
                                         </div>
-                                        <button id="save-route" type="button" class="btn">Sign in</button>
+                                        <button id="save-route" type="button" class="btn">Save</button>
                                     </form>
                                 </div>
                             </div>

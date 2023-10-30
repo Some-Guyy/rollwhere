@@ -18,6 +18,7 @@ const app = Vue.createApp({
             destinationPlace: "",
 
             currentRouteSteps: [],
+            currentRouteSummary: "",
             currentRouteIndex: 0,
             currentRouteSaveName: ""
         }
@@ -95,12 +96,24 @@ const app = Vue.createApp({
             this.currentRouteSteps = steps;
         },
 
+        updateCurrentRouteSummary(summary) {
+            this.currentRouteSummary = summary;
+        },
+
         getCurrentRouteIndex() {
             return this.currentRouteIndex;
         },
 
         updateCurrentRouteIndex(index) {
             this.currentRouteIndex = index;
+        },
+
+        getCurrentRouteSaveName() {
+            return this.currentRouteSaveName;
+        },
+
+        updateCurrentRouteSaveName(name) {
+            this.currentRouteSaveName = name;
         }
     }
 });
@@ -576,10 +589,15 @@ class AutocompleteDirectionsHandler {
     //save route
     saveRoute(routeData) {
         let routeDataCopy = JSON.parse(JSON.stringify(routeData)); // Create a copy so we don't edit the original response.
-        let routeName = prompt("What route name?");
+        let routeName = root.getCurrentRouteSaveName();
+        if (routeName === "") {
+            routeName = document.getElementById("save-route-name-input").getAttribute("placeholder");
+        }
+
         let selectedRouteIndex = root.getCurrentRouteIndex();
         routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
         root.addRoute(routeName, routeDataCopy);
+        root.updateCurrentRouteSaveName("");
         console.log("saveRoute()", routeDataCopy);
     }
 
@@ -600,6 +618,7 @@ class AutocompleteDirectionsHandler {
                         root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
                         root.updateCurrentRouteIndex(0);
                         root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+                        root.updateCurrentRouteSummary(response.routes[0].summary);
                         root.changeCanvas("routepage");
                         this.directionsRenderer.setDirections(response);
                         console.log("loadRoute() wayP", response);
@@ -611,6 +630,7 @@ class AutocompleteDirectionsHandler {
             root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
             root.updateCurrentRouteIndex(0);
             root.updateOriginDest(savedRoute.routes[0].legs[0].start_address, savedRoute.routes[0].legs[0].end_address);
+            root.updateCurrentRouteSummary(savedRoute.routes[0].summary);
             root.changeCanvas("routepage");
             this.directionsRenderer.setDirections(savedRoute);
             console.log("loadRoute()", savedRoute);
@@ -700,6 +720,7 @@ class AutocompleteDirectionsHandler {
                         li.addEventListener("click", () => {
                             this.switchRoute(i);
                             root.updateCurrentRouteSteps(response.routes[i].legs[0].steps);
+                            root.updateCurrentRouteSummary(response.routes[i].summary);
                             root.updateCurrentRouteIndex(i);
                             root.changeCanvas("routepage");
                         });
