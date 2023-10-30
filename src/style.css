@@ -66,14 +66,14 @@
 }
 
 #save-route {
-    border-color: #3E837A;
-    color: #3E837A;
-    background-color: #fff;
+    color: white;
+    background-color: #3E837A;
 }
 
 #save-route:active {
-    color: white;
-    background-color: #3E837A;
+    border-color: #3E837A;
+    color: #3E837A;
+    background-color: #fff;
 }
 
 
