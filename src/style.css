@@ -45,9 +45,54 @@
     border-radius: 50%;
 }
 
+#saved-routes{
+    /* color: black; */
+    margin-left: 5px;
+}
+
+#saved-routes:enabled {
+    color: #3E837A;
+    font-weight: bold;
+}
+
+#alternate-routes-list {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.alternate-routes-li-item {
+    margin-right: 10%;
+}
+
+#back-btn {
+    border-color: #3E837A;
+    color: #3E837A;
+    background-color: #fff;
+}
+
+#back-btn:active {
+    color: white;
+    background-color: #3E837A;
+}
+
+#save-route {
+    border-color: #3E837A;
+    color: #3E837A;
+    background-color: #fff;
+}
+
+#save-route:active {
+    color: white;
+    background-color: #3E837A;
+}
+
+
+#card-header {
+    background-color: #3E837A;
+    color: white;
+}
+
 #btn-grp {
-    /* position: absolute;
-    bottom: 20px; */
     margin-bottom: 20px;
 }
 
