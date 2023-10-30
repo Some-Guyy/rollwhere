@@ -188,7 +188,7 @@ async function initMap() {
             let i = 0
             for (i = 0; i < keys.length; i++) {
                 CreateMarkers(marker[keys[i]].position, marker[keys[i]].content, marker[keys[i]].icon)
-
+            markers.off('value', gotData)
             }
         }
     }
