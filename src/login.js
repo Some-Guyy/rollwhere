@@ -9,7 +9,7 @@ const app = Vue.createApp({
             logo_height: "40%",
 
             welcome_size: '200px',
-
+            error_msg: "",
         }
     }
 })
@@ -89,7 +89,9 @@ Login.addEventListener("click",()=>{
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-    alert(errorMessage)
+    let errorMessage2 = "Wrong Password or Wrong Email"
+    vm.error_msg = errorMessage2
+    // alert(errorMessage2)
   });
 
 })
