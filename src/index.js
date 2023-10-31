@@ -110,6 +110,10 @@ const app = Vue.createApp({
 
         updateCurrentRouteIndex(index) {
             this.currentRouteIndex = index;
+        },
+
+        updateUserName(username){
+            this.username = username
         }
     }
 });
@@ -512,6 +516,7 @@ var routes = firebase.database().ref('users/'+ user + '/routes')
 routes.on('value', gotDataRoutes)
 function gotDataRoutes(data) {
     if (data.val()) {
+        console.log("hello")
         var route = data.val()
         var keys = Object.keys(route)
         let i = 0
@@ -532,6 +537,19 @@ if (user) {
 } else {
     location.href = "login.html"
   // No user is signed in.
+}
+var username = firebase.database().ref('users/'+ user +'/username')
+username.on('value',gotDataUsername)
+
+function gotDataUsername(data) {
+    console.log(data.val())
+    if (data.val()) {
+        root.updateUserName(data.val())
+        username.off('value', gotDataUsername)
+    }
+    else{
+        username.off('value', gotDataUsername)
+    }
 }
 
 
