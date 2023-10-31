@@ -200,9 +200,10 @@ async function initMap() {
         center: { lat: 1.3521, lng: 103.8198 },
         mapId: "5100c9e4073b9a44",
         mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.TOP_RIGHT
-        }
+            style: google.maps.MapTypeControlStyle.DEFAULT,
+            position: google.maps.ControlPosition.LEFT_BOTTOM
+        },
+        
     });
 
     markers.on('value', gotData)
