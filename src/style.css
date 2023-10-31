@@ -76,23 +76,6 @@
     background-color: #fff;
 }
 
-/* #saved_route {
-    border: #3E837A;
-    color: #3E837A;
-    background-color: #fff;
-}
-
-#saved_route:hover {
-    background-color: #3E837A;
-    color: #fff;
-}
-
-#saved_route:active {
-    background-color: #3E837A;
-    col
-} */
-
-
 #card-header {
     background-color: #3E837A;
     color: white;
@@ -104,14 +87,14 @@
 
 #homepage-btn {
     background-color: #3E837A;
-    width: 90%;
+    width: 100%;
     text-align: left;
     color: white;
 }
 
 #logout-btn {
     background-color: #F18F1C;
-    width: 90%;
+    width: 100%;
     text-align: left;
     color: white;
 }
