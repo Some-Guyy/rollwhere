@@ -201,9 +201,12 @@ async function initMap() {
         mapId: "5100c9e4073b9a44",
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DEFAULT,
-            position: google.maps.ControlPosition.LEFT_BOTTOM
+            position: google.maps.ControlPosition.BOTTOM_CENTER
         },
-        
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_BOTTOM
+        }
     });
 
     markers.on('value', gotData)
@@ -553,9 +556,9 @@ class AutocompleteDirectionsHandler {
         );
         this.setupPlaceChangedListener(originAutocomplete, "ORIG");
         this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destinationInput);
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
+        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destinationInput);
+        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
+        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
         this.switchRoute();
         this.setUpSaveRouteListener();
         this.setUpLoadRouteListener();

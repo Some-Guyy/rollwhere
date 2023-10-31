@@ -26,11 +26,35 @@
 
 <body>
 
-    <div style="display: none">
-        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" />
 
-        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" />
+    <!--TO AND FROM INPUTS-->
+    <div class="d-none d-md-block" style="position: absolute;
+    right: 1%;
+    top: 1px;
+    z-index: 1;
+    ">
+        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" style="width: 320px;"/>
 
+        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" style="width: 320px;"/>
+    </div>
+
+    <!--TO AND FROM INPUTS-->
+    <div class="d-sm-block d-md-none" style="position: absolute;
+    right: 1%;
+    top: 1px;
+    z-index: 1;
+    ">
+        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" style="width: 100px;"/>
+
+        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" style="width: 100px;"/>
+    </div>
+
+    <!--MODE SELECTOR-->
+    <div style="position: absolute;
+    right: 1%;
+    top: 40px;
+    z-index: 1;
+    ">
         <div id="mode-selector" class="controls">
             <input type="radio" name="type" id="changemode-walking" checked="checked" />
             <label for="changemode-walking">Walking</label>
@@ -42,6 +66,8 @@
             <label for="changemode-driving">Driving</label>
         </div>
     </div>
+
+    
 
     <!--offcanvas navbar-->
     <div id="root">
@@ -114,7 +140,8 @@
                             <div class="btn-group-vertical w-100" role="group" aria-label="Vertical button group">
                                 <div v-for="route of savedRoutes" class="btn-group" role="group">
                                     <button v-on:click="updateSavedRouteSelectedId(route.id)" type="button"
-                                        class="btn btn-outline-success dropdown-toggle text-wrap"
+                                        class="btn btn-outline-secondary dropdown-toggle text-wrap"
+                                        id="saved_route"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ route.name }}
                                     </button>

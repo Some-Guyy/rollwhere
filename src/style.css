@@ -21,11 +21,11 @@
     z-index: 1;
 } */
 
-#rollwhere-logo {
+/* #rollwhere-logo {
     width: 83px;
     position: absolute;
     bottom: 30px;
-}
+} */
 
 .offcanvas-header {
     background-color: #3E837A;
@@ -75,6 +75,22 @@
     color: #3E837A;
     background-color: #fff;
 }
+
+/* #saved_route {
+    border: #3E837A;
+    color: #3E837A;
+    background-color: #fff;
+}
+
+#saved_route:hover {
+    background-color: #3E837A;
+    color: #fff;
+}
+
+#saved_route:active {
+    background-color: #3E837A;
+    col
+} */
 
 
 #card-header {
@@ -188,17 +204,18 @@ body {
     margin-left: 12px;
     padding: 0 11px 0 13px;
     text-overflow: ellipsis;
-    width: 200px;
+    width: 120px;
 }
 
 #origin-input:focus,
 #destination-input:focus {
-    border-color: #4d90fe;
+    border-color: #3E837A;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #3E837A;
 }
 
 #mode-selector {
     color: #fff;
-    background-color: #4d90fe;
+    background-color: #3E837A;
     margin-left: 12px;
     padding: 5px 11px 0px 11px;
 }
