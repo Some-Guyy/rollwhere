@@ -193,12 +193,11 @@
                         <!--Offcanvas Buttons at footer-->
                         <hr style="width: 95%; margin-left: 2.5%;">
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
-
                             <!--Back to homepage button-->
                             <div class="row">
                                 <div class="col">
                                     <button id="homepage-btn" type="button" class="btn"
-                                        v-on:click="changeCanvas('homepage')">
+                                        v-on:click="changeCanvas('homepage')" :disabled="activePage.homepage">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
                                             fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16"
                                             style="margin-right: 30px;">
