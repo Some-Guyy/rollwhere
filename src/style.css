@@ -151,27 +151,39 @@
 
   /* Below are some test classes for obstacle types */
 
-  .danger {
+  .barrier {
     color: red;
     font-weight: bold;
     font-size: medium;
   }
 
 
-  .pothole {
+  .elevator {
     color: blue;
     font-weight: bold;
     font-size: medium;
   }
 
-  .monster {
-    color: green;
+  .narrow {
+    color: red;
+    font-weight: bold;
+    font-size: medium;
+  }
+
+  .pothole {
+    color: red;
     font-weight: bold;
     font-size: medium;
   }
 
   .slope {
-    color: brown;
+    color: blue;
+    font-weight: bold;
+    font-size: medium;
+  }
+
+  .staircase {
+    color: red;
     font-weight: bold;
     font-size: medium;
   }

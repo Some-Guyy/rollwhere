@@ -470,7 +470,7 @@ function createBottomRight(map) {
 
                             <div class="card-header bg-dark-subtle" >
                                 <h4>
-                                    Obstacle Type: <span class="${obstacle_type}"><h4>${obstacle_info}</h4></span>
+                                    <span class="${obstacle_type}"><h4>${obstacle_info}</h4></span>
                                 </h4>
                             </div>
 
