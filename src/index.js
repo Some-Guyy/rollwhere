@@ -132,8 +132,10 @@ const app = Vue.createApp({
         },
 
         cancelSettingsModal() {
-            this.usernameSettings = "";
-            this.profilePicSettings = this.profilePicUrl;
+            setTimeout(() => {
+                this.usernameSettings = "";
+                this.profilePicSettings = this.profilePicUrl;
+            }, 200);
         },
 
         updateSavedRouteSelectedId(id) {
