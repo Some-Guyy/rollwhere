@@ -208,16 +208,18 @@ var modal_form_class = `
 
                 <div class="row">
                     <div class="col-md-4">
-                        <img id="image" src="images/monster.png">
+                        <img id="image" src="images/marker/barrier.png">
                     </div>
-                    <div class="col-md-8">
-
-                        <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                            <!-- <option selected>Obstacle</option> -->
-                            <option value="monster" selected>monster</option>
-                            <option value="danger">danger</option>
+                    <div class="col-8">
+                        Obstacle Type
+                        <select class="form-select" aria-label="Default select example"
+                            id="obstacle_type">
+                            <option value="barrier" selected>barrier</option>
+                            <option value="elevator">elevator</option>
+                            <option value="narrow">narrow</option>
                             <option value="pothole">pothole</option>
                             <option value="slope">slope</option>
+                            <option value="staircase">staircase</option>
                         </select>
 
                     </div>
@@ -225,10 +227,10 @@ var modal_form_class = `
 
             </div>
 
-            What is the obstacle name
+            Obstacle Name
             <input type="text" class="form-control" id="obstacle_info">
             <br>
-            Share with us somemore details!!!
+            Share any details about the obstacle
             <textarea class="form-control" id="obstacle_details"></textarea>
 
         </div>
@@ -396,17 +398,23 @@ function createBottomRight(map) {
             map.addListener("click", (mapsMouseEvent) => {
                 // more efficient way, creating a library of icons
                 const icons = {
-                    danger: {
-                        icon: "images/danger.png"
+                    barrier: {
+                        icon: "images/marker/barrier.png"
+                    },
+                    elevator: {
+                        icon: "images/marker/elevator.png"
+                    },
+                    narrow: {
+                        icon: "images/marker/narrow.png"
                     },
                     pothole: {
-                        icon: "images/pothole.png"
-                    },
-                    monster: {
-                        icon: "images/monster.png"
+                        icon: "images/marker/pothole.png"
                     },
                     slope: {
-                        icon: "images/slope.png"
+                        icon: "images/marker/slope.png"
+                    },
+                    staircase: {
+                        icon: "images/marker/staircase.png"
                     }
                 };
 
@@ -423,7 +431,7 @@ function createBottomRight(map) {
                 var marker_icon = document.getElementById("image")
                 chng.addEventListener("change", () => {
                     // console.log(chng.value)
-                    marker_icon.setAttribute("src", `images/${chng.value}.png`)
+                    marker_icon.setAttribute("src", `images/marker/${chng.value}.png`)
                 })
 
                 // when clicking close button on modal

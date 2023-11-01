@@ -295,16 +295,18 @@
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img id="image" src="images/monster.png">
+                                        <img id="image" src="images/marker/barrier.png">
                                     </div>
                                     <div class="col-8">
                                         Obstacle Type
                                         <select class="form-select" aria-label="Default select example"
                                             id="obstacle_type">
-                                            <option value="monster" selected>monster</option>
-                                            <option value="danger">danger</option>
+                                            <option value="barrier" selected>barrier</option>
+                                            <option value="elevator">elevator</option>
+                                            <option value="narrow">narrow</option>
                                             <option value="pothole">pothole</option>
                                             <option value="slope">slope</option>
+                                            <option value="staircase">staircase</option>
                                         </select>
 
                                     </div>
@@ -312,10 +314,10 @@
 
                             </div>
 
-                            What is the obstacle name
+                            Obstacle Name
                             <input type="text" class="form-control" id="obstacle_info">
                             <br>
-                            Share with us somemore in detail
+                            Share any details about the obstacle
                             <textarea class="form-control" id="obstacle_details"></textarea>
 
                         </div>
@@ -334,7 +336,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="errorModalLabel">You didn't put obstacle type!</h1>
+                        <h1 class="modal-title fs-5" id="errorModalLabel">Obstacle name cannot be empty!</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             id="close"></button>
                     </div>
