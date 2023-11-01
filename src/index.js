@@ -392,7 +392,7 @@ function createBottomRight(map) {
 
 
     controlButton.addEventListener("click", () => {
-        if (controlButton.checked == true) {
+        if (controlButton.checked === true) {
             // create info window
             let infoWindow = new google.maps.InfoWindow();
 
@@ -519,6 +519,7 @@ function createBottomRight(map) {
 
                         // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
                         document.getElementById("exampleModal").innerHTML = modal_form_class
+                        controlButton.click();
                     }
 
                 })
