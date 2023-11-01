@@ -109,6 +109,10 @@ const app = Vue.createApp({
             document.getElementById("load-route").click();
         },
 
+        getProfilePicUrl() {
+            return this.profilePicUrl;
+        },
+
         updateProfilePicSettings(url) {
             this.profilePicSettings = url;
         },
@@ -309,7 +313,7 @@ async function initMap() {
 
     // this below is to use ryan photo as marker
     var userPhoto = document.createElement("img");
-    userPhoto.src = "images/Ryan_photo.jfif";
+    userPhoto.src = root.getProfilePicUrl();
     userPhoto.id = "user-photo"
 
     // creating the info window for user
