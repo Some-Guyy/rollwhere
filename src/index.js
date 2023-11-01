@@ -124,6 +124,7 @@ const app = Vue.createApp({
 
             if (this.profilePicUrl !== this.profilePicSettings) {
                 this.profilePicUrl = this.profilePicSettings;
+                document.getElementById("user-photo").src = this.profilePicSettings;
             }
         },
 
