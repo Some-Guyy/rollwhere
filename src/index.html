@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <title>RollWhere</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -25,11 +26,25 @@
 
 <body>
 
-    <div style="display: none">
-        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" />
 
-        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" />
+    <!--TO AND FROM INPUTS-->
+    <div style="position: absolute;
+    right: 1%;
+    top: 1px;
+    z-index: 1;
+    ">
+        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" style="width: 30vw;"/>
 
+        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" style="width: 30vw;"/>
+        
+    </div>
+
+    <!--MODE SELECTOR-->
+    <div style="position: absolute;
+    right: 1%;
+    top: 40px;
+    z-index: 1;
+    ">
         <div id="mode-selector" class="controls">
             <input type="radio" name="type" id="changemode-walking" checked="checked" />
             <label for="changemode-walking">Walking</label>
@@ -41,6 +56,8 @@
             <label for="changemode-driving">Driving</label>
         </div>
     </div>
+
+    
 
     <!--offcanvas navbar-->
     <div id="root">
@@ -119,7 +136,8 @@
                             <div class="btn-group-vertical w-100" role="group" aria-label="Vertical button group">
                                 <div v-for="route of savedRoutes" class="btn-group" role="group">
                                     <button v-on:click="updateSavedRouteSelectedId(route.id)" type="button"
-                                        class="btn btn-outline-success dropdown-toggle text-wrap"
+                                        class="btn btn-outline-secondary dropdown-toggle text-wrap"
+                                        id="saved_route"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ route.name }}
                                     </button>
@@ -199,12 +217,11 @@
                         <!--Offcanvas Buttons at footer-->
                         <hr style="width: 95%; margin-left: 2.5%;">
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
-
                             <!--Back to homepage button-->
                             <div class="row">
                                 <div class="col">
                                     <button id="homepage-btn" type="button" class="btn"
-                                        v-on:click="changeCanvas('homepage')">
+                                        v-on:click="changeCanvas('homepage')" :disabled="activePage.homepage">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
                                             fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16"
                                             style="margin-right: 30px;">

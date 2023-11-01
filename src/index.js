@@ -20,7 +20,8 @@ const app = Vue.createApp({
             currentRouteSteps: [],
             currentRouteSummary: "",
             currentRouteIndex: 0,
-            currentRouteSaveName: ""
+            currentRouteSaveName: "",
+            stepsUpdatable: false
         }
     },
 
@@ -114,6 +115,14 @@ const app = Vue.createApp({
 
         updateCurrentRouteSaveName(name) {
             this.currentRouteSaveName = name;
+        },
+
+        getStepsUpdatable() {
+            return this.stepsUpdatable;
+        },
+
+        updateStepsUpdatable(value) {
+            this.stepsUpdatable = value;
         }
     }
 });
@@ -191,8 +200,12 @@ async function initMap() {
         center: { lat: 1.3521, lng: 103.8198 },
         mapId: "5100c9e4073b9a44",
         mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.TOP_RIGHT
+            style: google.maps.MapTypeControlStyle.DEFAULT,
+            position: google.maps.ControlPosition.BOTTOM_CENTER
+        },
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_BOTTOM
         }
     });
 
@@ -543,13 +556,49 @@ class AutocompleteDirectionsHandler {
         );
         this.setupPlaceChangedListener(originAutocomplete, "ORIG");
         this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destinationInput);
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
-        this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
+        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destinationInput);
+        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
+        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
         this.switchRoute();
         this.setUpSaveRouteListener();
         this.setUpLoadRouteListener();
         this.setupBackBtnListener();
+        // this.setupMapListener(map);
+        this.directionsRenderer.addListener("directions_changed", () => {
+            let stepsUpdatable = root.getStepsUpdatable();
+            root.updateStepsUpdatable(!stepsUpdatable);
+            if (root.getLastRouteResponse() !== null && root.getStepsUpdatable() === true) {
+                let routeData = this.directionsRenderer.getDirections();
+                if (routeData.request.waypoints) {
+                    this.directionsService.route(
+                        {
+                            origin: routeData.request.origin,
+                            destination: routeData.request.destination,
+                            travelMode: routeData.request.travelMode,
+                            waypoints: routeData.request.waypoints
+                        },
+                        (response, status) => {
+                            if (status === "OK") {
+                                root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+                                root.updateCurrentRouteIndex(0);
+                                root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+                                root.updateCurrentRouteSummary(response.routes[0].summary);
+                                this.directionsRenderer.setDirections(response);
+                                console.log("mapclick wayP", response);
+                            } else {
+                                window.alert("Directions request failed due to " + status);
+                            }
+                        });
+                } else {
+                    root.updateCurrentRouteSteps(routeData.routes[0].legs[0].steps);
+                    root.updateCurrentRouteIndex(0);
+                    root.updateOriginDest(routeData.routes[0].legs[0].start_address, routeData.routes[0].legs[0].end_address);
+                    root.updateCurrentRouteSummary(routeData.routes[0].summary);
+                    this.directionsRenderer.setDirections(routeData);
+                    console.log("mapclick", routeData);
+                }
+            }
+        })
     }
     // Sets a listener on a radio button to change the filter type on Places
     // Autocomplete.
@@ -580,6 +629,42 @@ class AutocompleteDirectionsHandler {
             this.route();
         });
     }
+
+    // setupMapListener(map) {
+    //     map.addListener("mouseup", () => {
+    //         if (root.lastRouteResponse !== null) {
+    //             let routeData = this.directionsRenderer.getDirections();
+    //             if (routeData.request.waypoints) {
+    //                 this.directionsService.route(
+    //                     {
+    //                         origin: routeData.request.origin,
+    //                         destination: routeData.request.destination,
+    //                         travelMode: routeData.request.travelMode,
+    //                         waypoints: routeData.request.waypoints
+    //                     },
+    //                     (response, status) => {
+    //                         if (status === "OK") {
+    //                             root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+    //                             root.updateCurrentRouteIndex(0);
+    //                             root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+    //                             root.updateCurrentRouteSummary(response.routes[0].summary);
+    //                             this.directionsRenderer.setDirections(response);
+    //                             console.log("mapclick wayP", response);
+    //                         } else {
+    //                             window.alert("Directions request failed due to " + status);
+    //                         }
+    //                     });
+    //             } else {
+    //                 root.updateCurrentRouteSteps(routeData.routes[0].legs[0].steps);
+    //                 root.updateCurrentRouteIndex(0);
+    //                 root.updateOriginDest(routeData.routes[0].legs[0].start_address, routeData.routes[0].legs[0].end_address);
+    //                 root.updateCurrentRouteSummary(routeData.routes[0].summary);
+    //                 this.directionsRenderer.setDirections(routeData);
+    //                 console.log("mapclick", routeData);
+    //             }
+    //         }
+    //     });
+    // }
 
     //switch to another route and make it active
     switchRoute(routeIndex) {
@@ -614,7 +699,6 @@ class AutocompleteDirectionsHandler {
                 },
                 (response, status) => {
                     if (status === "OK") {
-                        root.updateLastRouteResponse(response);
                         root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
                         root.updateCurrentRouteIndex(0);
                         root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
@@ -662,7 +746,6 @@ class AutocompleteDirectionsHandler {
 
         backBtn.addEventListener("click", () => {
             if (root.getLastPageAccessed() === "searchpage" && this.directionsRenderer.getDirections().request.waypoints) {
-                console.log("waypoints exist");
                 this.directionsRenderer.setDirections(root.getLastRouteResponse());
             }
             root.goBackCanvas();
