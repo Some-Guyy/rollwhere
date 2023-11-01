@@ -131,6 +131,11 @@ const app = Vue.createApp({
             //insert logout code here
         },
 
+        cancelSettingsModal() {
+            this.usernameSettings = "";
+            this.profilePicSettings = this.profilePicUrl;
+        },
+
         updateSavedRouteSelectedId(id) {
             this.savedRouteSelectedId = id;
         },
