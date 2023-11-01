@@ -346,7 +346,7 @@
         <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true"
             data-bs-backdrop="static" data-bs-keyboard="false">
 
-            <div id="settings-modal" class="modal-dialog modal-dialog-centered modal-lg">
+            <div id="settings-modal" class="modal-dialog modal-dialog-centered modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-10 fw-bold" id="settingsModalLabel">SEETINGS</h1>
@@ -357,21 +357,31 @@
                         <div class="modal-body">
                             <div class="container-fluid">
                                 <div class="row">
-                                    Profile Picture
+                                    <p class="fs-3 text-center">Profile Picture</p>
                                 </div>
 
-                                <div class="row">
-                                    <img :src="profilePicEdit">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-6">
+                                        <img :src="profilePicEdit" style="width: 100%; margin: auto;">
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-auto d-flex justify-content-center">
+                                        <button class="btn text-light" style="background-color: #3E837A;" type="button">Change Picture</button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4 d-flex justify-content-center">
+                                    <div class="col-auto">
+                                        <label class="col-form-label">Change Username:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control">
+                                    </div>
                                 </div>
 
                             </div>
-
-                            What is the obstacle name
-                            <input type="text" class="form-control" id="obstacle_info">
-                            <br>
-                            Share with us somemore in detail
-                            <textarea class="form-control" id="obstacle_details"></textarea>
-
                         </div>
 
                         <div class="modal-footer">
