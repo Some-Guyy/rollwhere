@@ -10,7 +10,9 @@ const app = Vue.createApp({
             lastRouteResponse: null,
 
             username: "mr.rollerman", // Will update this based on login
+            usernameEdit: "mr.rollerman",
             profilePicUrl: "images/profile/duck.png",
+            profilePicEdit: "images/profile/duck.png",
             savedRoutes: [],
             savedRouteSelectedId: null,
 
