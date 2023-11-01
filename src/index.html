@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <head>
     <title>RollWhere</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -33,10 +34,12 @@
     top: 1px;
     z-index: 1;
     ">
-        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" style="width: 30vw;"/>
+        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location"
+            style="width: 30vw;" />
 
-        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location" style="width: 30vw;"/>
-        
+        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"
+            style="width: 30vw;" />
+
     </div>
 
     <!--MODE SELECTOR-->
@@ -57,7 +60,7 @@
         </div>
     </div>
 
-    
+
 
     <!--offcanvas navbar-->
     <div id="root">
@@ -77,12 +80,18 @@
                     <!--offcanvas header homepage-->
                     <div v-show="activePage.homepage == true" class="offcanvas-header">
                         <div class="container-fluid">
+                            <div class="row">
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                            </div>
 
                             <div class="row">
                                 <img id="offcanvas-photo" :src="profilePicUrl">
+                            </div>
 
-                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
+                            <div class="row d-flex justify-content-center">
+                                <button class="btn btn-outline-light mt-3 w-50" data-bs-toggle="modal"
+                                    data-bs-target="#settingsModal">Account Settings</button>
                             </div>
 
                             <div class="row">
@@ -130,8 +139,7 @@
                             <div class="btn-group-vertical w-100" role="group" aria-label="Vertical button group">
                                 <div v-for="route of savedRoutes" class="btn-group" role="group">
                                     <button v-on:click="updateSavedRouteSelectedId(route.id)" type="button"
-                                        class="btn btn-outline-secondary dropdown-toggle text-wrap"
-                                        id="saved_route"
+                                        class="btn btn-outline-secondary dropdown-toggle text-wrap" id="saved_route"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ route.name }}
                                     </button>
@@ -197,7 +205,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Current route index: {{currentRouteIndex}} -->
                         <hr>
                         <ol>
                             <li v-for="step of currentRouteSteps">
@@ -232,7 +239,7 @@
                             <!-- logout button-->
                             <div class="row">
                                 <div class="col">
-                                    <button id="logout-btn" type="button" class="btn">
+                                    <button @click="logout" id="logout-btn" type="button" class="btn">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="white"
                                             class="bi bi-box-arrow-left" viewBox="0 0 16 16"
                                             style="margin-right: 30px;">
@@ -264,87 +271,142 @@
                 </div>
             </div>
         </nav>
+
+        <!-- modal that pops out when user clicks on map -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
+
+            <div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
+                        <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+
+                            <div class="container-fluid">
+
+                                <div class="row">
+                                    <div class="col-md-4">Marker Icon</div>
+                                    <div class="col-md-4 ms-auto"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img id="image" src="images/monster.png">
+                                    </div>
+                                    <div class="col-8">
+                                        Obstacle Type
+                                        <select class="form-select" aria-label="Default select example"
+                                            id="obstacle_type">
+                                            <option value="monster" selected>monster</option>
+                                            <option value="danger">danger</option>
+                                            <option value="pothole">pothole</option>
+                                            <option value="slope">slope</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            What is the obstacle name
+                            <input type="text" class="form-control" id="obstacle_info">
+                            <br>
+                            Share with us somemore in detail
+                            <textarea class="form-control" id="obstacle_details"></textarea>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn fw-bold text-light" id="place_marker"
+                                data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- error Modal popup -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="errorModalLabel">You didn't put obstacle type!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal that pops out when user clicks account settings -->
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
+
+            <div id="settings-modal" class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-10 fw-bold" id="settingsModalLabel">Account Settings</h1>
+                        <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <p class="fs-3 text-center">Profile Picture</p>
+                                </div>
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-6">
+                                        <img :src="profilePicSettings" style="width: 100%; margin: auto;">
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-auto d-flex justify-content-center">
+                                        <div class="dropdown-center">
+                                            <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">Change Picture</button>
+                                            <div class="container-fluid dropdown-menu" style="min-width: 300px;">
+                                                <div class="row">
+                                                    <div v-for="pic of profilePics" class="col-3">
+                                                        <img class="profile-pic-selection" :src="pic" @click="updateProfilePicSettings(pic)">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4 d-flex justify-content-center">
+                                    <div class="col-auto">
+                                        <label class="col-form-label">Change Username:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" :placeholder="username"
+                                            v-model="usernameSettings">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button @click="logout" class="btn btn-outline-danger" type="button">Logout</button>
+                            <button @click="updateProfile" type="button" class="btn fw-bold text-light" data-bs-dismiss="modal"
+                                style="background-color: #3E837A;">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Map is here -->
     <div id="map" style="z-index: 0"></div>
-
-    <!-- modal that pops out when user clicks on map -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-
-        <div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
-                    <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <form>
-                    <div class="modal-body">
-
-                        <div class="container-fluid">
-
-                            <div class="row">
-                                <div class="col-md-4">Marker Icon</div>
-                                <div class="col-md-4 ms-auto"></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img id="image" src="images/monster.png">
-                                </div>
-                                <div class="col-8">
-                                    Obstacle Type
-                                    <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                                        <option value="monster" selected>monster</option>
-                                        <option value="danger">danger</option>
-                                        <option value="pothole">pothole</option>
-                                        <option value="slope">slope</option>
-                                    </select>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        What is the obstacle name
-                        <input type="text" class="form-control" id="obstacle_info">
-                        <br>
-                        Share with us somemore in detail
-                        <textarea class="form-control" id="obstacle_details"></textarea>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn fw-bold text-light" id="place_marker" data-bs-dismiss="modal"
-                            style="background-color: #3E837A;">Place Marker</button>
-                    </div>
-
-
-            </div>
-        </div>
-    </div>
-
-    <!-- error Modal popup -->
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="errorModalLabel">You didn't put obstacle type!</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="close"></button>
-                </div>
-                <!-- <div class="modal-body">
-            ...
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-            </div> -->
-            </div>
-        </div>
-    </div>
     <!-- 
             The `defer` attribute causes the callback to execute after the full HTML
             document has been parsed. For non-blocking uses, avoiding race conditions,

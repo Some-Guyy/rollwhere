@@ -38,6 +38,16 @@
     top: 10px;
 }
 
+.profile-pic-selection {
+    width: 100%;
+    margin: auto;
+}
+
+.profile-pic-selection:hover {
+    border: 2px solid #3E837A;
+    border-radius: 5px;
+}
+
 #offcanvas-photo {
     margin: auto;
     width: 50%;
@@ -52,6 +62,15 @@
 
 .alternate-routes-li-item {
     margin-right: 10%;
+}
+
+#settings-btn {
+    opacity: 0.7;
+}
+
+#settings-btn:hover {
+    opacity: 1;
+    cursor: pointer;
 }
 
 #back-btn {

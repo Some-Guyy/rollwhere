@@ -9,8 +9,33 @@ const app = Vue.createApp({
             lastPageAccessed: null,
             lastRouteResponse: null,
 
+            profilePics: [
+                "images/profile/cat.png",
+                "images/profile/cheetah.png",
+                "images/profile/chicken.png",
+                "images/profile/chipmunk.png",
+                "images/profile/cow.png",
+                "images/profile/dog.png",
+                "images/profile/duck.png",
+                "images/profile/elephant.png",
+                "images/profile/giraffe.png",
+                "images/profile/horse.png",
+                "images/profile/kangaroo.png",
+                "images/profile/monkey.png",
+                "images/profile/panda.png",
+                "images/profile/penguin.png",
+                "images/profile/rabbit.png",
+                "images/profile/raccoon.png",
+                "images/profile/rat.png",
+                "images/profile/sparrow.png",
+                "images/profile/tiger.png",
+                "images/profile/wolf.png"
+            ],
+
             username: "mr.rollerman", // Will update this based on login
-            profilePicUrl: "images/Ryan_photo.jfif",
+            usernameSettings: "",
+            profilePicUrl: "images/profile/duck.png",
+            profilePicSettings: "images/profile/duck.png",
             savedRoutes: [],
             savedRouteSelectedId: null,
 
@@ -82,6 +107,28 @@ const app = Vue.createApp({
 
         clickLoadRoute() {
             document.getElementById("load-route").click();
+        },
+
+        getProfilePicUrl() {
+            return this.profilePicUrl;
+        },
+
+        updateProfilePicSettings(url) {
+            this.profilePicSettings = url;
+        },
+
+        updateProfile() {
+            if (this.usernameSettings !== "") {
+                this.username = this.usernameSettings;
+            }
+
+            if (this.profilePicUrl !== this.profilePicSettings) {
+                this.profilePicUrl = this.profilePicSettings;
+            }
+        },
+
+        logout() {
+            //insert logout code here
         },
 
         updateSavedRouteSelectedId(id) {
@@ -266,7 +313,7 @@ async function initMap() {
 
     // this below is to use ryan photo as marker
     var userPhoto = document.createElement("img");
-    userPhoto.src = "images/Ryan_photo.jfif";
+    userPhoto.src = root.getProfilePicUrl();
     userPhoto.id = "user-photo"
 
     // creating the info window for user
