@@ -276,7 +276,7 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
             data-bs-backdrop="static" data-bs-keyboard="false">
 
-            <div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
+            <div id="modal-form" class="modal-dialog modal-dialog-centered modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
@@ -288,17 +288,19 @@
 
                             <div class="container-fluid">
 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-4">Marker Icon</div>
                                     <div class="col-md-4 ms-auto"></div>
-                                </div>
+                                </div> -->
 
-                                <div class="row">
-                                    <div class="col-md-4">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-6 d-flex justify-content-center">
                                         <img id="image" src="images/marker/barrier.png">
                                     </div>
-                                    <div class="col-8">
-                                        Obstacle Type
+                                </div>
+
+                                <div class="row d-flex justify-content-center m-3">
+                                    <div class="col-auto">
                                         <select class="form-select" aria-label="Default select example"
                                             id="obstacle_type">
                                             <option value="barrier" selected>barrier</option>
@@ -308,16 +310,15 @@
                                             <option value="slope">slope</option>
                                             <option value="staircase">staircase</option>
                                         </select>
-
                                     </div>
                                 </div>
 
                             </div>
 
-                            Obstacle Name
+                            Marker Name
                             <input type="text" class="form-control" id="obstacle_info">
                             <br>
-                            Share any details about the obstacle
+                            Share any details about the marker
                             <textarea class="form-control" id="obstacle_details"></textarea>
 
                         </div>
@@ -352,8 +353,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-10 fw-bold" id="settingsModalLabel">Account Settings</h1>
-                        <button @click="cancelSettingsModal" id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button @click="cancelSettingsModal" id="modal_close" type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form>
                         <div class="modal-body">
@@ -376,7 +377,8 @@
                                             <div class="container-fluid dropdown-menu" style="min-width: 300px;">
                                                 <div class="row">
                                                     <div v-for="pic of profilePics" class="col-3">
-                                                        <img class="profile-pic-selection" :src="pic" @click="updateProfilePicSettings(pic)">
+                                                        <img class="profile-pic-selection" :src="pic"
+                                                            @click="updateProfilePicSettings(pic)">
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,8 +400,8 @@
 
                         <div class="modal-footer">
                             <button @click="logout" class="btn btn-outline-danger" type="button">Logout</button>
-                            <button @click="updateProfile" type="button" class="btn fw-bold text-light" data-bs-dismiss="modal"
-                                style="background-color: #3E837A;">Save Settings</button>
+                            <button @click="updateProfile" type="button" class="btn fw-bold text-light"
+                                data-bs-dismiss="modal" style="background-color: #3E837A;">Save Settings</button>
                         </div>
                     </form>
                 </div>

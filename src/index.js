@@ -190,56 +190,58 @@ let map;
 
 // base template for modal form
 var modal_form_class = `
-<div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
+<div id="modal-form" class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
         <div class="modal-header">
             <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
-            <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
         </div>
         <form>
-        <div class="modal-body">
-            
-            <div class="container-fluid">
+            <div class="modal-body">
 
-                <div class="row">
-                <div class="col-md-4">Marker Icon</div>
-                <div class="col-md-4 ms-auto"></div>
+                <div class="container-fluid">
+
+                    <!-- <div class="row">
+                        <div class="col-md-4">Marker Icon</div>
+                        <div class="col-md-4 ms-auto"></div>
+                    </div> -->
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6 d-flex justify-content-center">
+                            <img id="image" src="images/marker/barrier.png">
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center m-3">
+                        <div class="col-auto">
+                            <select class="form-select" aria-label="Default select example"
+                                id="obstacle_type">
+                                <option value="barrier" selected>barrier</option>
+                                <option value="elevator">elevator</option>
+                                <option value="narrow">narrow</option>
+                                <option value="pothole">pothole</option>
+                                <option value="slope">slope</option>
+                                <option value="staircase">staircase</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <img id="image" src="images/marker/barrier.png">
-                    </div>
-                    <div class="col-8">
-                        Obstacle Type
-                        <select class="form-select" aria-label="Default select example"
-                            id="obstacle_type">
-                            <option value="barrier" selected>barrier</option>
-                            <option value="elevator">elevator</option>
-                            <option value="narrow">narrow</option>
-                            <option value="pothole">pothole</option>
-                            <option value="slope">slope</option>
-                            <option value="staircase">staircase</option>
-                        </select>
-
-                    </div>
-                </div>
+                Marker Name
+                <input type="text" class="form-control" id="obstacle_info">
+                <br>
+                Share any details about the marker
+                <textarea class="form-control" id="obstacle_details"></textarea>
 
             </div>
 
-            Obstacle Name
-            <input type="text" class="form-control" id="obstacle_info">
-            <br>
-            Share any details about the obstacle
-            <textarea class="form-control" id="obstacle_details"></textarea>
-
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn fw-bold text-light" id="place_marker" data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
-        </div>
-        
-
+            <div class="modal-footer">
+                <button type="button" class="btn fw-bold text-light" id="place_marker"
+                    data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
+            </div>
+        </form>
     </div>
 </div>`;
 
@@ -437,12 +439,13 @@ function createBottomRight(map) {
                 // when clicking close button on modal
                 var modal_close = document.getElementById("modal_close")
                 modal_close.addEventListener("click", () => {
-                    // console.log("close")
-                    // some bug where if u dont touch form but cancel, it ties to prev form. my workaround is to add a value without user seeing before resetting
-                    let temp = document.getElementById("obstacle_info")
-                    temp.value = "a";
-                    //resets modal form
-                    document.getElementById("exampleModal").innerHTML = modal_form_class
+                    setTimeout(() => {
+                        // some bug where if u dont touch form but cancel, it ties to prev form. my workaround is to add a value without user seeing before resetting
+                        let temp = document.getElementById("obstacle_info")
+                        temp.value = "a";
+                        //resets modal form
+                        document.getElementById("exampleModal").innerHTML = modal_form_class;
+                    }, 200);
                 })
 
                 // when clicking place marker on modal
