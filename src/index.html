@@ -370,7 +370,7 @@
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-auto d-flex justify-content-center">
                                         <div class="dropdown-center">
-                                            <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">Change Picture</button>
                                             <div class="container-fluid dropdown-menu" style="min-width: 300px;">
                                                 <div class="row">
@@ -389,7 +389,7 @@
                                         <label class="col-form-label">Change Username:</label>
                                     </div>
                                     <div class="col-auto">
-                                        <input type="text" class="form-control" :placeholder="username"
+                                        <input type="text" class="form-control" :placeholder="username" id="change-username"
                                             v-model="usernameSettings">
                                     </div>
                                 </div>
@@ -397,7 +397,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button @click="logout" class="btn btn-outline-danger" type="button">Logout</button>
+                            <button @click="logout" class="btn" id="logout-btn2" type="button">Logout</button>
                             <button @click="updateProfile" type="button" class="btn fw-bold text-light"
                                 data-bs-dismiss="modal" style="background-color: #3E837A;">Save Settings</button>
                         </div>
