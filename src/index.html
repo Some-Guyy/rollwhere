@@ -116,14 +116,16 @@
 
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         <div class="container-fluid">
-                            <div class="p-1 fs-6 text rounded-2" style="background-color: rgba(0, 0, 0, 0.3);">
-                                <div class="row text-center align-middle">
+                            <div class="p-2 fs-6 text rounded-2" style="background-color: rgba(0, 0, 0, 0.3);">
+
+                                <div class="row text-start align-middle pt-3">
                                     <p><span class="fw-bold">From:</span> {{ originPlace }}</p>
                                 </div>
                                 <hr>
-                                <div class="row text-center align-middle">
+                                <div class="row text-start align-middle pt-3">
                                     <p><span class="fw-bold">To:</span> {{ destinationPlace }}</p>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -287,20 +289,14 @@
                         <div class="modal-body">
 
                             <div class="container-fluid">
+                                <div class="row mt-2">
 
-                                <!-- <div class="row">
-                                    <div class="col-md-4">Marker Icon</div>
-                                    <div class="col-md-4 ms-auto"></div>
-                                </div> -->
-
-                                <div class="row d-flex justify-content-center">
                                     <div class="col-6 d-flex justify-content-center">
                                         <img id="image" src="images/marker/barrier.png">
                                     </div>
-                                </div>
 
-                                <div class="row d-flex justify-content-center m-3">
-                                    <div class="col-auto">
+                                    <div class="col-6">
+                                        Select a marker type
                                         <select class="form-select" aria-label="Default select example"
                                             id="obstacle_type">
                                             <option value="barrier" selected>barrier</option>
@@ -311,15 +307,16 @@
                                             <option value="staircase">staircase</option>
                                         </select>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
+                            <br>
 
                             Marker Name
-                            <input type="text" class="form-control" id="obstacle_info">
+                            <input type="text" class="form-control" id="obstacle_info" placeholder="Put marker name here">
                             <br>
                             Share any details about the marker
-                            <textarea class="form-control" id="obstacle_details"></textarea>
+                            <textarea class="form-control" id="obstacle_details" placeholder="Put details here"></textarea>
 
                         </div>
 
