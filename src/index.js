@@ -848,24 +848,22 @@ class AutocompleteDirectionsHandler {
                         let li = document.createElement("li");
 
                         li.innerHTML = `
-                        <div class="card card border-success alternate-routes-li-item">
+                        <div class="card card border-success alternate-routes-li-item mb-3">
                             <div class="card-header card-title" id="card-header">
                                 <h5>
                                     Route ${i + 1}: ${response.routes[i].summary}
                                 </h5>
                             </div>
-                            <div class="card-body">
+                            <div class="p-1">
                                 <p class="card-text">
                                     <span class="fw-bold">Distance:</span>
                                      ${response.routes[i].legs[0].distance.text}
-                                </p>
-                                <p class="card-text">
+                                <br>
                                 <span class="fw-bold">Duration:</span>
-                                 ${response.routes[i].legs[0].duration.text}
+                                    ${response.routes[i].legs[0].duration.text}
                                 </p>
                             </div>
                         </div>
-                        <br><br>
                         `;
                         li.addEventListener("click", () => {
                             this.switchRoute(i);
