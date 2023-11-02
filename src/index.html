@@ -215,6 +215,20 @@
                     </div>
 
                     <div>
+                        <!-- Invisible modal button clicked when user adds marker to map -->
+                        <div id="Modal" class="invisible" style="height: 1px;">
+                            <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                            </button>
+                        </div>
+
+                        <!-- invisible error modal button for error in marker modal -->
+                        <div class="invisible" style="height: 1px;">
+                            <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#errorModal">
+                            </button>
+                        </div>
+                        
                         <!--Offcanvas Buttons at footer-->
                         <hr style="width: 95%; margin-left: 2.5%;">
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
@@ -253,21 +267,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Invisible modal button clicked when user adds marker to map -->
-                    <div id="Modal" class="invisible">
-                        <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                        </button>
-                    </div>
-
-                    <!-- invisible error modal button for error in marker modal -->
-                    <div class="invisible">
-                        <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#errorModal">
-                        </button>
-                    </div>
+                    </div>   
                 </div>
             </div>
         </nav>
@@ -334,10 +334,11 @@
 
         <!-- error Modal popup -->
         <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="errorModalLabel">Obstacle name cannot be empty!</h1>
+                        <h1 class="modal-title fs-2" id="errorModalLabel">Marker name cannot be empty!</h1>
+
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             id="close"></button>
                     </div>
