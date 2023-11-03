@@ -1,7 +1,7 @@
 html, body {
     margin: 0%;
-    background-size:cover;
     background-image: url("images/mapBG.png");
+    background-size: cover;
 }
 
 
@@ -15,7 +15,7 @@ html, body {
 
 #whiteBox {
     width: 70%;
-    height: 80%;
+    height: 100%;
     background-color: white;
     border: solid #3E837A 8px;
     border-radius: 5%;
@@ -61,7 +61,7 @@ html, body {
 
 #SignUp {
     background-color: #3E837A;
-    width: 60%;
+    width: 100%;
     color: white;
     font-weight: bold;
     margin-top: 30px;
