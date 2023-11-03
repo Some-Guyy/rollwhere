@@ -96,18 +96,24 @@ Login.addEventListener("click",()=>{
 
 })
 
-firebase.auth().sendPasswordResetEmail(email)
-  .then(() => {
-    // Password reset email sent!
-    // ..
+ResetPassword.addEventListener("click",()=>{
+  let email = document.getElementById('EmailReset').value
+  firebase.auth().sendPasswordResetEmail(email)
+    .then(() => {
+      // Password reset email sent!
+      // ..
+      alert("Password reset email sent!")
+      location.href = 'login.html'
+
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      alert(errorMessage)
+      // ..
+    });
+
   })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // ..
-  });
-
-
 
 
 

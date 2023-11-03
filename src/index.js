@@ -133,11 +133,17 @@ const app = Vue.createApp({
         updateProfile() {
             if (this.usernameSettings !== "") {
                 this.username = this.usernameSettings;
+                firebase.database().ref('users/'+ user).update({
+                    username:this.usernameSettings
+                })
             }
 
             if (this.profilePicUrl !== this.profilePicSettings) {
                 this.profilePicUrl = this.profilePicSettings;
                 document.getElementById("user-photo").src = this.profilePicSettings;
+                firebase.database().ref('users/'+ user).update({
+                    profilepic: this.profilePicSettings
+                })
             }
         },
 
@@ -179,6 +185,11 @@ const app = Vue.createApp({
 
         updateUserName(username){
             this.username = username
+        },
+
+        updateProfilepic(profilepic){
+            this.profilePicUrl = profilepic
+            this.profilePicSettings = profilepic
         },
 
         getCurrentRouteSaveName() {
@@ -628,7 +639,7 @@ if (user) {
     location.href = "login.html"
   // No user is signed in.
 }
-var username = firebase.database().ref('users/'+ user +'/username')
+const username = firebase.database().ref('users/'+ user +'/username')
 username.on('value',gotDataUsername)
 
 function gotDataUsername(data) {
@@ -638,6 +649,19 @@ function gotDataUsername(data) {
     }
     else{
         username.off('value', gotDataUsername)
+    }
+}
+
+const profilepic = firebase.database().ref('users/'+ user +'/profilepic')
+profilepic.on('value',gotDataProfilepic)
+
+function gotDataProfilepic(data){
+    if (data.val()) {
+        root.updateProfilepic(data.val())
+        profilepic.off('value', gotDataProfilepic)
+    }
+    else{
+        profilepic.off('value', gotDataProfilepic)
     }
 }
 
