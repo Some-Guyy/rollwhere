@@ -48,6 +48,7 @@ const app = Vue.createApp({
             currentRouteSaveName: "",
             stepsUpdatable: false,
 
+            editMode: false,
             transitSteps: [],
             currentTransitStepIndex: 0
         }
@@ -181,6 +182,14 @@ const app = Vue.createApp({
 
         updateStepsUpdatable(value) {
             this.stepsUpdatable = value;
+        },
+
+        getEditMode() {
+            return this.editMode;
+        },
+
+        updateEditMode(bool) {
+            this.editMode = bool;
         },
 
         getTransitSteps() {
@@ -720,18 +729,11 @@ class AutocompleteDirectionsHandler {
             routeName = document.getElementById("save-route-name-input").getAttribute("placeholder");
         }
 
-        let selectedRouteIndex = root.getCurrentRouteIndex();
-        routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
-
-        if (!routeDataCopy.hasOwnProperty("isTransit")) {
-            // routeDataCopy.isTransit = false;
-            if (document.querySelector('input[name="type"]:checked').value === "transit") {
-                routeDataCopy.isTransit = true;
-            } else {
-                routeDataCopy.isTransit = false;
-            }
+        if (!root.getEditMode()) {
+            let selectedRouteIndex = root.getCurrentRouteIndex();
+            routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
         }
-        
+
         root.addRoute(routeName, routeDataCopy);
         root.updateCurrentRouteSaveName("");
         console.log("saveRoute()", routeDataCopy);
@@ -740,55 +742,84 @@ class AutocompleteDirectionsHandler {
     //load saved routes
     loadRoute() {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
-        if (savedRoute.request.waypoints) {
-            this.directionsService.route(
-                {
-                    origin: savedRoute.request.origin,
-                    destination: savedRoute.request.destination,
-                    travelMode: savedRoute.request.travelMode,
-                    waypoints: savedRoute.request.waypoints
-                },
-                (response, status) => {
-                    if (status === "OK") {
-                        root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
-                        root.updateCurrentRouteIndex(0);
-                        root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
-                        root.updateCurrentRouteSummary(response.routes[0].summary);
-                        root.changeCanvas("routepage");
-                        this.directionsRenderer.setDirections(response);
-                        console.log("loadRoute() wayP", response);
-                    } else {
-                        window.alert("Directions request failed due to " + status);
-                    }
-                });
-        } else {
-            root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
-            root.updateCurrentRouteIndex(0);
-            root.updateOriginDest(savedRoute.routes[0].legs[0].start_address, savedRoute.routes[0].legs[0].end_address);
-            root.updateCurrentRouteSummary(savedRoute.routes[0].summary);
+        if (Array.isArray(savedRoute)) {
+            root.updateEditMode(true);
+            root.updateCurrentTransitStepIndex(0);
+            let index = root.getCurrentTransitStepIndex();
+            root.updateTransitSteps(savedRoute);
+            if (savedRoute[index].waypoints) {
+                //display the route with waypoints
+                this.displayRouteTravelMode(savedRoute, index, savedRoute[index].waypoints);
+            } else {
+                this.displayRouteTravelMode(savedRoute, index);
+            }
             root.changeCanvas("routepage");
-            this.directionsRenderer.setDirections(savedRoute);
-            console.log("loadRoute()", savedRoute);
+        } else {
+            root.updateEditMode(false);
+            if (savedRoute.request.waypoints) {
+                this.directionsService.route(
+                    {
+                        origin: savedRoute.request.origin,
+                        destination: savedRoute.request.destination,
+                        travelMode: savedRoute.request.travelMode,
+                        waypoints: savedRoute.request.waypoints
+                    },
+                    (response, status) => {
+                        if (status === "OK") {
+                            root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+                            root.updateCurrentRouteIndex(0);
+                            root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+                            root.updateCurrentRouteSummary(response.routes[0].summary);
+                            root.changeCanvas("routepage");
+                            this.directionsRenderer.setDirections(response);
+                            console.log("loadRoute() wayP", response);
+                        } else {
+                            window.alert("Directions request failed due to " + status);
+                        }
+                    });
+            } else {
+                root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
+                root.updateCurrentRouteIndex(0);
+                root.updateOriginDest(savedRoute.routes[0].legs[0].start_address, savedRoute.routes[0].legs[0].end_address);
+                root.updateCurrentRouteSummary(savedRoute.routes[0].summary);
+                root.changeCanvas("routepage");
+                this.directionsRenderer.setDirections(savedRoute);
+                console.log("loadRoute()", savedRoute);
+            }
         }
     }
 
     //handle the save routes
     setUpSaveRouteListener() {
-        let saveRouteBtn = document.getElementById("save-route")
+        let saveRouteBtn = document.getElementById("save-route");
 
         saveRouteBtn.addEventListener("click", () => {
-            let routeData = this.directionsRenderer.getDirections()
-            this.saveRoute(routeData)
-        })
+            if (root.getEditMode()) {
+                let routeData = this.directionsRenderer.getDirections();
+                let steps = root.getTransitSteps();
+                let index = root.getCurrentTransitStepIndex();
+
+                if (routeData.routes[0].legs[0].via_waypoints.length !== 0) {
+                    //set new property called waypoints into current step with the waypoints of current directionsResult object
+                    steps[index].waypoints = routeData.routes[0].legs[0].via_waypoints;
+                    root.updateTransitSteps(steps);
+                }
+
+                this.saveRoute(steps);
+            } else {
+                let routeData = this.directionsRenderer.getDirections();
+                this.saveRoute(routeData);
+            }
+        });
     }
 
     //handle the load routes
     setUpLoadRouteListener() {
-        let loadRouteBtn = document.getElementById("load-route")
+        let loadRouteBtn = document.getElementById("load-route");
 
         loadRouteBtn.addEventListener("click", () => {
-            this.loadRoute()
-        })
+            this.loadRoute();
+        });
     }
 
     // This allows us to access directionsRenderer when pressing back button to reload previous response because response may have changed when dragging routes to modify them
@@ -796,7 +827,7 @@ class AutocompleteDirectionsHandler {
         let backBtn = document.getElementById("back-btn");
 
         backBtn.addEventListener("click", () => {
-            if (root.getLastPageAccessed() === "searchpage" && this.directionsRenderer.getDirections().request.waypoints) {
+            if (root.getLastPageAccessed() === "searchpage") {
                 this.directionsRenderer.setDirections(root.getLastRouteResponse());
             }
             root.goBackCanvas();
@@ -805,6 +836,7 @@ class AutocompleteDirectionsHandler {
 
     //helper function to help display each step onto the map to edit
     displayRouteTravelMode(steps, index, waypoints = "none") {
+        root.updateEditMode(true);
         if (steps[index].travel_mode == "WALKING") {
             if (waypoints != "none") {
                 let newStructureWaypoints = []
@@ -943,6 +975,7 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
+                    root.updateEditMode(false);
                     root.updateLastRouteResponse(response);
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
 
