@@ -828,7 +828,8 @@ class AutocompleteDirectionsHandler {
         //when user press this edit route button (only will appear for transit), the first step (usually walkable path) will be active
         editRouteBtn.addEventListener("click", () => {
             if (this.directionsRenderer.getDirections()) {
-                let currentRoute = this.directionsRenderer.getDirections().routes[0]
+                let selectedRouteIndex = root.getCurrentRouteIndex();
+                let currentRoute = this.directionsRenderer.getDirections().routes[selectedRouteIndex];
                 localStorage.setItem("editRoute", JSON.stringify(currentRoute))
                 let steps = currentRoute.legs[0].steps
                 localStorage.setItem("steps", JSON.stringify(steps))
