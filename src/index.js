@@ -9,8 +9,33 @@ const app = Vue.createApp({
             lastPageAccessed: null,
             lastRouteResponse: null,
 
+            profilePics: [
+                "images/profile/cat.png",
+                "images/profile/cheetah.png",
+                "images/profile/chicken.png",
+                "images/profile/chipmunk.png",
+                "images/profile/cow.png",
+                "images/profile/dog.png",
+                "images/profile/duck.png",
+                "images/profile/elephant.png",
+                "images/profile/giraffe.png",
+                "images/profile/horse.png",
+                "images/profile/kangaroo.png",
+                "images/profile/monkey.png",
+                "images/profile/panda.png",
+                "images/profile/penguin.png",
+                "images/profile/rabbit.png",
+                "images/profile/raccoon.png",
+                "images/profile/rat.png",
+                "images/profile/sparrow.png",
+                "images/profile/tiger.png",
+                "images/profile/wolf.png"
+            ],
+
             username: "mr.rollerman", // Will update this based on login
-            profilePicUrl: "images/Ryan_photo.jfif",
+            usernameSettings: "",
+            profilePicUrl: "images/profile/duck.png",
+            profilePicSettings: "images/profile/duck.png",
             savedRoutes: [],
             savedRouteSelectedId: null,
 
@@ -97,6 +122,36 @@ const app = Vue.createApp({
             document.getElementById("load-route").click();
         },
 
+        getProfilePicUrl() {
+            return this.profilePicUrl;
+        },
+
+        updateProfilePicSettings(url) {
+            this.profilePicSettings = url;
+        },
+
+        updateProfile() {
+            if (this.usernameSettings !== "") {
+                this.username = this.usernameSettings;
+            }
+
+            if (this.profilePicUrl !== this.profilePicSettings) {
+                this.profilePicUrl = this.profilePicSettings;
+                document.getElementById("user-photo").src = this.profilePicSettings;
+            }
+        },
+
+        logout() {
+            //insert logout code here
+        },
+
+        cancelSettingsModal() {
+            setTimeout(() => {
+                this.usernameSettings = "";
+                this.profilePicSettings = this.profilePicUrl;
+            }, 200);
+        },
+
         updateSavedRouteSelectedId(id) {
             this.savedRouteSelectedId = id;
         },
@@ -152,56 +207,55 @@ let map;
 
 // base template for modal form
 var modal_form_class = `
-<div id="modal-form" class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
-            <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form>
-        <div class="modal-body">
-            
-            <div class="container-fluid">
-
-                <div class="row">
-                <div class="col-md-4">Marker Icon</div>
-                <div class="col-md-4 ms-auto"></div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <img id="image" src="images/monster.png">
+<div id="modal-form" class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-10 fw-bold" id="exampleModalLabel">Place a marker</h1>
+                        <button id="modal_close" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
-                    <div class="col-md-8">
+                    <form>
+                        <div class="modal-body">
 
-                        <select class="form-select" aria-label="Default select example" id="obstacle_type">
-                            <!-- <option selected>Obstacle</option> -->
-                            <option value="monster" selected>monster</option>
-                            <option value="danger">danger</option>
-                            <option value="pothole">pothole</option>
-                            <option value="slope">slope</option>
-                        </select>
+                            <div class="container-fluid">
+                                <div class="row mt-2">
 
-                    </div>
+                                    <div class="col-6 d-flex justify-content-center">
+                                        <img id="image" src="images/marker/barrier.png">
+                                    </div>
+
+                                    <div class="col-6">
+                                        Select a marker type
+                                        <select class="form-select" aria-label="Default select example"
+                                            id="obstacle_type">
+                                            <option value="barrier" selected>barrier</option>
+                                            <option value="elevator">elevator</option>
+                                            <option value="narrow">narrow</option>
+                                            <option value="pothole">pothole</option>
+                                            <option value="slope">slope</option>
+                                            <option value="staircase">staircase</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br>
+
+                            Marker Name
+                            <input type="text" class="form-control" id="obstacle_info" placeholder="Put marker name here">
+                            <br>
+                            Share any details about the marker
+                            <textarea class="form-control" id="obstacle_details" placeholder="Put details here"></textarea>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn fw-bold text-light" id="place_marker"
+                                data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
+                        </div>
+                    </form>
                 </div>
-
-            </div>
-
-            What is the obstacle name
-            <input type="text" class="form-control" id="obstacle_info">
-            <br>
-            Share with us somemore details!!!
-            <textarea class="form-control" id="obstacle_details"></textarea>
-
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn fw-bold text-light" id="place_marker" data-bs-dismiss="modal" style="background-color: #3E837A;">Place Marker</button>
-        </div>
-        
-
-    </div>
-</div>`;
+            </div>`;
 
 async function initMap() {
 
@@ -283,7 +337,7 @@ async function initMap() {
 
     // this below is to use ryan photo as marker
     var userPhoto = document.createElement("img");
-    userPhoto.src = "images/Ryan_photo.jfif";
+    userPhoto.src = root.getProfilePicUrl();
     userPhoto.id = "user-photo"
 
     // creating the info window for user
@@ -350,7 +404,7 @@ function createBottomRight(map) {
 
 
     controlButton.addEventListener("click", () => {
-        if (controlButton.checked == true) {
+        if (controlButton.checked === true) {
             // create info window
             let infoWindow = new google.maps.InfoWindow();
 
@@ -358,17 +412,23 @@ function createBottomRight(map) {
             map.addListener("click", (mapsMouseEvent) => {
                 // more efficient way, creating a library of icons
                 const icons = {
-                    danger: {
-                        icon: "images/danger.png"
+                    barrier: {
+                        icon: "images/marker/barrier.png"
+                    },
+                    elevator: {
+                        icon: "images/marker/elevator.png"
+                    },
+                    narrow: {
+                        icon: "images/marker/narrow.png"
                     },
                     pothole: {
-                        icon: "images/pothole.png"
-                    },
-                    monster: {
-                        icon: "images/monster.png"
+                        icon: "images/marker/pothole.png"
                     },
                     slope: {
-                        icon: "images/slope.png"
+                        icon: "images/marker/slope.png"
+                    },
+                    staircase: {
+                        icon: "images/marker/staircase.png"
                     }
                 };
 
@@ -385,18 +445,19 @@ function createBottomRight(map) {
                 var marker_icon = document.getElementById("image")
                 chng.addEventListener("change", () => {
                     // console.log(chng.value)
-                    marker_icon.setAttribute("src", `images/${chng.value}.png`)
+                    marker_icon.setAttribute("src", `images/marker/${chng.value}.png`)
                 })
 
                 // when clicking close button on modal
                 var modal_close = document.getElementById("modal_close")
                 modal_close.addEventListener("click", () => {
-                    // console.log("close")
-                    // some bug where if u dont touch form but cancel, it ties to prev form. my workaround is to add a value without user seeing before resetting
-                    let temp = document.getElementById("obstacle_info")
-                    temp.value = "a";
-                    //resets modal form
-                    document.getElementById("exampleModal").innerHTML = modal_form_class
+                    setTimeout(() => {
+                        // some bug where if u dont touch form but cancel, it ties to prev form. my workaround is to add a value without user seeing before resetting
+                        let temp = document.getElementById("obstacle_info")
+                        temp.value = "a";
+                        //resets modal form
+                        document.getElementById("exampleModal").innerHTML = modal_form_class;
+                    }, 200);
                 })
 
                 // when clicking place marker on modal
@@ -421,7 +482,7 @@ function createBottomRight(map) {
 
                             <div class="card-header bg-dark-subtle" >
                                 <h4>
-                                    Obstacle Type: <span class="${obstacle_type}"><h4>${obstacle_info}</h4></span>
+                                    <span class="${obstacle_type}"><h4>${obstacle_info}</h4></span>
                                 </h4>
                             </div>
 
@@ -470,6 +531,7 @@ function createBottomRight(map) {
 
                         // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
                         document.getElementById("exampleModal").innerHTML = modal_form_class
+                        controlButton.click();
                     }
 
                 })
@@ -858,24 +920,22 @@ class AutocompleteDirectionsHandler {
                         let li = document.createElement("li");
 
                         li.innerHTML = `
-                        <div class="card card border-success alternate-routes-li-item">
+                        <div class="card card border-success alternate-routes-li-item mb-3">
                             <div class="card-header card-title" id="card-header">
                                 <h5>
                                     Route ${i + 1}: ${response.routes[i].summary}
                                 </h5>
                             </div>
-                            <div class="card-body">
+                            <div class="p-1">
                                 <p class="card-text">
                                     <span class="fw-bold">Distance:</span>
                                      ${response.routes[i].legs[0].distance.text}
-                                </p>
-                                <p class="card-text">
+                                <br>
                                 <span class="fw-bold">Duration:</span>
-                                 ${response.routes[i].legs[0].duration.text}
+                                    ${response.routes[i].legs[0].duration.text}
                                 </p>
                             </div>
                         </div>
-                        <br><br>
                         `;
                         li.addEventListener("click", () => {
                             this.switchRoute(i);
