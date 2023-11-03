@@ -217,6 +217,7 @@
                                 :disabled="currentTransitStepIndex === 0">
                                 prev
                             </button>
+                            <p v-show="editMode === true">({{ currentTransitStepIndex+1 }}/{{ transitSteps.length }})</p>
                         </div>
                         <hr>
                         <ol>
