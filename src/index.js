@@ -464,7 +464,6 @@ function createBottomRight(map) {
                 // changing icon everytime there is a change
                 var marker_icon = document.getElementById("image")
                 chng.addEventListener("change", () => {
-                    // console.log(chng.value)
                     marker_icon.setAttribute("src", `images/marker/${chng.value}.png`)
                 })
 
@@ -679,7 +678,6 @@ class AutocompleteDirectionsHandler {
                                 root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
                                 root.updateCurrentRouteSummary(response.routes[0].summary);
                                 this.directionsRenderer.setDirections(response);
-                                console.log("mapclick wayP", response);
                             } else {
                                 window.alert("Directions request failed due to " + status);
                             }
@@ -690,7 +688,6 @@ class AutocompleteDirectionsHandler {
                     root.updateOriginDest(routeData.routes[0].legs[0].start_address, routeData.routes[0].legs[0].end_address);
                     root.updateCurrentRouteSummary(routeData.routes[0].summary);
                     this.directionsRenderer.setDirections(routeData);
-                    console.log("mapclick", routeData);
                 }
             }
         })
@@ -745,7 +742,6 @@ class AutocompleteDirectionsHandler {
 
         root.addRoute(routeName, routeDataCopy);
         root.updateCurrentRouteSaveName("");
-        console.log("saveRoute()", routeDataCopy);
     }
 
     //load saved routes
@@ -788,7 +784,6 @@ class AutocompleteDirectionsHandler {
                             root.updateCurrentRouteSummary(response.routes[0].summary);
                             root.changeCanvas("routepage");
                             this.directionsRenderer.setDirections(response);
-                            console.log("loadRoute() wayP", response);
                         } else {
                             window.alert("Directions request failed due to " + status);
                         }
@@ -806,7 +801,6 @@ class AutocompleteDirectionsHandler {
                 root.updateCurrentRouteSummary(savedRoute.routes[0].summary);
                 root.changeCanvas("routepage");
                 this.directionsRenderer.setDirections(savedRoute);
-                console.log("loadRoute()", savedRoute);
             }
         }
     }
@@ -895,7 +889,7 @@ class AutocompleteDirectionsHandler {
             }
             console.log("walking", steps[index])
         } else {
-            console.log("transit")
+            console.log("transit", steps[index])
             this.directionsService.route(
                 {
                     origin: steps[index].start_location,
@@ -923,12 +917,9 @@ class AutocompleteDirectionsHandler {
                 let index = root.getCurrentTransitStepIndex();
                 let selectedRouteIndex = root.getCurrentRouteIndex();
                 let currentRoute = this.directionsRenderer.getDirections().routes[selectedRouteIndex];
-                // localStorage.setItem("editRoute", JSON.stringify(currentRoute))
-                // console.log("edit", this.directionsRenderer.getDirections());
+
                 let steps = currentRoute.legs[0].steps;
-                // localStorage.setItem("steps", JSON.stringify(steps))
                 root.updateTransitSteps(steps);
-                // console.log(steps)
                 //calls a directionService and directionRenderer and display onto map
                 this.displayRouteTravelMode(steps, index);
             }
@@ -938,11 +929,8 @@ class AutocompleteDirectionsHandler {
         nextRouteBtn.addEventListener("click", () => {
             let index = root.getCurrentTransitStepIndex();
             let prevStep = this.directionsRenderer.getDirections();
-            console.log(this.directionsRenderer.getDirections());
 
             let steps = root.getTransitSteps();
-            console.log("steps index", steps[index]);
-            console.log(prevStep);
 
             //saving the waypoints from the current step 
             if (prevStep.routes[0].legs[0].via_waypoints.length !== 0) {
@@ -972,7 +960,6 @@ class AutocompleteDirectionsHandler {
             if (prevStep.routes[0].legs[0].via_waypoints.length !== 0) {
                 steps[index].waypoints = prevStep.routes[0].legs[0].via_waypoints;
                 root.updateTransitSteps(steps);
-                // console.log("end of prevStep");
             }
 
             root.updateCurrentTransitStepIndex(root.getCurrentTransitStepIndex() - 1);
@@ -980,7 +967,6 @@ class AutocompleteDirectionsHandler {
 
             if (steps[index].waypoints) {
                 this.displayRouteTravelMode(steps, index, steps[index].waypoints);
-                // console.log(steps[index].waypoints);
             } else {
                 this.displayRouteTravelMode(steps, index);
             }
@@ -1050,7 +1036,6 @@ class AutocompleteDirectionsHandler {
                         alternateRouteListEl.appendChild(li);
                     }
 
-                    console.log("route()", response);
                     me.directionsRenderer.setDirections(response);
                 } else {
                     window.alert("Directions request failed due to " + status);
