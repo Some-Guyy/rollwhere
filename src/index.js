@@ -1007,12 +1007,27 @@ class AutocompleteDirectionsHandler {
 
                     for (let i = 0; i < response.routes.length; i++) {
                         let li = document.createElement("li");
+                        let routeName = "";
+                        if (response.routes[i].summary === "") {
+                            let stepModes = [];
+                            for (let step of response.routes[i].legs[0].steps) {
+                                if (step.travel_mode === "TRANSIT") {
+                                    stepModes.push(step.instructions.split(" ")[0]);
+                                }
+                            }
+                            routeName = stepModes.join(" -> ");
+                            if (routeName === "") {
+                                routeName = "No Transits";
+                            }
+                        } else {
+                            routeName = response.routes[i].summary;
+                        }
 
                         li.innerHTML = `
                         <div class="card card border-success alternate-routes-li-item mb-3">
                             <div class="card-header card-title" id="card-header">
                                 <h5>
-                                    Route ${i + 1}: ${response.routes[i].summary}
+                                    Route ${i + 1}: ${routeName}
                                 </h5>
                             </div>
                             <div class="p-1">
@@ -1036,6 +1051,7 @@ class AutocompleteDirectionsHandler {
                         alternateRouteListEl.appendChild(li);
                     }
 
+                    console.log("route()", response);
                     me.directionsRenderer.setDirections(response);
                 } else {
                     window.alert("Directions request failed due to " + status);
