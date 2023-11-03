@@ -49,13 +49,13 @@
     z-index: 1;
     ">
         <div id="mode-selector" class="controls">
-            <input type="radio" name="type" value="walking" id="changemode-walking" checked="checked" />
+            <input type="radio" name="type" id="changemode-walking" checked="checked" />
             <label for="changemode-walking">Walking</label>
 
-            <input type="radio" name="type" value="transit" id="changemode-transit" />
+            <input type="radio" name="type" id="changemode-transit" />
             <label for="changemode-transit">Transit</label>
 
-            <input type="radio" name="type" value="driving" id="changemode-driving" />
+            <input type="radio" name="type" id="changemode-driving" />
             <label for="changemode-driving">Driving</label>
         </div>
     </div>
@@ -78,7 +78,7 @@
                     aria-labelledby="offcanvasNavbarLabel" data-bs-backdrop="true">
 
                     <!--offcanvas header homepage-->
-                    <div v-show="activePage.homepage === true" class="offcanvas-header">
+                    <div v-show="activePage.homepage == true" class="offcanvas-header">
                         <div class="container-fluid">
                             <div class="row">
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
@@ -111,7 +111,7 @@
                     </div>
 
                     <!--offcanvas header searchpage & routepage-->
-                    <div v-show="activePage.searchpage === true || activePage.routepage === true"
+                    <div v-show="activePage.searchpage == true || activePage.routepage == true"
                         class="offcanvas-header">
 
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -129,7 +129,7 @@
                     </div>
 
                     <!--offcanvas body homepage-->
-                    <div v-show="activePage.homepage === true" class="offcanvas-body" style="overflow-y: auto;">
+                    <div v-show="activePage.homepage == true" class="offcanvas-body" style="overflow-y: auto;">
                         <h5 class="d-flex justify-content-center">My Saved Routes</h5>
                         <button hidden id="load-route"></button>
                         <hr>
@@ -154,7 +154,7 @@
                         </div>
 
                         <!--if no saved routes, everything gone-->
-                        <div v-show="savedRoutes.length === 0" style="text-align: center;">
+                        <div v-show="savedRoutes.length==0" style="text-align: center;">
                             <br>
                             ~No routes added yet, feel free to save some!~
                         </div>
@@ -162,7 +162,7 @@
                     </div>
 
                     <!--offcanvas body searchpage-->
-                    <div v-show="activePage.searchpage === true" class="offcanvas-body" style="overflow-y: auto;">
+                    <div v-show="activePage.searchpage == true" class="offcanvas-body" style="overflow-y: auto;">
                         <div class="fs-4 text-center">
                             List of routes
                         </div>
@@ -175,7 +175,7 @@
                     </div>
 
                     <!--offcanvas body routepage-->
-                    <div v-show="activePage.routepage === true" class="offcanvas-body" style="overflow-y: auto;">
+                    <div v-show="activePage.routepage == true" class="offcanvas-body" style="overflow-y: auto;">
                         <div class="row d-flex text-center">
                             <h3>Steps</h3>
                         </div>
@@ -204,20 +204,6 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <button v-show="isTransit === true" id="edit-route" class="btn btn-success" type="button">
-                                edit walkable steps
-                            </button>
-                            <button v-show="editMode === true" id="next-route" class="btn btn-success" type="button"
-                                :disabled="transitSteps.length === currentTransitStepIndex+1">
-                                next
-                            </button>
-                            <button v-show="editMode === true" id="prev-route" class="btn btn-success" type="button"
-                                :disabled="currentTransitStepIndex === 0">
-                                prev
-                            </button>
-                            <p v-show="editMode === true">({{ currentTransitStepIndex+1 }}/{{ transitSteps.length }})</p>
                         </div>
                         <hr>
                         <ol>
