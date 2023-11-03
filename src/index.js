@@ -692,42 +692,6 @@ class AutocompleteDirectionsHandler {
         });
     }
 
-    // setupMapListener(map) {
-    //     map.addListener("mouseup", () => {
-    //         if (root.lastRouteResponse !== null) {
-    //             let routeData = this.directionsRenderer.getDirections();
-    //             if (routeData.request.waypoints) {
-    //                 this.directionsService.route(
-    //                     {
-    //                         origin: routeData.request.origin,
-    //                         destination: routeData.request.destination,
-    //                         travelMode: routeData.request.travelMode,
-    //                         waypoints: routeData.request.waypoints
-    //                     },
-    //                     (response, status) => {
-    //                         if (status === "OK") {
-    //                             root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
-    //                             root.updateCurrentRouteIndex(0);
-    //                             root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
-    //                             root.updateCurrentRouteSummary(response.routes[0].summary);
-    //                             this.directionsRenderer.setDirections(response);
-    //                             console.log("mapclick wayP", response);
-    //                         } else {
-    //                             window.alert("Directions request failed due to " + status);
-    //                         }
-    //                     });
-    //             } else {
-    //                 root.updateCurrentRouteSteps(routeData.routes[0].legs[0].steps);
-    //                 root.updateCurrentRouteIndex(0);
-    //                 root.updateOriginDest(routeData.routes[0].legs[0].start_address, routeData.routes[0].legs[0].end_address);
-    //                 root.updateCurrentRouteSummary(routeData.routes[0].summary);
-    //                 this.directionsRenderer.setDirections(routeData);
-    //                 console.log("mapclick", routeData);
-    //             }
-    //         }
-    //     });
-    // }
-
     //switch to another route and make it active
     switchRoute(routeIndex) {
         this.directionsRenderer.setRouteIndex(routeIndex);
