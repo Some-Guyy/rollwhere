@@ -219,7 +219,7 @@
                         <hr style="width: 95%; margin-left: 2.5%;">
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
                             <div class="row">
-                                <button id="edit-route" class="btn btn-success" type="button">
+                                <button v-show="isTransit === true" id="edit-route" class="btn btn-success" type="button">
                                     edit walkable steps
                                 </button>
                                 <button v-show="editMode === true" id="next-route" class="btn btn-success" type="button" :disabled="transitSteps.length === currentTransitStepIndex+1">
@@ -228,7 +228,7 @@
                                 <button v-show="editMode === true" id="prev-route" class="btn btn-success" type="button" :disabled="currentTransitStepIndex === 0">
                                     prev
                                 </button>
-                                editMode: {{editMode}}, transitIndex: {{currentTransitStepIndex}}
+                                editMode: {{editMode}}, trans: {{isTransit}}
                             </div>
                             <!--Back to homepage button-->
                             <div class="row">

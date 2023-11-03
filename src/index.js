@@ -49,6 +49,7 @@ const app = Vue.createApp({
             stepsUpdatable: false,
 
             editMode: false,
+            isTransit: false,
             transitSteps: [],
             currentTransitStepIndex: 0
         }
@@ -190,6 +191,14 @@ const app = Vue.createApp({
 
         updateEditMode(bool) {
             this.editMode = bool;
+        },
+
+        getIsTransit() {
+            return this.isTransit;
+        },
+
+        updateIsTransit(bool) {
+            this.isTransit = bool;
         },
 
         getTransitSteps() {
@@ -744,6 +753,7 @@ class AutocompleteDirectionsHandler {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
         if (Array.isArray(savedRoute)) {
             root.updateEditMode(true);
+            root.updateIsTransit(false);
             root.updateCurrentTransitStepIndex(0);
             let index = root.getCurrentTransitStepIndex();
             root.updateTransitSteps(savedRoute);
@@ -766,6 +776,12 @@ class AutocompleteDirectionsHandler {
                     },
                     (response, status) => {
                         if (status === "OK") {
+                            if (savedRoute.request.travelMode === "TRANSIT") {
+                                root.updateIsTransit(true);
+                            } else {
+                                root.updateIsTransit(false);
+                            }
+
                             root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
                             root.updateCurrentRouteIndex(0);
                             root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
@@ -778,6 +794,12 @@ class AutocompleteDirectionsHandler {
                         }
                     });
             } else {
+                if (savedRoute.request.travelMode === "TRANSIT") {
+                    root.updateIsTransit(true);
+                } else {
+                    root.updateIsTransit(false);
+                }
+
                 root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
                 root.updateCurrentRouteIndex(0);
                 root.updateOriginDest(savedRoute.routes[0].legs[0].start_address, savedRoute.routes[0].legs[0].end_address);
@@ -828,7 +850,15 @@ class AutocompleteDirectionsHandler {
 
         backBtn.addEventListener("click", () => {
             if (root.getLastPageAccessed() === "searchpage") {
-                this.directionsRenderer.setDirections(root.getLastRouteResponse());
+                let lastRouteResponse = root.getLastRouteResponse();
+                if (lastRouteResponse.request.travelMode === "TRANSIT") {
+                    root.updateIsTransit(true);
+                } else {
+                    root.updateIsTransit(false);
+                }
+
+                root.updateEditMode(false);
+                this.directionsRenderer.setDirections(lastRouteResponse);
             }
             root.goBackCanvas();
         })
@@ -888,6 +918,7 @@ class AutocompleteDirectionsHandler {
         //when user press this edit route button (only will appear for transit), the first step (usually walkable path) will be active
         editRouteBtn.addEventListener("click", () => {
             if (this.directionsRenderer.getDirections()) {
+                root.updateIsTransit(false);
                 root.updateCurrentTransitStepIndex(0);
                 let index = root.getCurrentTransitStepIndex();
                 let selectedRouteIndex = root.getCurrentRouteIndex();
@@ -975,6 +1006,12 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
+                    if (this.travelMode === "TRANSIT") {
+                        root.updateIsTransit(true);
+                    } else {
+                        root.updateIsTransit(false);
+                    }
+
                     root.updateEditMode(false);
                     root.updateLastRouteResponse(response);
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
