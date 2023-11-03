@@ -703,6 +703,16 @@ class AutocompleteDirectionsHandler {
 
         let selectedRouteIndex = root.getCurrentRouteIndex();
         routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
+
+        if (!routeDataCopy.hasOwnProperty("isTransit")) {
+            // routeDataCopy.isTransit = false;
+            if (document.querySelector('input[name="type"]:checked').value === "transit") {
+                routeDataCopy.isTransit = true;
+            } else {
+                routeDataCopy.isTransit = false;
+            }
+        }
+        
         root.addRoute(routeName, routeDataCopy);
         root.updateCurrentRouteSaveName("");
         console.log("saveRoute()", routeDataCopy);
