@@ -7,7 +7,7 @@ const app = Vue.createApp({
                 "routepage": false
             },
             lastPageAccessed: null,
-            lastRouteResponse: null,
+            lastSearchResponse: null,
 
             profilePics: [
                 "images/profile/cat.png",
@@ -78,12 +78,12 @@ const app = Vue.createApp({
             return this.lastPageAccessed;
         },
 
-        getLastRouteResponse() {
-            return this.lastRouteResponse;
+        getLastSearchResponse() {
+            return this.lastSearchResponse;
         },
 
-        updateLastRouteResponse(response) {
-            this.lastRouteResponse = response;
+        updateLastSearchResponse(response) {
+            this.lastSearchResponse = response;
         },
 
         getRoute(id) {
@@ -662,7 +662,7 @@ class AutocompleteDirectionsHandler {
         this.directionsRenderer.addListener("directions_changed", () => {
             let stepsUpdatable = root.getStepsUpdatable();
             root.updateStepsUpdatable(!stepsUpdatable);
-            if (root.getLastRouteResponse() !== null && root.getStepsUpdatable() === true) {
+            if (root.getLastSearchResponse() !== null && root.getStepsUpdatable() === true) {
                 let routeData = this.directionsRenderer.getDirections();
                 if (routeData.request.waypoints) {
                     this.directionsService.route(
@@ -850,15 +850,15 @@ class AutocompleteDirectionsHandler {
 
         backBtn.addEventListener("click", () => {
             if (root.getLastPageAccessed() === "searchpage") {
-                let lastRouteResponse = root.getLastRouteResponse();
-                if (lastRouteResponse.request.travelMode === "TRANSIT") {
+                let lastSearchResponse = root.getLastSearchResponse();
+                if (lastSearchResponse.request.travelMode === "TRANSIT") {
                     root.updateIsTransit(true);
                 } else {
                     root.updateIsTransit(false);
                 }
 
                 root.updateEditMode(false);
-                this.directionsRenderer.setDirections(lastRouteResponse);
+                this.directionsRenderer.setDirections(lastSearchResponse);
             }
             root.goBackCanvas();
         })
@@ -1013,7 +1013,7 @@ class AutocompleteDirectionsHandler {
                     }
 
                     root.updateEditMode(false);
-                    root.updateLastRouteResponse(response);
+                    root.updateLastSearchResponse(response);
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
 
                     let alternateRouteListEl = document.getElementById("alternate-routes-list");
