@@ -46,7 +46,10 @@ const app = Vue.createApp({
             currentRouteSummary: "",
             currentRouteIndex: 0,
             currentRouteSaveName: "",
-            stepsUpdatable: false
+            stepsUpdatable: false,
+
+            transitSteps: [],
+            currentTransitStepIndex: 0
         }
     },
 
@@ -178,6 +181,22 @@ const app = Vue.createApp({
 
         updateStepsUpdatable(value) {
             this.stepsUpdatable = value;
+        },
+
+        getTransitSteps() {
+            return this.transitSteps;
+        },
+
+        updateTransitSteps(steps) {
+            this.transitSteps = steps;
+        },
+
+        getCurrentTransitStepIndex() {
+            return this.currentTransitStepIndex;
+        },
+
+        updateCurrentTransitStepIndex(index) {
+            this.currentTransitStepIndex = index;
         }
     }
 });
@@ -830,70 +849,77 @@ class AutocompleteDirectionsHandler {
 
     //edit the routes 
     setUpEditRoute() {
-        let editRouteBtn = document.getElementById("edit-route")
-        let nextRouteBtn = document.getElementById("next-route")
-        let prevRouteBtn = document.getElementById("prev-route")
-        let index = 0
+        let editRouteBtn = document.getElementById("edit-route");
+        let nextRouteBtn = document.getElementById("next-route");
+        let prevRouteBtn = document.getElementById("prev-route");
 
         //when user press this edit route button (only will appear for transit), the first step (usually walkable path) will be active
         editRouteBtn.addEventListener("click", () => {
             if (this.directionsRenderer.getDirections()) {
+                root.updateCurrentTransitStepIndex(0);
+                let index = root.getCurrentTransitStepIndex();
                 let selectedRouteIndex = root.getCurrentRouteIndex();
                 let currentRoute = this.directionsRenderer.getDirections().routes[selectedRouteIndex];
-                localStorage.setItem("editRoute", JSON.stringify(currentRoute))
-                let steps = currentRoute.legs[0].steps
-                localStorage.setItem("steps", JSON.stringify(steps))
-                console.log(steps)
+                // localStorage.setItem("editRoute", JSON.stringify(currentRoute))
+                // console.log("edit", this.directionsRenderer.getDirections());
+                let steps = currentRoute.legs[0].steps;
+                // localStorage.setItem("steps", JSON.stringify(steps))
+                root.updateTransitSteps(steps);
+                // console.log(steps)
                 //calls a directionService and directionRenderer and display onto map
-                this.displayRouteTravelMode(steps, index)
+                this.displayRouteTravelMode(steps, index);
             }
         })
 
         //this button will only appear when user press edit route button, this will also show the next step
         nextRouteBtn.addEventListener("click", () => {
-            let prevStep = this.directionsRenderer.getDirections()
-            console.log(this.directionsRenderer.getDirections())
+            let index = root.getCurrentTransitStepIndex();
+            let prevStep = this.directionsRenderer.getDirections();
+            console.log(this.directionsRenderer.getDirections());
 
-            let steps = JSON.parse(localStorage.getItem("steps"))
-            console.log("steps index", steps[index])
-            console.log(prevStep)
+            let steps = root.getTransitSteps();
+            console.log("steps index", steps[index]);
+            console.log(prevStep);
 
             //saving the waypoints from the current step 
             if (prevStep.routes[0].legs[0].via_waypoints.length !== 0) {
                 //set new property called waypoints into current step with the waypoints of current directionsResult object
-                steps[index].waypoints = prevStep.routes[0].legs[0].via_waypoints
-                localStorage.setItem("steps", JSON.stringify(steps))
+                steps[index].waypoints = prevStep.routes[0].legs[0].via_waypoints;
+                root.updateTransitSteps(steps);
             }
 
             //go into next step 
-            index++
+            root.updateCurrentTransitStepIndex(root.getCurrentTransitStepIndex() + 1);
+            index = root.getCurrentTransitStepIndex();
 
             //if there are waypoints in current step
             if (steps[index].waypoints) {
                 //display the route with waypoints
-                this.displayRouteTravelMode(steps, index, steps[index].waypoints)
+                this.displayRouteTravelMode(steps, index, steps[index].waypoints);
             } else {
-                this.displayRouteTravelMode(steps, index)
+                this.displayRouteTravelMode(steps, index);
             }
         })
 
         prevRouteBtn.addEventListener("click", () => {
-            let prevStep = this.directionsRenderer.getDirections()
-
-            let steps = JSON.parse(localStorage.getItem("steps"))
+            let prevStep = this.directionsRenderer.getDirections();
+            let steps = root.getTransitSteps();
+            let index = root.getCurrentTransitStepIndex();
 
             if (prevStep.routes[0].legs[0].via_waypoints.length !== 0) {
-                steps[index].waypoints = prevStep.routes[0].legs[0].via_waypoints
-                localStorage.setItem("steps", JSON.stringify(steps))
-                console.log("end of prevStep")
+                steps[index].waypoints = prevStep.routes[0].legs[0].via_waypoints;
+                root.updateTransitSteps(steps);
+                // console.log("end of prevStep");
             }
 
-            index--
+            root.updateCurrentTransitStepIndex(root.getCurrentTransitStepIndex() - 1);
+            index = root.getCurrentTransitStepIndex();
+
             if (steps[index].waypoints) {
-                this.displayRouteTravelMode(steps, index, steps[index].waypoints)
-                console.log(steps[index].waypoints)
+                this.displayRouteTravelMode(steps, index, steps[index].waypoints);
+                // console.log(steps[index].waypoints);
             } else {
-                this.displayRouteTravelMode(steps, index)
+                this.displayRouteTravelMode(steps, index);
             }
         })
     }
