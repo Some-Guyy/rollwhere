@@ -592,7 +592,6 @@ class AutocompleteDirectionsHandler {
 
         const originInput = document.getElementById("origin-input");
         const destinationInput = document.getElementById("destination-input");
-        const modeSelector = document.getElementById("mode-selector");
         // Specify just the place data fields that you need.
         const originAutocomplete = new google.maps.places.Autocomplete(
             originInput,
@@ -618,14 +617,10 @@ class AutocompleteDirectionsHandler {
         );
         this.setupPlaceChangedListener(originAutocomplete, "ORIG");
         this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destinationInput);
-        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
-        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
         this.switchRoute();
         this.setUpSaveRouteListener();
         this.setUpLoadRouteListener();
         this.setupBackBtnListener();
-        // this.setupMapListener(map);
         this.directionsRenderer.addListener("directions_changed", () => {
             let stepsUpdatable = root.getStepsUpdatable();
             root.updateStepsUpdatable(!stepsUpdatable);
