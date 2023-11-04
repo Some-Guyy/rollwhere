@@ -38,6 +38,8 @@ const app = Vue.createApp({
             profilePicSettings: "images/profile/duck.png",
             savedRoutes: [],
             savedRouteSelectedId: null,
+            saveRouteFormError: "",
+            saveRouteFormSuccess: "",
 
             originPlace: "",
             destinationPlace: "",
@@ -93,6 +95,10 @@ const app = Vue.createApp({
                 }
             }
             console.log("id of route not found!");
+        },
+
+        getRoutes() {
+            return this.savedRoutes;
         },
 
         addRoute(routeName, routeData) {
@@ -165,6 +171,14 @@ const app = Vue.createApp({
 
         updateSavedRouteSelectedId(id) {
             this.savedRouteSelectedId = id;
+        },
+
+        updateSaveRouteFormError(msg) {
+            this.saveRouteFormError = msg;
+        },
+
+        updateSaveRouteFormSuccess(msg) {
+            this.saveRouteFormSuccess = msg;
         },
 
         updateOriginDest(origin, dest) {
@@ -840,6 +854,17 @@ class AutocompleteDirectionsHandler {
             let selectedRouteIndex = root.getCurrentRouteIndex();
             routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
         }
+
+        let savedRoutes = root.getRoutes();
+        for (let route of savedRoutes) {
+            if (route.name === routeName) {
+                root.updateSaveRouteFormError("You already have a route with the same name!");
+                root.updateSaveRouteFormSuccess("");
+                return;
+            }
+        }
+        root.updateSaveRouteFormSuccess("Saved!");
+        root.updateSaveRouteFormError("");
 
         root.addRoute(routeName, routeDataCopy);
         root.updateCurrentRouteSaveName("");
