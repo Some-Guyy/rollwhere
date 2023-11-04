@@ -59,6 +59,8 @@ const app = Vue.createApp({
 
     methods: {
         changeCanvas(page) {
+            this.saveRouteFormError = "";
+            this.saveRouteFormSuccess = "";
             for (const pageName in this.activePage) {
                 if (this.activePage[pageName] === true) {
                     this.lastPageAccessed = pageName; // Update last page accessed to help with back button
@@ -873,7 +875,11 @@ class AutocompleteDirectionsHandler {
     //load saved routes
     loadRoute() {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
-        if (Array.isArray(savedRoute)) {
+        if (Array.isArray(savedRoute)) { // If the savedRoute is an array means it is a transit-based route
+            // root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+            // root.updateCurrentRouteIndex(0);
+            // root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+            // root.updateCurrentRouteSummary(response.routes[0].summary);
             root.updateEditMode(true);
             root.updateIsTransit(false);
             root.updateCurrentTransitStepIndex(0);
