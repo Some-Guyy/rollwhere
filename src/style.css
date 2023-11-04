@@ -74,14 +74,8 @@
 }
 
 #back-btn {
-    border-color: #3E837A;
-    color: #3E837A;
-    background-color: #fff;
-}
-
-#back-btn:active {
     color: white;
-    background-color: #3E837A;
+    background-color: #F18F1C;
 }
 
 #save-route-btn, #save-route {
@@ -94,6 +88,13 @@
     color: #3E837A;
     background-color: #fff;
 }
+
+#edit-route {
+    /* margin: auto; */
+    width: 93%;
+    text-align: center;
+}
+
 
 #card-header {
     background-color: #3E837A;

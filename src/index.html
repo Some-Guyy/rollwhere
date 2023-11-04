@@ -180,13 +180,16 @@
                             <h3>Steps</h3>
                         </div>
                         <div class="row">
-                            <div class="col-2"></div>
-                            <div class="col-4">
-                                <button class="btn" id="back-btn" type="button">
-                                    Back
+                            <div class="col-1"></div>
+
+                            <!--Back to list button-->
+                            <div class="col-6">
+                                <button class="btn btn-warning" id="back-btn" type="button">
+                                    Back to list
                                 </button>
                             </div>
-                            <div class="col-1"></div>
+
+                            <!--save route dropdown button-->
                             <div class="col-5">
                                 <div class="btn-group dropstart">
                                     <button id="save-route-btn" class="btn dropdown-toggle" type="button"
@@ -204,20 +207,42 @@
                                     </form>
                                 </div>
                             </div>
+
                         </div>
-                        <div class="row">
-                            <button v-show="isTransit === true" id="edit-route" class="btn btn-success" type="button">
-                                edit walkable steps
-                            </button>
-                            <button v-show="editMode === true" id="next-route" class="btn btn-success" type="button"
-                                :disabled="transitSteps.length === currentTransitStepIndex+1">
-                                next
-                            </button>
-                            <button v-show="editMode === true" id="prev-route" class="btn btn-success" type="button"
+                        <div class="row pt-2">
+                            
+                            <!-- view each section button-->
+                            <div class="col-1"></div>
+                            <div class="col-11">
+                                <button v-show="isTransit === true" id="edit-route" class="btn btn-secondary" type="button">
+                                    View each section of your trip
+                                </button>
+                            </div>
+                            <div class="col-1"></div>
+
+                            
+                            <div class="row d-flex justify-content-around">
+                                <!--prev button-->
+                                <div class="col-1"></div>
+                                <div class="col-5">
+                                    <button v-show="editMode === true" id="prev-route" class="btn btn-secondary" type="button"
                                 :disabled="currentTransitStepIndex === 0">
-                                prev
-                            </button>
-                            <p id="edit-page-num" v-show="editMode === true">({{ currentTransitStepIndex+1 }}/{{ transitSteps.length }})</p>
+                                View prev part
+                                    </button>
+                                </div>
+
+                                <div class="col-1"></div>
+                                <!--Next button-->
+                                <div class="col-5">
+                                    <button v-show="editMode === true" id="next-route" class="btn btn-secondary" type="button"
+                                :disabled="transitSteps.length === currentTransitStepIndex+1">
+                                View next part
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!--Page no show-->
+                            <p id="edit-page-num" v-show="editMode === true">({{ currentTransitStepIndex+1 }}/{{ transitSteps.length }}) part of trip</p>
                         </div>
                         <hr>
                         <ol>
