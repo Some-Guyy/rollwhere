@@ -16,6 +16,7 @@ const app = Vue.createApp({
           },
 
           error_msg: "",
+          success_msg: ""
 
 
       }
@@ -61,24 +62,29 @@ function AddUser(userId, username, email) {
 
 //add user to database after signup
 SignUp.addEventListener('click',()=>{
-  var email = document.getElementById('email').value
-  var password = document.getElementById('password').value
   var username = document.getElementById('username').value
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Signed in 
-    var user = userCredential.user;
-    AddUser(user.uid,username,email)
-    // ...
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    let errMsg = errorMessage;
-    signUp.error_msg = errMsg;
-    // ..
-  });
-
+  if (username.trim() == ""){
+    signUp.error_msg = "Invalid username";
+  }
+  else{
+    var email = document.getElementById('email').value
+    var password = document.getElementById('password').value
+    
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed in 
+      var user = userCredential.user;
+      AddUser(user.uid,username,email)
+      // ...
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      let errMsg = errorMessage;
+      signUp.error_msg = errMsg;
+      // ..
+    });
+  }
 
 })
 
