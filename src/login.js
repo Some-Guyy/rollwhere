@@ -10,6 +10,7 @@ const app = Vue.createApp({
 
             welcome_size: '200px',
             error_msg: "",
+            forgotPasswordError: "",
         }
     }
 })
@@ -89,8 +90,8 @@ Login.addEventListener("click",()=>{
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-    let errorMessage2 = "Wrong Password or Wrong Email"
-    vm.error_msg = errorMessage2
+    let errorMessage2 = "Wrong Password or Wrong Email";
+    vm.error_msg = errorMessage2;
     // alert(errorMessage2)
   });
 
@@ -109,7 +110,9 @@ ResetPassword.addEventListener("click",()=>{
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      alert(errorMessage)
+      let error_msg3 = "Email not typed properly";
+      vm.forgotPasswordError = error_msg3;
+      // alert(errorMessage)
       // ..
     });
 

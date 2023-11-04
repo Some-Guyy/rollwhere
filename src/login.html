@@ -82,8 +82,10 @@
 
                             
                         </div>
-                        <div class="mt-2 mx-5">
-                            <span>Forgot Password?</span>
+
+                        <!--Forgot Password link that triggers modal-->
+                        <div class="mx-5">
+                            <a data-toggle="modal" data-target="#PasswordModal" href="#" id="forgotPassword">Forgot password?</a>
                         </div>
                         
 
@@ -103,36 +105,45 @@
                 <!--Sign up-->
                 <div class="row" id="signSect">
                     <p>Don't have an account?<span><a href="signup.html" id="signLink"> Sign Up</a></span>
-                        <br><span><a data-toggle="modal" data-target="#PasswordModal" href="#">Forgot password?</a></span>
                     </p>
                 </div>
             </div>
   
-  <!--Password Reset Modal -->
-  <div class="modal fade" id="PasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalCenterTitle">Password Reset</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            Enter your email and we will send you an email with a password reset link
-            <form>
-            <div class="form-group">
-                <label for="EmailReset" class="col-form-label" >Email:</label>
-                <input type="text" class="form-control" id="EmailReset">
+            <!--Password Reset Modal -->
+            <div class="modal fade" id="PasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+
+                        <!--Forgot password modal header-->
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Password Reset</h5>
+                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                </button>
+                        </div>
+                        
+                        <!--Forgot password modal body-->
+                        <div class="modal-body">
+                                Provide your account's email and an email with a password reset link will be sent!
+                                
+                                <div class="form-group">
+                                    <label for="EmailReset" class="col-form-label" style="font-weight: bold;">Email:</label>
+                                    <input type="text" class="form-control" id="EmailReset" placeholder="Enter email here">
+                                </div>
+                                <div class="text-danger">
+                                    {{forgotPasswordError}}
+                                </div>
+                        </div>
+                        
+                        <!--Forgot password modal footer-->
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal" id="PasswordCloseButton">Close</button>
+
+                            <button type="button" class="btn" id="ResetPassword">Send Email</button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="ResetPassword">Send Email</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
             <!--Right Portion which is map-->
             <div class="col-md-6 d-none d-md-block" style="height: 100vh; margin-bottom: 20px;">
