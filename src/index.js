@@ -778,7 +778,7 @@ class AutocompleteDirectionsHandler {
         this.directionsRenderer.addListener("directions_changed", () => {
             let stepsUpdatable = root.getStepsUpdatable();
             root.updateStepsUpdatable(!stepsUpdatable);
-            if (root.getLastSearchResponse() !== null && root.getStepsUpdatable() === true) {
+            if (root.getStepsUpdatable() === true) {
                 let routeData = this.directionsRenderer.getDirections();
                 if (routeData.request.waypoints) {
                     this.directionsService.route(
@@ -1019,9 +1019,7 @@ class AutocompleteDirectionsHandler {
                     (result) => { this.directionsRenderer.setDirections(result) }
                 )
             }
-            console.log("walking", steps[index])
         } else {
-            console.log("transit", steps[index])
             this.directionsService.route(
                 {
                     origin: steps[index].start_location,
