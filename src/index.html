@@ -266,6 +266,20 @@
                     </div>
 
                     <div>
+                        <!-- Invisible modal button clicked when user adds marker to map -->
+                        <div id="Modal" class="invisible" style="height: 1px;">
+                            <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                            </button>
+                        </div>
+
+                        <!-- invisible error modal button for error in marker modal -->
+                        <div class="invisible" style="height: 1px;">
+                            <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#errorModal">
+                            </button>
+                        </div>
+
                         <!--Offcanvas Buttons at footer-->
                         <hr style="width: 95%; margin-left: 2.5%;">
                         <div id="btn-grp" class="container-fluid d-grid gap-2">
@@ -305,20 +319,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Invisible modal button clicked when user adds marker to map -->
-                    <div id="Modal" class="invisible">
-                        <button id="modal_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                        </button>
-                    </div>
-
-                    <!-- invisible error modal button for error in marker modal -->
-                    <div class="invisible">
-                        <button id="modal_error_button" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#errorModal">
-                        </button>
-                    </div>
                 </div>
             </div>
         </nav>
@@ -338,20 +338,14 @@
                         <div class="modal-body">
 
                             <div class="container-fluid">
+                                <div class="row mt-2">
 
-                                <!-- <div class="row">
-                                    <div class="col-md-4">Marker Icon</div>
-                                    <div class="col-md-4 ms-auto"></div>
-                                </div> -->
-
-                                <div class="row d-flex justify-content-center">
                                     <div class="col-6 d-flex justify-content-center">
                                         <img id="image" src="images/marker/barrier.png">
                                     </div>
-                                </div>
 
-                                <div class="row d-flex justify-content-center m-3">
-                                    <div class="col-auto">
+                                    <div class="col-6">
+                                        Select a marker type
                                         <select class="form-select" aria-label="Default select example"
                                             id="obstacle_type">
                                             <option value="barrier" selected>barrier</option>
@@ -362,15 +356,16 @@
                                             <option value="staircase">staircase</option>
                                         </select>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
+                            <br>
 
                             Marker Name
-                            <input type="text" class="form-control" id="obstacle_info">
+                            <input type="text" class="form-control" id="obstacle_info" placeholder="Put marker name here">
                             <br>
                             Share any details about the marker
-                            <textarea class="form-control" id="obstacle_details"></textarea>
+                            <textarea class="form-control" id="obstacle_details" placeholder="Put details here"></textarea>
 
                         </div>
 
@@ -423,7 +418,7 @@
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-auto d-flex justify-content-center">
                                         <div class="dropdown-center">
-                                            <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">Change Picture</button>
                                             <div class="container-fluid dropdown-menu" style="min-width: 300px;">
                                                 <div class="row">
@@ -442,15 +437,13 @@
                                         <label class="col-form-label">Change Username:</label>
                                     </div>
                                     <div class="col-auto">
-                                        <input type="text" class="form-control" :placeholder="username"
-                                            v-model="usernameSettings">
+                                        <input type="text" class="form-control" :placeholder="username" v-model="usernameSettings" id="chngUsername">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button @click="logout" class="btn btn-outline-danger" type="button">Logout</button>
                             <button @click="updateProfile" type="button" class="btn fw-bold text-light"
                                 data-bs-dismiss="modal" style="background-color: #3E837A;">Save Settings</button>
                         </div>
