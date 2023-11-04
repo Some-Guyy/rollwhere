@@ -146,8 +146,13 @@
 
 
                             <!--Error Message-->
-                            <div v-show="error_msg.length>0" class="d-flex justify-content-center mt-2 text-danger">
+                            <div v-show="error_msg.length>0" class="d-flex justify-content-center mt-2 fw-bold text-danger">
                               {{error_msg}}
+                            </div>
+
+                            <!--Success Message-->
+                            <div v-show="success_msg.length>0" class="d-flex justify-content-center mt-2 fw-bold text-success">
+                              {{success_msg}}
                             </div>
 
                             <!--Account creation-->
