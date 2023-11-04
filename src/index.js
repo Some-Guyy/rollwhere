@@ -96,12 +96,25 @@ const app = Vue.createApp({
         },
 
         addRoute(routeName, routeData) {
-            this.savedRoutes.push({ id: Math.random(), name: routeName, data: routeData });
+            let ref = firebase.database().ref('users/' + user + "/routes")
+            const newRoute = ref.push({
+                name: routeName,
+                routeData : routeData
+            })
+            console.log(newRoute.key)
+            this.savedRoutes.push({ id: newRoute.key, name: routeName, data: routeData });
         },
 
         deleteRoute() {
             for (let i = 0; i < this.savedRoutes.length; i++) {
                 if (this.savedRoutes[i].id === this.savedRouteSelectedId) {
+                    firebase.database().ref('users/' + user + "/routes/" + this.savedRouteSelectedId).remove()
+                    .then(function () {
+                        console.log("route removed")
+                    })
+                    .catch(function (error) {
+                        console.log("remove err")
+                    });
                     this.savedRoutes.splice(i, 1);
                     this.savedRouteSelectedId = null;
                     return;
@@ -125,11 +138,17 @@ const app = Vue.createApp({
         updateProfile() {
             if (this.usernameSettings !== "") {
                 this.username = this.usernameSettings;
+                firebase.database().ref('users/'+ user).update({
+                    username:this.usernameSettings
+                })
             }
 
             if (this.profilePicUrl !== this.profilePicSettings) {
                 this.profilePicUrl = this.profilePicSettings;
                 document.getElementById("user-photo").src = this.profilePicSettings;
+                firebase.database().ref('users/'+ user).update({
+                    profilepic: this.profilePicSettings
+                })
             }
         },
 
@@ -167,6 +186,15 @@ const app = Vue.createApp({
 
         updateCurrentRouteIndex(index) {
             this.currentRouteIndex = index;
+        },
+
+        updateUserName(username){
+            this.username = username
+        },
+
+        updateProfilepic(profilepic){
+            this.profilePicUrl = profilepic
+            this.profilePicSettings = profilepic
         },
 
         getCurrentRouteSaveName() {
@@ -581,6 +609,8 @@ firebase.initializeApp(firebaseConfig);
 
 var markers = firebase.database().ref('markers')
 
+// const auth = firebase.auth()
+
 
 
 //The following example demostrates how to add data
@@ -609,6 +639,77 @@ function DeleteMarker(iden) {
             console.log("remove err")
         });
 }
+// checks if there is a user
+var user = sessionStorage.getItem('user')
+if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/v8/firebase.User
+    // ...
+  } else {
+      location.href = "login.html"
+    // No user is signed in.
+  }
+
+var routes = firebase.database().ref('users/'+ user + '/routes')
+routes.on('value', gotDataRoutes)
+function gotDataRoutes(data) {
+    if (data.val()) {
+        var route = data.val()
+        var keys = Object.keys(route)
+        let i = 0
+        for (i = 0; i < keys.length; i++) {
+            root.savedRoutes.push({ id: keys[i], name: route[keys[i]].name, data: route[keys[i]].routeData});
+        }
+        routes.off('value', gotDataRoutes)
+    }
+    else{
+        routes.off('value', gotDataRoutes)
+    }
+}
+
+if (user) {
+  // User is signed in, see docs for a list of available properties
+  // https://firebase.google.com/docs/reference/js/v8/firebase.User
+  // ...
+} else {
+    location.href = "login.html"
+  // No user is signed in.
+}
+const username = firebase.database().ref('users/'+ user +'/username')
+username.on('value',gotDataUsername)
+
+function gotDataUsername(data) {
+    if (data.val()) {
+        root.updateUserName(data.val())
+        username.off('value', gotDataUsername)
+    }
+    else{
+        username.off('value', gotDataUsername)
+    }
+}
+
+const profilepic = firebase.database().ref('users/'+ user +'/profilepic')
+profilepic.on('value',gotDataProfilepic)
+
+function gotDataProfilepic(data){
+    if (data.val()) {
+        root.updateProfilepic(data.val())
+        profilepic.off('value', gotDataProfilepic)
+    }
+    else{
+        profilepic.off('value', gotDataProfilepic)
+    }
+}
+
+
+//logout button listener
+var logout = document.getElementById("logout-btn")
+logout.addEventListener("click",()=>{
+    sessionStorage.clear()
+    alert("logging out")
+    location.href = "login.html"
+  })
+
 
 class AutocompleteDirectionsHandler {
     map;

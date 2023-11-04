@@ -1,0 +1,142 @@
+#abril { 
+    font-family: "Abril Fatface"; 
+    font-size: 7vw; 
+    font-style: normal; 
+    font-variant: normal; 
+    font-weight: 400; 
+} 
+
+#actor { 
+    font-family: "Actor"; 
+    font-size: 1.5vw; 
+    font-style: normal; 
+    font-variant: normal; 
+    font-weight: 400; 
+}
+
+#forgotPassword {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+#forgotPassword:hover {
+    color: #3E837A;
+}
+
+#loginSect {
+    display: flex;
+    justify-content: center;
+}
+
+#Login {
+    background-color: #3E837A;
+    width: 50%;
+    color: white;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+#signSect {
+    text-align: center;
+}
+
+#signLink {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+#signLink:hover {
+    color: #3E837A;
+}
+
+.form-control:focus {
+    border-color: #3E837A;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #3E837A;
+}
+
+.modal-header {
+    background-color:#3E837A;
+    color: white;
+    border: #3E837A;
+}
+
+#PasswordCloseButton {
+    background-color: gray;
+    color: white;
+}
+
+#ResetPassword {
+    background-color: #3E837A;
+    color: white;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    border-radius: 10%;
+    margin: 10px 10px 10px 0;
+}
+
+
+ /* GLOW effects taken from https://codepen.io/alvarotrigo/pen/RwVRYGN */
+.glow-on-hover {
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #3E837A;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #3E837A
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #3E837A;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
