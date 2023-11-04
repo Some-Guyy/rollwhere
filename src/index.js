@@ -38,6 +38,8 @@ const app = Vue.createApp({
             profilePicSettings: "images/profile/duck.png",
             savedRoutes: [],
             savedRouteSelectedId: null,
+            saveRouteFormError: "",
+            saveRouteFormSuccess: "",
 
             originPlace: "",
             destinationPlace: "",
@@ -57,6 +59,8 @@ const app = Vue.createApp({
 
     methods: {
         changeCanvas(page) {
+            this.saveRouteFormError = "";
+            this.saveRouteFormSuccess = "";
             for (const pageName in this.activePage) {
                 if (this.activePage[pageName] === true) {
                     this.lastPageAccessed = pageName; // Update last page accessed to help with back button
@@ -93,6 +97,10 @@ const app = Vue.createApp({
                 }
             }
             console.log("id of route not found!");
+        },
+
+        getRoutes() {
+            return this.savedRoutes;
         },
 
         addRoute(routeName, routeData) {
@@ -165,6 +173,14 @@ const app = Vue.createApp({
 
         updateSavedRouteSelectedId(id) {
             this.savedRouteSelectedId = id;
+        },
+
+        updateSaveRouteFormError(msg) {
+            this.saveRouteFormError = msg;
+        },
+
+        updateSaveRouteFormSuccess(msg) {
+            this.saveRouteFormSuccess = msg;
         },
 
         updateOriginDest(origin, dest) {
@@ -762,7 +778,7 @@ class AutocompleteDirectionsHandler {
         this.directionsRenderer.addListener("directions_changed", () => {
             let stepsUpdatable = root.getStepsUpdatable();
             root.updateStepsUpdatable(!stepsUpdatable);
-            if (root.getLastSearchResponse() !== null && root.getStepsUpdatable() === true) {
+            if (root.getStepsUpdatable() === true) {
                 let routeData = this.directionsRenderer.getDirections();
                 if (routeData.request.waypoints) {
                     this.directionsService.route(
@@ -841,6 +857,17 @@ class AutocompleteDirectionsHandler {
             routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
         }
 
+        let savedRoutes = root.getRoutes();
+        for (let route of savedRoutes) {
+            if (route.name === routeName) {
+                root.updateSaveRouteFormError("You already have a route with the same name!");
+                root.updateSaveRouteFormSuccess("");
+                return;
+            }
+        }
+        root.updateSaveRouteFormSuccess("Saved!");
+        root.updateSaveRouteFormError("");
+
         root.addRoute(routeName, routeDataCopy);
         root.updateCurrentRouteSaveName("");
     }
@@ -848,7 +875,11 @@ class AutocompleteDirectionsHandler {
     //load saved routes
     loadRoute() {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
-        if (Array.isArray(savedRoute)) {
+        if (Array.isArray(savedRoute)) { // If the savedRoute is an array means it is a transit-based route
+            // root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+            // root.updateCurrentRouteIndex(0);
+            // root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+            // root.updateCurrentRouteSummary(response.routes[0].summary);
             root.updateEditMode(true);
             root.updateIsTransit(false);
             root.updateCurrentTransitStepIndex(0);
@@ -988,9 +1019,7 @@ class AutocompleteDirectionsHandler {
                     (result) => { this.directionsRenderer.setDirections(result) }
                 )
             }
-            console.log("walking", steps[index])
         } else {
-            console.log("transit", steps[index])
             this.directionsService.route(
                 {
                     origin: steps[index].start_location,
