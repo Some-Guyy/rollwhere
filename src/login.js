@@ -90,7 +90,14 @@ Login.addEventListener("click",()=>{
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-    let errorMessage2 = "Wrong Password or Wrong Email";
+    if (errorCode === "auth/invalid-email") {
+      var errorMessage2 = "Invalid email";
+    } else if (errorCode === "auth/wrong-password") {
+      var errorMessage2 = "Please enter a password";
+    } else {
+      var errorMessage2 = "Incorrect email or password";
+    }
+    
     vm.error_msg = errorMessage2;
     // alert(errorMessage2)
   });
