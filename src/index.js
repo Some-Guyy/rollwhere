@@ -7,7 +7,7 @@ const app = Vue.createApp({
                 "routepage": false
             },
             lastPageAccessed: null,
-            lastRouteResponse: null,
+            lastSearchResponse: null,
 
             profilePics: [
                 "images/profile/cat.png",
@@ -46,7 +46,12 @@ const app = Vue.createApp({
             currentRouteSummary: "",
             currentRouteIndex: 0,
             currentRouteSaveName: "",
-            stepsUpdatable: false
+            stepsUpdatable: false,
+
+            editMode: false,
+            isTransit: false,
+            transitSteps: [],
+            currentTransitStepIndex: 0
         }
     },
 
@@ -73,12 +78,12 @@ const app = Vue.createApp({
             return this.lastPageAccessed;
         },
 
-        getLastRouteResponse() {
-            return this.lastRouteResponse;
+        getLastSearchResponse() {
+            return this.lastSearchResponse;
         },
 
-        updateLastRouteResponse(response) {
-            this.lastRouteResponse = response;
+        updateLastSearchResponse(response) {
+            this.lastSearchResponse = response;
         },
 
         getRoute(id) {
@@ -178,6 +183,38 @@ const app = Vue.createApp({
 
         updateStepsUpdatable(value) {
             this.stepsUpdatable = value;
+        },
+
+        getEditMode() {
+            return this.editMode;
+        },
+
+        updateEditMode(bool) {
+            this.editMode = bool;
+        },
+
+        getIsTransit() {
+            return this.isTransit;
+        },
+
+        updateIsTransit(bool) {
+            this.isTransit = bool;
+        },
+
+        getTransitSteps() {
+            return this.transitSteps;
+        },
+
+        updateTransitSteps(steps) {
+            this.transitSteps = steps;
+        },
+
+        getCurrentTransitStepIndex() {
+            return this.currentTransitStepIndex;
+        },
+
+        updateCurrentTransitStepIndex(index) {
+            this.currentTransitStepIndex = index;
         }
     }
 });
@@ -427,7 +464,6 @@ function createBottomRight(map) {
                 // changing icon everytime there is a change
                 var marker_icon = document.getElementById("image")
                 chng.addEventListener("change", () => {
-                    // console.log(chng.value)
                     marker_icon.setAttribute("src", `images/marker/${chng.value}.png`)
                 })
 
@@ -592,7 +628,6 @@ class AutocompleteDirectionsHandler {
 
         const originInput = document.getElementById("origin-input");
         const destinationInput = document.getElementById("destination-input");
-        const modeSelector = document.getElementById("mode-selector");
         // Specify just the place data fields that you need.
         const originAutocomplete = new google.maps.places.Autocomplete(
             originInput,
@@ -618,18 +653,15 @@ class AutocompleteDirectionsHandler {
         );
         this.setupPlaceChangedListener(originAutocomplete, "ORIG");
         this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destinationInput);
-        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
-        // this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
         this.switchRoute();
         this.setUpSaveRouteListener();
         this.setUpLoadRouteListener();
         this.setupBackBtnListener();
-        // this.setupMapListener(map);
+        this.setUpEditRoute();
         this.directionsRenderer.addListener("directions_changed", () => {
             let stepsUpdatable = root.getStepsUpdatable();
             root.updateStepsUpdatable(!stepsUpdatable);
-            if (root.getLastRouteResponse() !== null && root.getStepsUpdatable() === true) {
+            if (root.getLastSearchResponse() !== null && root.getStepsUpdatable() === true) {
                 let routeData = this.directionsRenderer.getDirections();
                 if (routeData.request.waypoints) {
                     this.directionsService.route(
@@ -646,7 +678,6 @@ class AutocompleteDirectionsHandler {
                                 root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
                                 root.updateCurrentRouteSummary(response.routes[0].summary);
                                 this.directionsRenderer.setDirections(response);
-                                console.log("mapclick wayP", response);
                             } else {
                                 window.alert("Directions request failed due to " + status);
                             }
@@ -657,7 +688,6 @@ class AutocompleteDirectionsHandler {
                     root.updateOriginDest(routeData.routes[0].legs[0].start_address, routeData.routes[0].legs[0].end_address);
                     root.updateCurrentRouteSummary(routeData.routes[0].summary);
                     this.directionsRenderer.setDirections(routeData);
-                    console.log("mapclick", routeData);
                 }
             }
         })
@@ -705,65 +735,107 @@ class AutocompleteDirectionsHandler {
             routeName = document.getElementById("save-route-name-input").getAttribute("placeholder");
         }
 
-        let selectedRouteIndex = root.getCurrentRouteIndex();
-        routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
+        if (!root.getEditMode()) {
+            let selectedRouteIndex = root.getCurrentRouteIndex();
+            routeDataCopy.routes = [routeDataCopy.routes[selectedRouteIndex]]; // Ensure routes array only has the selected route
+        }
+
         root.addRoute(routeName, routeDataCopy);
         root.updateCurrentRouteSaveName("");
-        console.log("saveRoute()", routeDataCopy);
     }
 
     //load saved routes
     loadRoute() {
         let savedRoute = root.getRoute(root.savedRouteSelectedId);
-        if (savedRoute.request.waypoints) {
-            this.directionsService.route(
-                {
-                    origin: savedRoute.request.origin,
-                    destination: savedRoute.request.destination,
-                    travelMode: savedRoute.request.travelMode,
-                    waypoints: savedRoute.request.waypoints
-                },
-                (response, status) => {
-                    if (status === "OK") {
-                        root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
-                        root.updateCurrentRouteIndex(0);
-                        root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
-                        root.updateCurrentRouteSummary(response.routes[0].summary);
-                        root.changeCanvas("routepage");
-                        this.directionsRenderer.setDirections(response);
-                        console.log("loadRoute() wayP", response);
-                    } else {
-                        window.alert("Directions request failed due to " + status);
-                    }
-                });
-        } else {
-            root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
-            root.updateCurrentRouteIndex(0);
-            root.updateOriginDest(savedRoute.routes[0].legs[0].start_address, savedRoute.routes[0].legs[0].end_address);
-            root.updateCurrentRouteSummary(savedRoute.routes[0].summary);
+        if (Array.isArray(savedRoute)) {
+            root.updateEditMode(true);
+            root.updateIsTransit(false);
+            root.updateCurrentTransitStepIndex(0);
+            let index = root.getCurrentTransitStepIndex();
+            root.updateTransitSteps(savedRoute);
+            if (savedRoute[index].waypoints) {
+                //display the route with waypoints
+                this.displayRouteTravelMode(savedRoute, index, savedRoute[index].waypoints);
+            } else {
+                this.displayRouteTravelMode(savedRoute, index);
+            }
             root.changeCanvas("routepage");
-            this.directionsRenderer.setDirections(savedRoute);
-            console.log("loadRoute()", savedRoute);
+        } else {
+            root.updateEditMode(false);
+            if (savedRoute.request.waypoints) {
+                this.directionsService.route(
+                    {
+                        origin: savedRoute.request.origin,
+                        destination: savedRoute.request.destination,
+                        travelMode: savedRoute.request.travelMode,
+                        waypoints: savedRoute.request.waypoints
+                    },
+                    (response, status) => {
+                        if (status === "OK") {
+                            if (savedRoute.request.travelMode === "TRANSIT") {
+                                root.updateIsTransit(true);
+                            } else {
+                                root.updateIsTransit(false);
+                            }
+
+                            root.updateCurrentRouteSteps(response.routes[0].legs[0].steps);
+                            root.updateCurrentRouteIndex(0);
+                            root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
+                            root.updateCurrentRouteSummary(response.routes[0].summary);
+                            root.changeCanvas("routepage");
+                            this.directionsRenderer.setDirections(response);
+                        } else {
+                            window.alert("Directions request failed due to " + status);
+                        }
+                    });
+            } else {
+                if (savedRoute.request.travelMode === "TRANSIT") {
+                    root.updateIsTransit(true);
+                } else {
+                    root.updateIsTransit(false);
+                }
+
+                root.updateCurrentRouteSteps(savedRoute.routes[0].legs[0].steps);
+                root.updateCurrentRouteIndex(0);
+                root.updateOriginDest(savedRoute.routes[0].legs[0].start_address, savedRoute.routes[0].legs[0].end_address);
+                root.updateCurrentRouteSummary(savedRoute.routes[0].summary);
+                root.changeCanvas("routepage");
+                this.directionsRenderer.setDirections(savedRoute);
+            }
         }
     }
 
     //handle the save routes
     setUpSaveRouteListener() {
-        let saveRouteBtn = document.getElementById("save-route")
+        let saveRouteBtn = document.getElementById("save-route");
 
         saveRouteBtn.addEventListener("click", () => {
-            let routeData = this.directionsRenderer.getDirections()
-            this.saveRoute(routeData)
-        })
+            if (root.getEditMode()) {
+                let routeData = this.directionsRenderer.getDirections();
+                let steps = root.getTransitSteps();
+                let index = root.getCurrentTransitStepIndex();
+
+                if (routeData.routes[0].legs[0].via_waypoints.length !== 0) {
+                    //set new property called waypoints into current step with the waypoints of current directionsResult object
+                    steps[index].waypoints = routeData.routes[0].legs[0].via_waypoints;
+                    root.updateTransitSteps(steps);
+                }
+
+                this.saveRoute(steps);
+            } else {
+                let routeData = this.directionsRenderer.getDirections();
+                this.saveRoute(routeData);
+            }
+        });
     }
 
     //handle the load routes
     setUpLoadRouteListener() {
-        let loadRouteBtn = document.getElementById("load-route")
+        let loadRouteBtn = document.getElementById("load-route");
 
         loadRouteBtn.addEventListener("click", () => {
-            this.loadRoute()
-        })
+            this.loadRoute();
+        });
     }
 
     // This allows us to access directionsRenderer when pressing back button to reload previous response because response may have changed when dragging routes to modify them
@@ -771,10 +843,133 @@ class AutocompleteDirectionsHandler {
         let backBtn = document.getElementById("back-btn");
 
         backBtn.addEventListener("click", () => {
-            if (root.getLastPageAccessed() === "searchpage" && this.directionsRenderer.getDirections().request.waypoints) {
-                this.directionsRenderer.setDirections(root.getLastRouteResponse());
+            if (root.getLastPageAccessed() === "searchpage") {
+                let lastSearchResponse = root.getLastSearchResponse();
+                if (lastSearchResponse.request.travelMode === "TRANSIT") {
+                    root.updateIsTransit(true);
+                } else {
+                    root.updateIsTransit(false);
+                }
+
+                root.updateEditMode(false);
+                this.directionsRenderer.setDirections(lastSearchResponse);
             }
             root.goBackCanvas();
+        })
+    }
+
+    //helper function to help display each step onto the map to edit
+    displayRouteTravelMode(steps, index, waypoints = "none") {
+        root.updateEditMode(true);
+        if (steps[index].travel_mode == "WALKING") {
+            if (waypoints != "none") {
+                let newStructureWaypoints = []
+                for (let waypoint of waypoints) {
+                    newStructureWaypoints.push({ location: waypoint, stopover: false })
+                }
+                this.directionsService.route(
+                    {
+                        origin: steps[index].start_location,
+                        destination: steps[index].end_location,
+                        travelMode: google.maps.TravelMode.WALKING,
+                        waypoints: newStructureWaypoints
+                    },
+                    (result) => {
+                        this.directionsRenderer.setDirections(result)
+                    })
+            } else {
+                this.directionsService.route(
+                    {
+                        origin: steps[index].start_location,
+                        destination: steps[index].end_location,
+                        travelMode: google.maps.TravelMode.WALKING
+                    },
+                    (result) => { this.directionsRenderer.setDirections(result) }
+                )
+            }
+            console.log("walking", steps[index])
+        } else {
+            console.log("transit", steps[index])
+            this.directionsService.route(
+                {
+                    origin: steps[index].start_location,
+                    destination: steps[index].end_location,
+                    travelMode: google.maps.TravelMode.TRANSIT
+                },
+                (result) => {
+                    this.directionsRenderer.setDirections(result)
+                }
+            )
+        }
+    }
+
+    //edit the routes 
+    setUpEditRoute() {
+        let editRouteBtn = document.getElementById("edit-route");
+        let nextRouteBtn = document.getElementById("next-route");
+        let prevRouteBtn = document.getElementById("prev-route");
+
+        //when user press this edit route button (only will appear for transit), the first step (usually walkable path) will be active
+        editRouteBtn.addEventListener("click", () => {
+            if (this.directionsRenderer.getDirections()) {
+                root.updateIsTransit(false);
+                root.updateCurrentTransitStepIndex(0);
+                let index = root.getCurrentTransitStepIndex();
+                let selectedRouteIndex = root.getCurrentRouteIndex();
+                let currentRoute = this.directionsRenderer.getDirections().routes[selectedRouteIndex];
+
+                let steps = currentRoute.legs[0].steps;
+                root.updateTransitSteps(steps);
+                //calls a directionService and directionRenderer and display onto map
+                this.displayRouteTravelMode(steps, index);
+            }
+        })
+
+        //this button will only appear when user press edit route button, this will also show the next step
+        nextRouteBtn.addEventListener("click", () => {
+            let index = root.getCurrentTransitStepIndex();
+            let prevStep = this.directionsRenderer.getDirections();
+
+            let steps = root.getTransitSteps();
+
+            //saving the waypoints from the current step 
+            if (prevStep.routes[0].legs[0].via_waypoints.length !== 0) {
+                //set new property called waypoints into current step with the waypoints of current directionsResult object
+                steps[index].waypoints = prevStep.routes[0].legs[0].via_waypoints;
+                root.updateTransitSteps(steps);
+            }
+
+            //go into next step 
+            root.updateCurrentTransitStepIndex(root.getCurrentTransitStepIndex() + 1);
+            index = root.getCurrentTransitStepIndex();
+
+            //if there are waypoints in current step
+            if (steps[index].waypoints) {
+                //display the route with waypoints
+                this.displayRouteTravelMode(steps, index, steps[index].waypoints);
+            } else {
+                this.displayRouteTravelMode(steps, index);
+            }
+        })
+
+        prevRouteBtn.addEventListener("click", () => {
+            let prevStep = this.directionsRenderer.getDirections();
+            let steps = root.getTransitSteps();
+            let index = root.getCurrentTransitStepIndex();
+
+            if (prevStep.routes[0].legs[0].via_waypoints.length !== 0) {
+                steps[index].waypoints = prevStep.routes[0].legs[0].via_waypoints;
+                root.updateTransitSteps(steps);
+            }
+
+            root.updateCurrentTransitStepIndex(root.getCurrentTransitStepIndex() - 1);
+            index = root.getCurrentTransitStepIndex();
+
+            if (steps[index].waypoints) {
+                this.displayRouteTravelMode(steps, index, steps[index].waypoints);
+            } else {
+                this.displayRouteTravelMode(steps, index);
+            }
         })
     }
 
@@ -797,7 +992,14 @@ class AutocompleteDirectionsHandler {
             },
             (response, status) => {
                 if (status === "OK") {
-                    root.updateLastRouteResponse(response);
+                    if (this.travelMode === "TRANSIT") {
+                        root.updateIsTransit(true);
+                    } else {
+                        root.updateIsTransit(false);
+                    }
+
+                    root.updateEditMode(false);
+                    root.updateLastSearchResponse(response);
                     root.updateOriginDest(response.routes[0].legs[0].start_address, response.routes[0].legs[0].end_address);
 
                     let alternateRouteListEl = document.getElementById("alternate-routes-list");
@@ -805,12 +1007,27 @@ class AutocompleteDirectionsHandler {
 
                     for (let i = 0; i < response.routes.length; i++) {
                         let li = document.createElement("li");
+                        let routeName = "";
+                        if (response.routes[i].summary === "") {
+                            let stepModes = [];
+                            for (let step of response.routes[i].legs[0].steps) {
+                                if (step.travel_mode === "TRANSIT") {
+                                    stepModes.push(step.instructions.split(" ")[0]);
+                                }
+                            }
+                            routeName = stepModes.join(" -> ");
+                            if (routeName === "") {
+                                routeName = "No Transits";
+                            }
+                        } else {
+                            routeName = response.routes[i].summary;
+                        }
 
                         li.innerHTML = `
                         <div class="card card border-success alternate-routes-li-item mb-3">
                             <div class="card-header card-title" id="card-header">
                                 <h5>
-                                    Route ${i + 1}: ${response.routes[i].summary}
+                                    Route ${i + 1}: ${routeName}
                                 </h5>
                             </div>
                             <div class="p-1">
