@@ -145,10 +145,10 @@ const app = Vue.createApp({
 
             if (this.profilePicUrl !== this.profilePicSettings) {
                 this.profilePicUrl = this.profilePicSettings;
-                document.getElementById("user-photo").src = this.profilePicSettings;
                 firebase.database().ref('users/'+ user).update({
                     profilepic: this.profilePicSettings
-                })
+                });
+                document.getElementById("user-photo").src = this.profilePicSettings;
             }
         },
 

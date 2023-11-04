@@ -74,8 +74,7 @@ SignUp.addEventListener('click',()=>{
   .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
-    // alert(errorMessage);
-    let errMsg = "Invalid email/Username/Password"
+    let errMsg = errorMessage;
     signUp.error_msg = errMsg;
     // ..
   });
