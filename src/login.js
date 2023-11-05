@@ -84,8 +84,6 @@ Login.addEventListener("click",()=>{
     // ...
     sessionStorage.setItem('user',user.uid)
     location.href = 'index.html'
-    alert("login successful go to index.html")
-
   })
   .catch((error) => {
     var errorCode = error.code;

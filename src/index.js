@@ -711,6 +711,7 @@ function gotDataProfilepic(data){
     if (data.val()) {
         root.updateProfilepic(data.val())
         profilepic.off('value', gotDataProfilepic)
+        document.getElementById("user-photo").src = root.getProfilePicUrl()
     }
     else{
         profilepic.off('value', gotDataProfilepic)
@@ -722,7 +723,6 @@ function gotDataProfilepic(data){
 var logout = document.getElementById("logout-btn")
 logout.addEventListener("click",()=>{
     sessionStorage.clear()
-    alert("logging out")
     location.href = "login.html"
   })
 
