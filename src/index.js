@@ -723,7 +723,6 @@ function gotDataProfilepic(data){
 var logout = document.getElementById("logout-btn")
 logout.addEventListener("click",()=>{
     sessionStorage.clear()
-    alert("logging out")
     location.href = "login.html"
   })
 
