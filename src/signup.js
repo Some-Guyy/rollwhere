@@ -6,8 +6,8 @@ const app = Vue.createApp({
   data() { 
       return {
           logo: "images/RollWhere_Logo.jpg",
-          logo_width: "60%",
-          logo_height: "60%",
+          logo_width: "25vh",
+          logo_height: "25vh",
 
           captions: {
             "wheelchair2": "We understand",
@@ -16,17 +16,32 @@ const app = Vue.createApp({
           },
 
           error_msg: "",
-          success_msg: ""
-
-
+          success_msg: "",
+          countdown: 3
+          
       }
   },
   methods: {
 
     find_caption(wheelchair) {
       this.caption = this.captions[wheelchair];
+    },
+
+    startRedirectCountDown() {
+      //if the countdown is not 0, it will call itself 
+      if (this.countdown !== -1){
+        //recursive function!!!
+        setTimeout(()=> {
+          this.success_msg = `Account created successfully! Redirecting you in ${this.countdown}`
+          this.countdown--
+          this.startRedirectCountDown()
+        }, 1000)
+      }
+      else {
+        location.href='login.html'
+      }
     }
-  }
+  }, 
 })
 
 const signUp = app.mount('#signUp')
@@ -54,8 +69,7 @@ function AddUser(userId, username, email) {
   if (error) {
       console.log(error)
   } else {
-    alert("Sign up successful,redirecting to login page")
-    location.href='login.html'
+    signUp.startRedirectCountDown()
   }
   });
 }
@@ -85,6 +99,7 @@ SignUp.addEventListener('click',()=>{
       // ..
     });
   }
+
 
 })
 
