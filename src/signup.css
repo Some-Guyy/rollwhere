@@ -2,6 +2,8 @@ html, body {
     margin: 0%;
     background-image: url("images/mapBG.png");
     background-size: cover;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 
@@ -9,7 +11,7 @@ html, body {
 .carousel img {
     object-fit: cover;
     object-position: center;
-    height: 100vh;
+    height: 90vh;
     border-radius: 5%;
 }
 
@@ -24,7 +26,7 @@ html, body {
 
 #abril { 
     font-family: "Abril Fatface"; 
-    font-size: 4vw; 
+    font-size: 4.5vw; 
     font-style: normal; 
     font-variant: normal; 
     font-weight: 400; 

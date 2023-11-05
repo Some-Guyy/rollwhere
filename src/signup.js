@@ -6,8 +6,8 @@ const app = Vue.createApp({
   data() { 
       return {
           logo: "images/RollWhere_Logo.jpg",
-          logo_width: "60%",
-          logo_height: "60%",
+          logo_width: "25vh",
+          logo_height: "25vh",
 
           captions: {
             "wheelchair2": "We understand",
