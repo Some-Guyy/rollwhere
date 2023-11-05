@@ -6,8 +6,6 @@ html, body {
     overflow-y: auto;
 }
 
-
-
 .carousel img {
     object-fit: cover;
     object-position: center;
