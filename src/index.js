@@ -711,6 +711,7 @@ function gotDataProfilepic(data){
     if (data.val()) {
         root.updateProfilepic(data.val())
         profilepic.off('value', gotDataProfilepic)
+        document.getElementById("user-photo").src = this.profilePicSettings;
     }
     else{
         profilepic.off('value', gotDataProfilepic)
