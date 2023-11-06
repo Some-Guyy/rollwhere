@@ -29,6 +29,7 @@ const app = Vue.createApp({
 
     startRedirectCountDown() {
       //if the countdown is not 0, it will call itself 
+      this.error_msg = ""
       if (this.countdown !== -1){
         //recursive function!!!
         setTimeout(()=> {
