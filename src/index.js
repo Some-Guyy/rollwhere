@@ -107,7 +107,7 @@ const app = Vue.createApp({
             let ref = firebase.database().ref('users/' + user + "/routes")
             const newRoute = ref.push({
                 name: routeName,
-                routeData : routeData
+                routeData: routeData
             })
             console.log(newRoute.key)
             this.savedRoutes.push({ id: newRoute.key, name: routeName, data: routeData });
@@ -117,12 +117,12 @@ const app = Vue.createApp({
             for (let i = 0; i < this.savedRoutes.length; i++) {
                 if (this.savedRoutes[i].id === this.savedRouteSelectedId) {
                     firebase.database().ref('users/' + user + "/routes/" + this.savedRouteSelectedId).remove()
-                    .then(function () {
-                        console.log("route removed")
-                    })
-                    .catch(function (error) {
-                        console.log("remove err")
-                    });
+                        .then(function () {
+                            console.log("route removed")
+                        })
+                        .catch(function (error) {
+                            console.log("remove err")
+                        });
                     this.savedRoutes.splice(i, 1);
                     this.savedRouteSelectedId = null;
                     return;
@@ -146,14 +146,14 @@ const app = Vue.createApp({
         updateProfile() {
             if (this.usernameSettings !== "") {
                 this.username = this.usernameSettings;
-                firebase.database().ref('users/'+ user).update({
-                    username:this.usernameSettings
+                firebase.database().ref('users/' + user).update({
+                    username: this.usernameSettings
                 })
             }
 
             if (this.profilePicUrl !== this.profilePicSettings) {
                 this.profilePicUrl = this.profilePicSettings;
-                firebase.database().ref('users/'+ user).update({
+                firebase.database().ref('users/' + user).update({
                     profilepic: this.profilePicSettings
                 });
                 document.getElementById("user-photo").src = this.profilePicSettings;
@@ -204,11 +204,11 @@ const app = Vue.createApp({
             this.currentRouteIndex = index;
         },
 
-        updateUserName(username){
+        updateUserName(username) {
             this.username = username
         },
 
-        updateProfilepic(profilepic){
+        updateProfilepic(profilepic) {
             this.profilePicUrl = profilepic
             this.profilePicSettings = profilepic
         },
@@ -532,11 +532,12 @@ function createBottomRight(map) {
                     // checking if obstacle type is valid
                     if (obstacle_info.length == 0) {
                         // failed
-                        document.getElementById("exampleModal").innerHTML = modal_form_class
+                        setTimeout(() => {
+                            document.getElementById("exampleModal").innerHTML = modal_form_class;
+                        }, 200);
                         // will trigger error modal button
                         let modal_error = document.getElementById("modal_error_button");
                         modal_error.click();
-
                     } else {
                         // success
                         // create details to put in infow window
@@ -592,8 +593,10 @@ function createBottomRight(map) {
                             DeleteMarker(iden);
                         });
 
-                        // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
-                        document.getElementById("exampleModal").innerHTML = modal_form_class
+                        setTimeout(() => {
+                            // reset the modal by changing inner HTML to initial modal, if not all markers tied to this form details
+                            document.getElementById("exampleModal").innerHTML = modal_form_class;
+                        }, 200);
                         controlButton.click();
                     }
 
@@ -661,12 +664,12 @@ if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/v8/firebase.User
     // ...
-  } else {
-      location.href = "login.html"
+} else {
+    location.href = "login.html"
     // No user is signed in.
-  }
+}
 
-var routes = firebase.database().ref('users/'+ user + '/routes')
+var routes = firebase.database().ref('users/' + user + '/routes')
 routes.on('value', gotDataRoutes)
 function gotDataRoutes(data) {
     if (data.val()) {
@@ -674,46 +677,46 @@ function gotDataRoutes(data) {
         var keys = Object.keys(route)
         let i = 0
         for (i = 0; i < keys.length; i++) {
-            root.savedRoutes.push({ id: keys[i], name: route[keys[i]].name, data: route[keys[i]].routeData});
+            root.savedRoutes.push({ id: keys[i], name: route[keys[i]].name, data: route[keys[i]].routeData });
         }
         routes.off('value', gotDataRoutes)
     }
-    else{
+    else {
         routes.off('value', gotDataRoutes)
     }
 }
 
 if (user) {
-  // User is signed in, see docs for a list of available properties
-  // https://firebase.google.com/docs/reference/js/v8/firebase.User
-  // ...
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/v8/firebase.User
+    // ...
 } else {
     location.href = "login.html"
-  // No user is signed in.
+    // No user is signed in.
 }
-const username = firebase.database().ref('users/'+ user +'/username')
-username.on('value',gotDataUsername)
+const username = firebase.database().ref('users/' + user + '/username')
+username.on('value', gotDataUsername)
 
 function gotDataUsername(data) {
     if (data.val()) {
         root.updateUserName(data.val())
         username.off('value', gotDataUsername)
     }
-    else{
+    else {
         username.off('value', gotDataUsername)
     }
 }
 
-const profilepic = firebase.database().ref('users/'+ user +'/profilepic')
-profilepic.on('value',gotDataProfilepic)
+const profilepic = firebase.database().ref('users/' + user + '/profilepic')
+profilepic.on('value', gotDataProfilepic)
 
-function gotDataProfilepic(data){
+function gotDataProfilepic(data) {
     if (data.val()) {
         root.updateProfilepic(data.val())
         profilepic.off('value', gotDataProfilepic)
         document.getElementById("user-photo").src = root.getProfilePicUrl()
     }
-    else{
+    else {
         profilepic.off('value', gotDataProfilepic)
     }
 }
@@ -721,10 +724,10 @@ function gotDataProfilepic(data){
 
 //logout button listener
 var logout = document.getElementById("logout-btn")
-logout.addEventListener("click",()=>{
+logout.addEventListener("click", () => {
     sessionStorage.clear()
     location.href = "login.html"
-  })
+})
 
 
 class AutocompleteDirectionsHandler {
