@@ -213,7 +213,8 @@
                                             <label for="save-route-name-input" class="form-label">Route Name</label>
                                             <input v-model="currentRouteSaveName" type="text" id="save-route-name-input"
                                                 class="form-control"
-                                                :placeholder="`From ${originPlace} to ${destinationPlace} via ${currentRouteSummary}`">
+                                                :placeholder="`From ${originPlace} to ${destinationPlace} via ${currentRouteSummary}`"
+                                                onkeydown="if(event.keyCode === 13){return false}">
                                         </div>
                                         <button id="save-route" type="button" class="btn">Save</button>
                                         <div v-show="saveRouteFormError.length > 0" class="text-danger">
@@ -259,7 +260,8 @@
                             </div>
 
                             <!--Page no show-->
-                            <p class="text-center mt-3" id="edit-page-num" v-show="editMode === true">~ ({{ currentTransitStepIndex+1 }}/{{ transitSteps.length }}) part of your trip ~</p>
+                            <p class="text-center mt-3" id="edit-page-num" v-show="editMode === true">~ ({{
+                                currentTransitStepIndex+1 }}/{{ transitSteps.length }}) part of your trip ~</p>
                         </div>
                         <hr>
                         <ol>
@@ -367,10 +369,12 @@
                             <br>
 
                             Marker Name
-                            <input type="text" class="form-control" id="obstacle_info" placeholder="Put marker name here">
+                            <input type="text" class="form-control" id="obstacle_info"
+                                placeholder="Put marker name here">
                             <br>
                             Share any details about the marker
-                            <textarea class="form-control" id="obstacle_details" placeholder="Put details here"></textarea>
+                            <textarea class="form-control" id="obstacle_details"
+                                placeholder="Put details here"></textarea>
 
                         </div>
 
@@ -442,7 +446,9 @@
                                         <label class="col-form-label">Change Username:</label>
                                     </div>
                                     <div class="col-auto">
-                                        <input type="text" class="form-control" :placeholder="username" v-model="usernameSettings" id="chngUsername">
+                                        <input type="text" class="form-control" :placeholder="username"
+                                            v-model="usernameSettings" id="chngUsername"
+                                            onkeydown="if(event.keyCode === 13){return false}">
                                     </div>
                                 </div>
                             </div>
