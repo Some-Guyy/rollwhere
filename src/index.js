@@ -109,7 +109,6 @@ const app = Vue.createApp({
                 name: routeName,
                 routeData: routeData
             })
-            console.log(newRoute.key)
             this.savedRoutes.push({ id: newRoute.key, name: routeName, data: routeData });
         },
 
@@ -118,10 +117,9 @@ const app = Vue.createApp({
                 if (this.savedRoutes[i].id === this.savedRouteSelectedId) {
                     firebase.database().ref('users/' + user + "/routes/" + this.savedRouteSelectedId).remove()
                         .then(function () {
-                            console.log("route removed")
                         })
                         .catch(function (error) {
-                            console.log("remove err")
+                            console.log(error)
                         });
                     this.savedRoutes.splice(i, 1);
                     this.savedRouteSelectedId = null;
@@ -643,8 +641,6 @@ function AddMarker(iden, position, content, icon) {
     }, function (error) {
         if (error) {
             console.log("err")
-        } else {
-            console.log("marker added")
         }
     });
 }
@@ -652,10 +648,9 @@ function AddMarker(iden, position, content, icon) {
 function DeleteMarker(iden) {
     firebase.database().ref('markers/' + iden).remove()
         .then(function () {
-            console.log("marker removed")
         })
         .catch(function (error) {
-            console.log("remove err")
+            console.log(error)
         });
 }
 // checks if there is a user
@@ -1184,7 +1179,6 @@ class AutocompleteDirectionsHandler {
                         alternateRouteListEl.appendChild(li);
                     }
 
-                    console.log("route()", response);
                     me.directionsRenderer.setDirections(response);
                 } else {
                     console.log("Directions request failed due to " + status);
