@@ -799,7 +799,7 @@ class AutocompleteDirectionsHandler {
                                 root.updateCurrentRouteSummary(response.routes[0].summary);
                                 this.directionsRenderer.setDirections(response);
                             } else {
-                                window.alert("Directions request failed due to " + status);
+                                console.log("Directions request failed due to " + status);
                             }
                         });
                 } else {
@@ -828,7 +828,7 @@ class AutocompleteDirectionsHandler {
             const place = autocomplete.getPlace();
 
             if (!place.place_id) {
-                window.alert("Please select an option from the dropdown list.");
+                console.log("Please select an option from the dropdown list.");
                 return;
             }
 
@@ -920,7 +920,7 @@ class AutocompleteDirectionsHandler {
                             root.changeCanvas("routepage");
                             this.directionsRenderer.setDirections(response);
                         } else {
-                            window.alert("Directions request failed due to " + status);
+                            console.log("Directions request failed due to " + status);
                         }
                     });
             } else {
@@ -1187,7 +1187,7 @@ class AutocompleteDirectionsHandler {
                     console.log("route()", response);
                     me.directionsRenderer.setDirections(response);
                 } else {
-                    window.alert("Directions request failed due to " + status);
+                    console.log("Directions request failed due to " + status);
                 }
             },
         );
